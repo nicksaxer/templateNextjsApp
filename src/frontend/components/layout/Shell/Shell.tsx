@@ -6,6 +6,7 @@ import { appConfig } from '@backend/config/app.config';
 import { type ReactNode, useState } from 'react';
 import type { Theme } from '@frontend/utils/prefs';
 import Icon from '@frontend/components/ui/elements/Icon';
+import NavigationLink from '@frontend/components/ui/elements/NavigationLink';
 import Button from '@frontend/components/ui/inputs/Button';
 import ThemeSwitch from './ThemeSwitch';
 import styles from './Shell.module.css';
@@ -42,11 +43,11 @@ export default function Shell({children, initialTheme}: {children: ReactNode; in
                 <p className={styles.navLabel}>THE PLAYGROUND</p>
                 <nav aria-label="Main navigation">
                     {links.map(link => (
-                        <Link key={link.href} href={link.href} className={styles.navLink} data-active={link.href === pathname}
+                        <NavigationLink key={link.href} href={link.href} className={styles.navLink} data-active={link.href === pathname}
                             aria-current={link.href === pathname ? 'page' : undefined} onClick={() => setMenuOpen(false)}>
                             <Icon name={link.icon} />
                             {link.label}
-                        </Link>
+                        </NavigationLink>
                     ))}
                 </nav>
                 <div className={styles.sidebarFoot}>

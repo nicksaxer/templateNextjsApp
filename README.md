@@ -25,7 +25,7 @@ Open http://localhost:3000. No environment variables, database, SMTP server, or 
 | `src/frontend/components/layout` | Container, shell, navigation, theme switch |
 | `src/frontend/components/modules` | Removable example features: Showcase, Project, Mail |
 | `src/frontend/components/ui/inputs` | Button, TextInput, NumberInput, SelectInput, TextArea, Switch, Checkbox, shared field behavior |
-| `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, Alert, Badge, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Dialog, Icon |
+| `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, Alert, Badge, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Dialog, Icon, NavigationLink |
 | `src/frontend/components/ui/animations` | SlideDown and FadeIn |
 | `src/frontend/utils` | Formatting, class names, cancellable delay, theme preferences |
 | `src/backend/00_config` | App, environment, MongoDB, example plans and limits |

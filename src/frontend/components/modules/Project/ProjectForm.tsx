@@ -21,6 +21,7 @@ import projectStyles from './Project.module.css';
 
 export default function ProjectForm({plans}: {plans: ExamplePlan[]}) {
     const [state, action, pending] = useActionState(previewProjectAction, null);
+    const [draft, setDraft] = useState({name: '', email: '', notes: '', updates: true});
     const [plan, setPlan] = useState('studio');
     const [seats, setSeats] = useState('3');
     const resultRef = useRef<HTMLDivElement>(null);
@@ -35,16 +36,18 @@ export default function ProjectForm({plans}: {plans: ExamplePlan[]}) {
             <Card title="Give it a little personality" description="A name, a plan, and some room to grow.">
                 <form action={action} noValidate className={styles.stack}>
                     <fieldset disabled={pending} className={projectStyles.fields}>
-                        <TextInput label="Project name" name="name" required maxLength={80} placeholder="Sunday Studio" error={errors?.name} />
+                        <TextInput label="Project name" name="name" required maxLength={80} placeholder="Sunday Studio" error={errors?.name}
+                            value={draft.name} onChange={event => setDraft({...draft, name: event.target.value})} />
                         <TextInput label="Your email" name="email" type="email" required maxLength={254} autoComplete="email" placeholder="alex@example.com" error={errors?.email}
-                            hint="Only used in this preview. Nothing is sent or saved." />
+                            hint="Only used in this preview. Nothing is sent or saved." value={draft.email} onChange={event => setDraft({...draft, email: event.target.value})} />
                         <div className={styles.twoColumns}>
                             <SelectInput label="Choose a plan" name="plan" value={plan} onChange={event => setPlan(event.target.value)}
                                 options={plans.map(plan => ({value: plan.id, label: `${plan.name} · ${formatCurrency(plan.price)}`}))} error={errors?.plan} />
                             <NumberInput label="People" name="seats" min={1} max={50} value={seats} onChange={event => setSeats(event.target.value)} error={errors?.seats} />
                         </div>
-                        <TextArea label="What’s the idea?" name="notes" placeholder="Something worth making…" maxLength={500} error={errors?.notes} />
-                        <Switch label="I’d like the occasional update" name="updates" defaultChecked />
+                        <TextArea label="What’s the idea?" name="notes" placeholder="Something worth making…" maxLength={500} error={errors?.notes}
+                            value={draft.notes} onChange={event => setDraft({...draft, notes: event.target.value})} />
+                        <Switch label="I’d like the occasional update" name="updates" checked={draft.updates} onChange={updates => setDraft({...draft, updates})} />
                     </fieldset>
                     <div className={projectStyles.estimate}>
                         <div>
