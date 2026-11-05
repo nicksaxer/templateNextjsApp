@@ -1,0 +1,40 @@
+.card { padding: 27px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); min-width: 0; box-shadow: 0 3px 6px #15162602; }
+.cardHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 25px; }
+.cardHeader h3 { font-size: 1rem; margin: 0; font-weight: 600; letter-spacing: -.02em; }
+.cardHeader p { margin: 6px 0 0; font-size: .8rem; color: var(--muted); line-height: 1.6; }
+.error { color: var(--danger); margin: 0; font-size: .77rem; }
+.alert { display: flex; align-items: flex-start; gap: 12px; padding: 15px 17px; border: 1px solid var(--tone-border); background: var(--tone-bg); color: var(--tone-text); border-radius: 9px; font-size: .82rem; line-height: 1.6; }
+.alert > i { padding-top: 2px; }
+.alert strong { display: block; font-weight: 600; }
+.alert[data-tone=info], .badge[data-tone=info] { --tone-bg: var(--accent-soft); --tone-text: var(--accent-text); --tone-border: var(--accent-border); }
+.alert[data-tone=success], .badge[data-tone=success] { --tone-bg: var(--success-soft); --tone-text: var(--success); --tone-border: var(--success-border); }
+.alert[data-tone=warning], .badge[data-tone=warning] { --tone-bg: var(--warning-soft); --tone-text: var(--warning); --tone-border: var(--warning-border); }
+.alert[data-tone=danger], .badge[data-tone=danger] { --tone-bg: var(--danger-soft); --tone-text: var(--danger); --tone-border: var(--danger-border); }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; background: var(--tone-bg); color: var(--tone-text); font-size: .7rem; font-weight: 600; border-radius: 5px; white-space: nowrap; }
+.info { position: relative; display: inline-flex; vertical-align: middle; }
+.info > button { background: none; color: var(--muted); border: 0; cursor: help; padding: 3px; font-size: .9rem; }
+.tooltip { position: absolute; z-index: 5; top: calc(100% + 8px); right: -10px; width: 210px; max-width: 65vw; padding: 12px 14px; border-radius: 8px; color: var(--text); background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); font-size: .78rem; font-weight: 400; line-height: 1.6; opacity: 0; visibility: hidden; transition: opacity .15s; }
+.info:hover .tooltip, .info:focus-within .tooltip { opacity: 1; visibility: visible; }
+.info[data-dismissed=true] .tooltip { opacity: 0; visibility: hidden; }
+.loading { display: flex; gap: 10px; align-items: center; justify-content: center; padding: 20px; color: var(--muted); font-size: .82rem; }
+.loading[data-delayed=true] { animation: appear .1s .2s both; }
+.spinner { width: 20px; height: 20px; border: 2px solid var(--accent-border); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
+.skeleton { display: flex; flex-direction: column; gap: 12px; padding: 12px 0; }
+.skeleton span { height: 12px; background: var(--surface-hover); border-radius: 4px; animation: pulse 1.5s ease-in-out infinite alternate; }
+.skeleton span:last-child { width: 65%; }
+.empty { padding: 30px 12px; text-align: center; }
+.empty > i { display: block; font-size: 1.8rem; color: var(--muted); margin-bottom: 15px; }
+.empty h3 { font-size: .94rem; font-weight: 600; margin: 0 0 8px; }
+.empty p { font-size: .82rem; color: var(--muted); margin: 0 0 20px; }
+.line { border: 0; border-top: 1px solid var(--border); margin: 24px 0; }
+.progress > div { display: flex; justify-content: space-between; font-size: .8rem; margin-bottom: 12px; }
+.progress span { color: var(--muted); }
+.progress progress { width: 100%; height: 6px; border: 0; appearance: none; border-radius: 6px; overflow: hidden; background: var(--surface-hover); }
+.progress progress::-webkit-progress-bar { background: var(--surface-hover); }
+.progress progress::-webkit-progress-value { background: var(--accent); border-radius: 6px; }
+.progress progress::-moz-progress-bar { background: var(--accent); border-radius: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { to { opacity: .4; } }
+@keyframes appear { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .loading, .spinner, .skeleton span { animation: none; } .tooltip { transition: none; } }
+@media (max-width: 600px) { .card { padding: 21px; } }

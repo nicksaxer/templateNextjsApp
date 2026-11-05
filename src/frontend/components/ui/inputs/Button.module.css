@@ -1,0 +1,13 @@
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; padding: 10px 17px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: .86rem; font-weight: 600; cursor: pointer; transition: background .16s, border-color .16s, transform .16s; }
+.button:hover:not(:disabled) { background: var(--surface-hover); border-color: var(--muted); }
+.button:active:not(:disabled) { transform: translateY(1px); }
+.filled { background: var(--accent); border-color: var(--accent); color: white; }
+.filled:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+.simple { background: transparent; border-color: transparent; }
+.danger { color: var(--danger); }
+.danger.filled { background: var(--danger); border-color: var(--danger); color: white; }
+.iconOnly { width: 42px; padding: 9px; }
+.button:disabled { opacity: .45; cursor: not-allowed; }
+.spinner { width: 15px; height: 15px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .button { transition: none; } .spinner { animation: none; } }

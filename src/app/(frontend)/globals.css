@@ -1,0 +1,17 @@
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root { color-scheme: light; --bg: #f8f9fc; --surface: #fff; --surface-hover: #f2f3f8; --text: #242736; --muted: #787d91; --border: #e5e7ef; --accent: #6554c7; --accent-hover: #5543b6; --accent-soft: #f0edfc; --accent-text: #6452b6; --accent-border: #dfd9f7; --success: #277b5c; --success-soft: #edf8f2; --success-border: #d4ecdf; --warning: #94661c; --warning-soft: #fffaec; --warning-border: #f2e5c3; --danger: #b84758; --danger-soft: #fff1f3; --danger-border: #f4d6dc; --shadow: 0 15px 50px #18203814; }
+:root[data-theme=dark] { color-scheme: dark; --bg: #14151c; --surface: #1d1e28; --surface-hover: #282a36; --text: #eeedf5; --muted: #a0a2b7; --border: #333543; --accent: #8874e3; --accent-hover: #7663d1; --accent-soft: #2b2545; --accent-text: #c1b4fa; --accent-border: #463967; --success: #8acdb0; --success-soft: #1b3029; --success-border: #2d4b3e; --warning: #e5c381; --warning-soft: #342c1e; --warning-border: #574829; --danger: #f4a4b3; --danger-soft: #38222b; --danger-border: #59313c; --shadow: 0 15px 50px #0004; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Arial, Helvetica, sans-serif; font-size: 15px; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font-family: inherit; }
+button, a, input, select, textarea, [tabindex] { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+a { color: inherit; text-decoration: none; }
+button { color: inherit; }
+::selection { background: var(--accent-border); }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.skipLink { position: fixed; top: 8px; left: 8px; z-index: 100; background: var(--surface); padding: 12px 18px; border: 1px solid var(--accent); border-radius: 8px; transform: translateY(-150%); }
+.skipLink:focus { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

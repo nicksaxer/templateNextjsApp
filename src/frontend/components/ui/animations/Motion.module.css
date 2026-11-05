@@ -1,0 +1,7 @@
+.slideDown { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 260ms cubic-bezier(.2, .8, .2, 1); }
+.slideDown[data-open=true] { grid-template-rows: 1fr; }
+.clip { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility 260ms; }
+.slideDown[data-open=true] > .clip { visibility: visible; }
+.fadeIn { animation: fadeIn 350ms ease-out both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .slideDown, .clip { transition: none; } .fadeIn { animation: none; } }
