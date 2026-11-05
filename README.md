@@ -1,0 +1,88 @@
+# templateNextjsApp
+
+A reusable Next.js App Router foundation based on the structure and coding conventions in [GuildMarket](https://github.com/nicksaxer/guildmarket) and [SeppOS](https://github.com/nicksaxer/SeppOS).
+
+The running app is an interactive playground: inputs, buttons, feedback states, animations, a project preview flow, and actual HTML email previews. It contains no code tutorials or source viewers.
+
+## Start
+
+Use Node.js 24 and npm:
+
+```sh
+npm ci
+npm run dev
+```
+
+Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. `npm run build` and `npm run start` run the production app.
+
+## Structure
+
+| Location | Responsibility |
+| --- | --- |
+| `src/app/(frontend)/(public)` | Pages composing frontend modules |
+| `src/app/(frontend)` | Document layout, theme, global tokens, loading/error/not-found boundaries |
+| `src/app/api` | HTTP interfaces; includes a minimal health endpoint |
+| `src/frontend/components/layout` | Container, shell, navigation, theme switch |
+| `src/frontend/components/modules` | Removable example features: Showcase, Project, Mail |
+| `src/frontend/components/ui/inputs` | Button, TextInput, NumberInput, SelectInput, TextArea, Switch, Checkbox, shared field behavior |
+| `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, Alert, Badge, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Dialog, Icon |
+| `src/frontend/components/ui/animations` | SlideDown and FadeIn |
+| `src/frontend/utils` | Formatting, class names, cancellable delay, theme preferences |
+| `src/backend/00_config` | App, environment, MongoDB, example plans and limits |
+| `src/backend/01_types` | Client-safe action results, DTOs, example domain and mail contracts |
+| `src/backend/02_models` | Example Mongoose schema and model |
+| `src/backend/03_services` | Application operations and mail rendering/delivery |
+| `src/backend/04_queries` | Server-rendered read entry points |
+| `src/backend/05_actions` | Validated Server Action entry points |
+| `src/backend/06_utils` | Form parsing, domain validation, AppError, action/HTTP error handling |
+| `src/backend/07_mailtemplates` | Handlebars base, header/footer partials, welcome and project templates |
+
+Aliases preserve the existing projects' conventions: `@frontend/*`, `@backend/config/*`, `@backend/types`, `@backend/models`, `@backend/services/*`, `@backend/queries/*`, `@backend/actions/*`, and `@backend/utils`.
+
+## Reuse for a new project
+
+1. Create a repository from this one using GitHub's **Use this template**, if enabled, or copy the source into a fresh repository. In repository Settings → General, **Template repository** enables that GitHub button.
+2. Change the package name, `app.config.ts`, page metadata, icon, and the CSS variables in `globals.css`. Keep `next` and `eslint-config-next` versions aligned.
+3. Replace the playground modules and public pages with your own features. `example.config.ts`, example types/model/service/query/action/validation, and example mail templates are deliberately named so they are easy to remove together.
+4. Keep shared UI, layouts, infrastructure, result/error contracts, and utilities as needed. The template includes no authentication system; select one for your project before adding private reads or mutations.
+5. Add only the integrations the project needs. Keep credentials on the server and document new variables in `.env.example`.
+
+Read [docs/architecture.md](docs/architecture.md) for boundaries, data flow, and extension conventions. [AGENTS.md](AGENTS.md) carries the coding conventions forward to future agent work.
+
+## The example flow
+
+`/project` submits to a Server Action, parses FormData, validates untrusted values in the service, validates a Mongoose document without saving it, calculates prices using server-owned configuration, and returns a serializable project DTO plus rendered email. Errors are returned through `ActionResult<T>` with field messages. The UI displays the actual result.
+
+Drafts are **not persisted**; they disappear on reload. The public example neither writes to MongoDB nor sends SMTP mail, even when integration credentials are present. It does not claim to demonstrate authentication, authorization, durable storage, or a payment flow.
+
+## Optional integrations
+
+Copy `.env.example` to `.env.local` only when enabling an integration in your own server code. Configuration is validated lazily so unused integrations never block startup or builds.
+
+- **MongoDB:** call `connectDatabase()` from `mongoose.config.ts` before database operations, then use the model in a server-only service. The connection promise is shared within the loaded module, and rejected connections can retry. The example model has timestamps, strict fields, and optimistic concurrency. Establish identity and enforce ownership before exposing persistent operations. Transactions require a replica set or compatible managed database.
+- **Mail:** `renderMail(values)` returns HTML, plain text, and subject without credentials. `sendMail(recipient, values)` sends through SMTP and throws on failure. `trySendEmail()` returns an explicit delivery result for a secondary notification; the caller must handle failure. There is no public send action. Set all `SMTP_*` variables in `.env.example` for delivery.
+- **Packaging:** `next.config.ts` traces the actual `07_mailtemplates` directory into production output. Template names are allowlisted; Handlebars escapes substituted values. Only already-rendered template content is inserted unescaped into the base layout. Browser previews use sandboxed iframes.
+
+SMTP delivery and live MongoDB connectivity require your development credentials and are not exercised by the default checks. SMTP settings must match the provider's TLS requirements; port 465 normally uses `SMTP_SECURE=true`, while STARTTLS on port 587 uses `false`.
+
+## UI conventions
+
+- CSS Modules and shared theme variables; no utility CSS framework or component library.
+- Buttons preserve `filled`, `simple`, `danger`, `iconOnly`, and `bsicon` conventions. `icon` accepts a React node; icon-only controls require an accessible label. Pending buttons are disabled and expose busy state.
+- Inputs preserve native value/defaultValue, reset, keyboard, disabled, and form submission semantics. Text inputs also support password reveal, field errors, hints, refs, and end adornments. NumberInput deliberately uses the native number control; SelectInput uses the native select for reliable keyboard and mobile behavior.
+- `SlideDown` replaces the familiar expand/collapse interaction declaratively: pass `open`, keep content inside. It animates between zero and intrinsic height without fixed height limits or timeout cleanup. Closed content is inert and hidden from assistive technology; state is retained while closed. Prefer the reusable Accordion for a labeled disclosure.
+- FadeIn, loading, skeleton, and slide effects respect reduced-motion preferences. Native dialogs provide focus trapping, Escape dismissal, and return focus. Tabs support arrow keys, Home, and End.
+- Themes are rendered from the same-site preference cookie, then updated in the document and cookie together. All tokens are scoped at the document level so dialogs inherit them. This preference cookie is not an authentication mechanism.
+
+## Verification
+
+```sh
+npm run check       # lint, strict typecheck, backend/utility tests
+npm run build       # production compile and route validation
+npx playwright install chromium
+npm run test:e2e    # starts the production server; build first
+```
+
+Backend tests cover validation, forged prices, serialization, FormData failures, checkbox semantics, mail escaping/template allowlisting, lazy configuration, and cancellation. Browser tests cover form failure/retry/success, email rendering, reset behavior, loading/empty states, motion, keyboard tabs/dialog focus, theme reload/navigation, mobile navigation, reduced motion, and error-free client execution. The CI workflow runs these checks on Node.js 24.
+
+This repository intentionally has no project-specific auth, payment, analytics, storage provider, or user data copied from either source project.
