@@ -8,15 +8,15 @@ export default function ErrorPage({reset}: {error: Error & {digest?: string}; re
     return (
         <Container>
             <EmptyState
-                title="A little bump in the road"
+                title="Something went wrong"
                 icon="cloud-rain"
                 action={
                     <Button filled onClick={reset}>
-                        Give it another try
+                        Try again
                     </Button>
                 }
             >
-                Something didn’t go to plan. Let’s try that again.
+                Please try again.
             </EmptyState>
         </Container>
     );

@@ -1,0 +1,43 @@
+.loading {
+    display: grid;
+    place-items: center;
+    min-height: 60dvh;
+    width: 100%;
+    padding: 2rem;
+}
+
+.loading[data-delayed='true'] {
+    visibility: hidden;
+    animation: reveal 0s 150ms forwards;
+}
+
+.icon {
+    color: var(--accent);
+    font-size: 2rem;
+    animation: spin 0.8s linear infinite;
+}
+
+.label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}
+
+@keyframes spin {
+    to {transform: rotate(360deg);}
+}
+
+@keyframes reveal {
+    to {visibility: visible;}
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .icon {
+        animation: none;
+    }
+}
+
+.compact { min-height: 0; padding: 1rem; }
+@media (prefers-reduced-motion: reduce) { .loading[data-delayed='true'] { visibility: visible; } }

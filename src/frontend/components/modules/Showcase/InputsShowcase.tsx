@@ -1,123 +1,82 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import Button from '@frontend/components/ui/inputs/Button';
 import TextInput from '@frontend/components/ui/inputs/TextInput';
-import TextArea from '@frontend/components/ui/inputs/TextArea';
 import NumberInput from '@frontend/components/ui/inputs/NumberInput';
 import SelectInput from '@frontend/components/ui/inputs/SelectInput';
+import TextArea from '@frontend/components/ui/inputs/TextArea';
 import Switch from '@frontend/components/ui/inputs/Switch';
 import Checkbox from '@frontend/components/ui/inputs/Checkbox';
-import Button from '@frontend/components/ui/inputs/Button';
-import Card from '@frontend/components/ui/elements/Card';
-import InfoBox from '@frontend/components/ui/elements/InfoBox';
-import Badge from '@frontend/components/ui/elements/Badge';
 import styles from './Showcase.module.css';
 
 export default function InputsShowcase() {
-    const [message, setMessage] = useState('');
-    const formRef = useRef<HTMLFormElement>(null);
+    const [clicks, setClicks] = useState(0);
+    const [enabled, setEnabled] = useState(true);
+    const [selection, setSelection] = useState('second');
     return (
-        <section id="inputs" className={styles.section}>
-            <div className={styles.sectionHeading}>
-                <div>
-                    <span className={styles.eyebrow}>01 / THE EVERYDAY ESSENTIALS</span>
-                    <h2>Make yourself understood.</h2>
-                    <p>Little interactions that feel right from the first click.</p>
+        <>
+            <section id="buttons" className={styles.section}>
+                <h2>Buttons</h2>
+                <div className={styles.buttonRow}>
+                    <Button onClick={() => setClicks(value => value + 1)}>Default</Button>
+                    <Button filled onClick={() => setClicks(value => value + 1)}>Filled</Button>
+                    <Button simple onClick={() => setClicks(value => value + 1)}>Simple</Button>
+                    <Button simple filled onClick={() => setClicks(value => value + 1)}>Simple filled</Button>
+                    <Button bsicon="bi-plus-lg" onClick={() => setClicks(value => value + 1)}>Bootstrap icon</Button>
+                    <Button icon={faPlus} onClick={() => setClicks(value => value + 1)}>Font Awesome icon</Button>
+                    <Button iconOnly icon={faPlus} aria-label="Icon only" onClick={() => setClicks(value => value + 1)} />
+                    <Button danger onClick={() => setClicks(value => value + 1)}>Danger</Button>
+                    <Button danger filled onClick={() => setClicks(value => value + 1)}>Danger filled</Button>
+                    <Button disabled>Disabled</Button>
+                    <Button pending>Loading</Button>
                 </div>
-                <Badge>Inputs & buttons</Badge>
-            </div>
-            <div className={styles.twoColumns}>
-                <Card title="A place for every detail" description="Go ahead. Fill something in.">
-                    <form
-                        ref={formRef}
-                        onSubmit={event => {
-                            event.preventDefault();
-                            setMessage('Looking good. Your details are ready.');
-                        }}
-                        className={styles.stack}
-                    >
-                        <div className={styles.twoColumns}>
-                            <TextInput label="Your name" name="name" placeholder="Alex Morgan" />
-                            <TextInput label="Email address" name="email" type="email" placeholder="alex@example.com" />
+                <p role="status">Clicked {clicks} times</p>
+            </section>
+            <section id="inputs" className={styles.section}>
+                <h2>Inputs</h2>
+                <form onSubmit={event => event.preventDefault()} onReset={() => {setEnabled(true); setSelection('second');}}>
+                    <div className={styles.examples}>
+                        <div className={styles.example}>
+                            <h3>TextInput</h3>
+                            <TextInput label="Text" name="text" placeholder="Type something" />
+                            <TextInput label="Password" type="password" defaultValue="example-password" />
+                            <TextInput label="Disabled input" defaultValue="Disabled value" disabled />
+                            <TextInput label="Read-only input" defaultValue="Read-only value" readOnly />
+                            <TextInput label="Input with error" defaultValue="invalid@" error="Enter a valid email address." />
+                            <TextInput label="Input with hint" hint="Example hint below the input." />
+                            <div className={styles.row}><span>Inline:</span><TextInput label="Inline text" inline defaultValue="Edit this text" /></div>
+                            <TextInput label="End adornment" endAdornment={<span className={styles.adornment}>CHF</span>} />
                         </div>
-                        <TextInput label="Password" type="password" name="password" autoComplete="new-password" placeholder="A little secret"
-                            hint="You can take a peek with the eye icon." />
-                        <div className={styles.twoColumns}>
-                            <SelectInput
-                                label="Your workspace"
-                                name="workspace"
-                                defaultValue="studio"
-                                options={[
-                                    {value: 'personal', label: 'Personal'},
-                                    {value: 'studio', label: 'Studio'},
-                                    {value: 'business', label: 'Business'}
-                                ]}
-                            />
-                            <NumberInput label="People" name="people" min={1} max={50} defaultValue={3} />
+                        <div className={styles.example}>
+                            <h3>NumberInput</h3>
+                            <NumberInput label="Quantity" name="quantity" defaultValue={3} min={0} max={10} />
+                            <NumberInput label="Decimal number" defaultValue={1.5} step={0.5} min={0} max={5} />
+                            <NumberInput label="Disabled number" defaultValue={2} disabled />
+                            <h3>SelectInput</h3>
+                            <SelectInput label="Select an option" name="selection" value={selection} onChange={event => setSelection(event.target.value)}>
+                                <option value="first">First option</option>
+                                <option value="second">Second option</option>
+                                <optgroup label="More options"><option value="third">Third option</option><option value="unavailable" disabled>Unavailable option</option></optgroup>
+                            </SelectInput>
+                            <p role="status">Selected: {selection}</p>
+                            <SelectInput label="Disabled select" disabled><option>Disabled option</option></SelectInput>
+                            <h3>Switch & checkbox</h3>
+                            <div className={styles.row}><Switch label="Example switch" checked={enabled} onChange={setEnabled} /><span>{enabled ? 'On' : 'Off'}</span></div>
+                            <div className={styles.row}><Switch label="Disabled switch" checked disabled onChange={() => {}} /><span>Disabled</span></div>
+                            <Checkbox label="Example checkbox" name="checkbox" />
+                            <Checkbox label="Disabled checkbox" disabled defaultChecked />
                         </div>
-                        <TextArea label="A little about your idea" name="idea" placeholder="Every good thing starts somewhere…" maxLength={500} />
-                        <div className={styles.rowBetween}>
-                            <Switch label="Keep me in the loop" name="updates" defaultChecked />
-                            <InfoBox>Just the occasional update. You can change your mind anytime.</InfoBox>
+                        <div className={styles.example}>
+                            <h3>TextArea</h3>
+                            <TextArea label="Multiline text" name="notes" placeholder="Type a few lines" />
+                            <TextArea label="Textarea with error" error="Example validation message." />
                         </div>
-                        <Checkbox label="I’m ready to make something good" name="ready" />
-                        <div className={styles.buttonRow}>
-                            <Button filled type="submit" bsicon="bi-check2">
-                                Save details
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    formRef.current?.reset();
-                                    setMessage('');
-                                }}
-                            >
-                                Reset
-                            </Button>
-                        </div>
-                        <span className={styles.smallStatus} role="status">
-                            {message}
-                        </span>
-                    </form>
-                </Card>
-                <div className={styles.stack}>
-                    <Card title="The right action" description="A little emphasis, exactly where it belongs.">
-                        <div className={styles.buttonRow}>
-                            <Button filled bsicon="bi-plus-lg" onClick={() => setMessage('A new beginning. Nice choice.')}>
-                                Create new
-                            </Button>
-                            <Button onClick={() => setMessage('Your changes are ready to save.')}>Secondary</Button>
-                            <Button simple bsicon="bi-arrow-up-right" onClick={() => setMessage('You’re all set to explore.')}>
-                                Explore
-                            </Button>
-                        </div>
-                        <div className={styles.buttonRow} style={{marginTop: 16}}>
-                            <Button danger bsicon="bi-trash3" onClick={() => setMessage('Example removed. You can start again anytime.')}>
-                                Remove
-                            </Button>
-                            <Button disabled>Unavailable</Button>
-                            <Button pending>Working</Button>
-                            <Button iconOnly aria-label="Add to favorites" bsicon="bi-heart" onClick={() => setMessage('Added to your favorites.')} />
-                        </div>
-                    </Card>
-                    <Card title="A helping hand" description="A clear nudge when something needs attention.">
-                        <div className={styles.stack}>
-                            <TextInput label="Email address" type="email" defaultValue="alex@" error="That email looks incomplete. Give it another try." />
-                            <TextInput label="Your invitation code" defaultValue="FOUNDATION-2026" disabled hint="This one’s already taken care of." />
-                        </div>
-                    </Card>
-                    <div className={styles.note}>
-                        <span>GOOD DESIGN IS IN THE DETAILS</span>
-                        <p>
-                            A clear label. A helpful hint.
-                            <br />
-                            One less thing to think about.
-                        </p>
-                        <span className={styles.noteStar} aria-hidden="true">
-                            ✳
-                        </span>
                     </div>
-                </div>
-            </div>
-        </section>
+                    <Button type="reset" simple>Reset inputs</Button>
+                </form>
+            </section>
+        </>
     );
 }

@@ -19,7 +19,7 @@ export async function renderMail(values: MailValues): Promise<RenderedMail> {
         readFile(path.join(templateRoot, 'components/footer.html'), 'utf8'),
         readFile(path.join(templateRoot, 'templates', templateNames[values.type]), 'utf8')
     ]);
-    const subject = values.type === 'welcome' ? `Welcome to ${appConfig.name}` : 'Your next project, ready to go';
+    const subject = values.type === 'welcome' ? `Welcome to ${appConfig.name}` : 'Project summary';
     const content = handlebars.compile(template)({...values, appName: appConfig.name});
     const html = handlebars.compile(base)({subject, content, appName: appConfig.name}, {partials: {header, footer}});
     const text = values.type === 'welcome' ? `Welcome, ${values.name}. Your space at ${appConfig.name} is ready.` : `${values.name}: ${values.plan}, ${values.seats} people, ${values.total} per month.`;

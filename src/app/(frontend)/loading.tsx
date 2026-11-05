@@ -4,7 +4,7 @@ import LoadingIndicator from '@frontend/components/ui/elements/LoadingIndicator'
 export default function Loading() {
     return (
         <Container>
-            <LoadingIndicator label="Making a little room…" />
+            <LoadingIndicator label="Loading…" />
         </Container>
     );
 }

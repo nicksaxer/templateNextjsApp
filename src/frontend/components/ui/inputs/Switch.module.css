@@ -1,0 +1,51 @@
+.switch {
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.switch input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    opacity: 0;
+}
+
+.track {
+    position: relative;
+    width: 2.75rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    background: var(--grey);
+    transition: 0.2s;
+}
+
+.track::before {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: #ffffff;
+    transition: transform 0.2s;
+}
+
+.switch input:checked + .track {
+    background: var(--accent);
+}
+
+.switch input:checked + .track::before {
+    transform: translateX(1.25rem);
+}
+
+.switch input:focus-visible + .track {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+.switch input:disabled + .track {
+    opacity: 0.5;
+}

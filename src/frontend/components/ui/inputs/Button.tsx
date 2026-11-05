@@ -1,23 +1,23 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { classNames } from '@frontend/utils/classnames';
+import type { ComponentPropsWithoutRef } from 'react';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Button.module.css';
 
-export interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
+interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
     bsicon?: string;
-    icon?: ReactNode;
+    icon?: IconDefinition;
     filled?: boolean;
+    pending?: boolean;
     simple?: boolean;
     iconOnly?: boolean;
     danger?: boolean;
-    pending?: boolean;
 }
 
-export default function Button({bsicon, icon, filled, simple, iconOnly, danger, pending, children, className, type = 'button', disabled, ...props}: ButtonProps) {
+export default function Button({bsicon, icon, filled, simple, iconOnly, danger, children, className = '', type = 'button', pending, disabled, ...props}: ButtonProps) {
     return (
-        <button {...props} type={type} disabled={disabled || pending} aria-busy={pending || undefined}
-            className={classNames(styles.button, filled && styles.filled, simple && styles.simple, iconOnly && styles.iconOnly, danger && styles.danger, className)}>
-            {pending ? <span className={styles.spinner} aria-hidden="true" /> : (icon ?? (bsicon && <i className={`bi ${bsicon}`} aria-hidden="true" />))}
-            {children}
+        <button {...props} type={type} disabled={disabled || pending} aria-busy={pending || undefined} className={`${styles.button} ${filled ? styles.filled : ''} ${simple ? styles.buttonSimple : ''} ${iconOnly ? styles.iconOnly : ''} ${danger ? styles.danger : ''} ${className}`}>
+            {pending ? <i className={`bi bi-arrow-repeat ${styles.pending}`} aria-hidden="true" /> : icon ? <FontAwesomeIcon icon={icon} className={styles.icon} aria-hidden="true" /> : bsicon && <i className={`bi ${bsicon} ${styles.icon}`} aria-hidden="true" />}
+            {iconOnly ? children : <span>{children}</span>}
         </button>
     );
 }

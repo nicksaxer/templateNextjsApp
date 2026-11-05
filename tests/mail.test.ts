@@ -7,12 +7,12 @@ import { getMailConfig, requiredEnv } from '../src/backend/00_config/env.config'
 test('mail rendering includes layout and partials and escapes all substituted user content', async () => {
     const mail = await renderMail({type: 'welcome', name: '<img src=x onerror=alert(1)>'});
     assert.match(mail.html, /<!doctype html>/);
-    assert.match(mail.html, /Made with care/);
+    assert.match(mail.html, /Example email/);
     assert.match(mail.html, /&lt;img/);
     assert.doesNotMatch(mail.html, /<img/);
     assert.doesNotMatch(mail.html, /{{/);
     assert.match(mail.text, /<img/);
-    assert.equal(mail.subject, 'Welcome to Foundation');
+    assert.equal(mail.subject, 'Welcome to Component library');
 });
 
 test('unknown template names cannot traverse the filesystem', async () => {

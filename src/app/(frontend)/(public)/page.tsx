@@ -1,58 +1,32 @@
-import Link from 'next/link';
+import { cookies } from 'next/headers';
+import { getShowcase } from '@backend/queries/example';
+import { getTheme } from '@frontend/utils/prefs';
 import Container from '@frontend/components/layout/Container';
 import InputsShowcase from '@frontend/components/modules/Showcase/InputsShowcase';
 import FeedbackShowcase from '@frontend/components/modules/Showcase/FeedbackShowcase';
 import MotionShowcase from '@frontend/components/modules/Showcase/MotionShowcase';
-import Icon from '@frontend/components/ui/elements/Icon';
+import AppearanceExamples from '@frontend/components/modules/Showcase/AppearanceExamples';
+import ProjectForm from '@frontend/components/modules/Project/ProjectForm';
+import MailGallery from '@frontend/components/modules/Mail/MailGallery';
 import styles from '@frontend/components/modules/Showcase/Showcase.module.css';
 
-export default function Home() {
+export default async function HomePage() {
+    const [{plans, mails}, cookieStore] = await Promise.all([getShowcase(), cookies()]);
     return (
         <Container>
-            <div className={styles.hero}>
-                <div className={styles.heroText}>
-                    <span className={styles.eyebrow}>A FEW GOOD THINGS TO BUILD ON</span>
-                    <h1>
-                        Start with
-                        <br />
-                        the good parts.
-                    </h1>
-                    <p>
-                        Thoughtful essentials for your next idea.
-                        <br />
-                        Ready to try. Easy to make your own.
-                    </p>
-                    <a href="#inputs" className={styles.heroLink}>
-                        Take a look around <Icon name="arrow-down" />
-                    </a>
-                </div>
-                <div className={styles.art} aria-hidden="true">
-                    <div className={styles.artGrid}>
-                        <span>✳</span>
-                        <span>◒</span>
-                        <span>◓</span>
-                        <span>◇</span>
-                    </div>
-                </div>
-            </div>
-            <div className={styles.intro}>
-                <p>A small collection of everyday essentials, brought together in one place. Go ahead and click, type, open, close. This space is yours to explore.</p>
-                <span>
-                    <Icon name="check2-circle" /> All set to explore
-                </span>
-            </div>
+            <h1 className={styles.title}>Component library</h1>
+            <AppearanceExamples initialTheme={getTheme(cookieStore.get('theme')?.value)} />
             <InputsShowcase />
             <FeedbackShowcase />
             <MotionShowcase />
-            <div className={styles.cta}>
-                <div>
-                    <h2>Let’s put it all together.</h2>
-                    <p>Give your next project a name and see it take shape.</p>
-                </div>
-                <Link href="/project">
-                    Start a little project <Icon name="arrow-right" />
-                </Link>
-            </div>
+            <section id="server-example" className={styles.section}>
+                <h2>Form validation</h2>
+                <ProjectForm plans={plans} />
+            </section>
+            <section id="mail" className={styles.section}>
+                <h2>Mail templates</h2>
+                <MailGallery mails={mails} />
+            </section>
         </Container>
     );
 }

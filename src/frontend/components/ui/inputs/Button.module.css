@@ -1,13 +1,91 @@
-.button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 42px; padding: 10px 17px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); font: inherit; font-size: .86rem; font-weight: 600; cursor: pointer; transition: background .16s, border-color .16s, transform .16s; }
-.button:hover:not(:disabled) { background: var(--surface-hover); border-color: var(--muted); }
-.button:active:not(:disabled) { transform: translateY(1px); }
-.filled { background: var(--accent); border-color: var(--accent); color: white; }
-.filled:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
-.simple { background: transparent; border-color: transparent; }
-.danger { color: var(--danger); }
-.danger.filled { background: var(--danger); border-color: var(--danger); color: white; }
-.iconOnly { width: 42px; padding: 9px; }
-.button:disabled { opacity: .45; cursor: not-allowed; }
-.spinner { width: 15px; height: 15px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite; }
+.button {
+    padding: 0 1em;
+    width: fit-content;
+    height: 3em;
+    border-radius: 0.55em;
+    border: 2px solid var(--accent);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    background-color: var(--button-background);
+    transition: 0.2s;
+    font-weight: 500;
+    line-height: 0;
+    text-decoration: none;
+}
+.filled {
+    background-color: var(--accent);
+    color: white;
+}
+
+.button:hover {
+    background-color: var(--accent);
+    color: white;
+    box-shadow: 0px 0px 15px var(--accent);
+}
+
+.buttonSimple {
+    border: none;
+    background-color: rgb(from var(--grey) r g b / 0.2);
+    height: 2em;
+    color: var(--foreground);
+}
+.buttonSimple:hover {
+    box-shadow: none;
+    background-color: rgb(from var(--grey) r g b / 0.4);
+    color: var(--foreground);
+}
+
+.buttonSimple.filled {
+    background-color: rgb(from var(--brightaccent) r g b / 0.2);
+}
+.buttonSimple:hover.filled {
+    background-color: rgb(from var(--brightaccent) r g b / 0.5);
+}
+
+.icon {
+    font-size: 1.2em;
+}
+
+.iconOnly {
+    padding: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+}
+
+.iconOnly > svg,
+.iconOnly .icon {
+    font-size: 1.25rem;
+}
+
+.button.danger {
+    border-color: var(--error);
+    background-color: var(--lightred);
+    color: var(--error);
+}
+
+.button.danger.filled {
+    background-color: var(--error);
+    color: white;
+}
+
+.button.danger:hover {
+    background-color: var(--error);
+    color: white;
+    box-shadow: 0 0 15px var(--error);
+}
+
+.buttonSimple.danger:hover {
+    box-shadow: none;
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pending { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .button { transition: none; } .spinner { animation: none; } }

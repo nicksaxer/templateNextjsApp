@@ -5,116 +5,71 @@ import Card from '@frontend/components/ui/elements/Card';
 import Alert from '@frontend/components/ui/elements/Alert';
 import Badge from '@frontend/components/ui/elements/Badge';
 import EmptyState from '@frontend/components/ui/elements/EmptyState';
+import ErrorMessage from '@frontend/components/ui/elements/ErrorMessage';
+import InfoBox from '@frontend/components/ui/elements/InfoBox';
 import LoadingIndicator from '@frontend/components/ui/elements/LoadingIndicator';
 import Skeleton from '@frontend/components/ui/elements/Skeleton';
 import Progress from '@frontend/components/ui/elements/Progress';
 import HLine from '@frontend/components/ui/elements/HLine';
 import Button from '@frontend/components/ui/inputs/Button';
 import delay from '@frontend/utils/delay';
+import { formatCurrency, formatDate } from '@frontend/utils/format';
 import styles from './Showcase.module.css';
 
 export default function FeedbackShowcase() {
     const [loading, setLoading] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [items, setItems] = useState(0);
+    const [progress, setProgress] = useState(40);
     const controller = useRef<AbortController | null>(null);
     useEffect(() => () => controller.current?.abort(), []);
     async function reload() {
-        controller.current?.abort();
         controller.current = new AbortController();
         setLoading(true);
         setLoaded(false);
-        try {
-            await delay(1400, controller.current.signal);
-            setLoaded(true);
-        } catch {
-            return;
-        } finally {
-            setLoading(false);
-        }
+        try {await delay(1400, controller.current.signal); setLoaded(true);}
+        catch {return;}
+        finally {setLoading(false);}
     }
     return (
         <section id="feedback" className={styles.section}>
-            <div className={styles.sectionHeading}>
-                <div>
-                    <span className={styles.eyebrow}>02 / A LITTLE REASSURANCE</span>
-                    <h2>Keep everyone in the loop.</h2>
-                    <p>For the waiting, the celebrating, and the occasional wrong turn.</p>
+            <h2>UI elements</h2>
+            <div className={styles.examples}>
+                <div className={styles.example}>
+                    <h3>InfoBox</h3>
+                    <span className={styles.tooltipExample}>Hover or focus the icon <InfoBox>Example information tooltip.</InfoBox></span>
+                    <h3>ErrorMessage</h3>
+                    <ErrorMessage>Example error message.</ErrorMessage>
+                    <h3>LoadingIndicator</h3>
+                    <LoadingIndicator compact delay={false} />
+                    <Button simple disabled={loading} onClick={reload}>Try loading</Button>
+                    {loading && <LoadingIndicator compact label="Loading example" delay={false} />}
+                    {loaded && <p role="status">Loading complete.</p>}
+                    <h3>HLine</h3>
+                    <HLine>Divider label</HLine>
                 </div>
-                <Badge tone="success">Feedback & states</Badge>
-            </div>
-            <div className={styles.twoColumns}>
-                <Card title="A message at the right moment">
-                    <div className={styles.stack}>
-                        <Alert tone="success" title="You’re all set.">
-                            Your changes have found their home.
-                        </Alert>
-                        <Alert tone="info" title="A little heads-up.">
-                            Your workspace has a few new possibilities.
-                        </Alert>
-                        <Alert tone="warning" title="One thing before you go.">
-                            There are a couple of unsaved changes.
-                        </Alert>
-                        <Alert tone="danger" title="That didn’t quite work.">
-                            Take a breath and give it another try.
-                        </Alert>
-                        <div className={styles.buttonRow}>
-                            <Badge tone="success">Active</Badge>
-                            <Badge>In progress</Badge>
-                            <Badge tone="warning">Needs attention</Badge>
-                            <Badge tone="danger">Offline</Badge>
-                        </div>
-                    </div>
-                </Card>
-                <div className={styles.stack}>
-                    <Card
-                        title="Worth the little wait"
-                        action={
-                            <Button simple bsicon="bi-arrow-clockwise" disabled={loading} onClick={reload}>
-                                Try loading
-                            </Button>
-                        }
-                    >
-                        {loading ? (
-                            <div aria-busy="true">
-                                <LoadingIndicator label="Getting things ready…" delay={false} />
-                                <Skeleton />
-                            </div>
-                        ) : loaded ? (
-                            <Alert tone="success" title="Everything is up to date.">
-                                Good things come to those who wait.
-                            </Alert>
-                        ) : (
-                            <>
-                                <LoadingIndicator label="A moment of calm…" delay={false} />
-                                <Skeleton lines={2} />
-                            </>
-                        )}
-                        <HLine />
-                        <Progress label="Your next milestone" value={loaded ? 100 : loading ? 42 : 68} />
-                    </Card>
-                    <Card>
-                        {items ? (
-                            <div className={styles.addedItem}>
-                                <span className={styles.itemIcon}>✦</span>
-                                <div>
-                                    <strong>Your first little idea</strong>
-                                    <p>A good place to begin.</p>
-                                </div>
-                                <Button simple iconOnly bsicon="bi-trash3" aria-label="Remove idea" onClick={() => setItems(0)} />
-                            </div>
-                        ) : (
-                            <EmptyState
-                                title="Room for something good"
-                                action={
-                                    <Button bsicon="bi-plus-lg" onClick={() => setItems(1)}>
-                                        Add an idea
-                                    </Button>
-                                }
-                            >
-                                Your first idea could be the start of it all.
-                            </EmptyState>
-                        )}
+                <div className={styles.example}>
+                    <h3>Alert</h3>
+                    <Alert tone="info">Information message</Alert>
+                    <Alert tone="success">Success message</Alert>
+                    <Alert tone="warning">Warning message</Alert>
+                    <Alert tone="danger">Error message</Alert>
+                    <h3>Badge</h3>
+                    <div className={styles.buttonRow}><Badge>Info</Badge><Badge tone="success">Success</Badge><Badge tone="warning">Warning</Badge><Badge tone="danger">Error</Badge></div>
+                </div>
+                <div className={styles.example}>
+                    <h3>Skeleton & progress</h3>
+                    <Skeleton lines={3} />
+                    <Progress label="Example progress" value={progress} />
+                    <label>Progress value <input aria-label="Progress value" type="range" min="0" max="100" value={progress} onChange={event => setProgress(Number(event.target.value))} /></label>
+                    <h3>Formatting</h3>
+                    <p>{formatCurrency(1234.5)}</p>
+                    <p>{formatDate('2026-01-15T12:00:00.000Z')}</p>
+                </div>
+                <div className={styles.example}>
+                    <h3>Card & empty state</h3>
+                    <Card title="Example card">
+                        {items ? <div className={styles.row}><span>Example item</span><Button simple onClick={() => setItems(0)}>Remove item</Button></div> : <EmptyState title="No items" action={<Button onClick={() => setItems(1)}>Add item</Button>}>Example empty state.</EmptyState>}
                     </Card>
                 </div>
             </div>

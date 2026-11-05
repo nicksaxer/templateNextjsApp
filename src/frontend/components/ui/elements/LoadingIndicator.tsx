@@ -1,10 +1,12 @@
-import styles from './Feedback.module.css';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from './LoadingIndicator.module.css';
 
-export default function LoadingIndicator({label = 'Loading…', delay = true}: {label?: string; delay?: boolean}) {
+export default function LoadingIndicator({label = 'Loading…', delay = true, compact = false}: {label?: string; delay?: boolean; compact?: boolean}) {
     return (
-        <div role="status" className={styles.loading} data-delayed={delay}>
-            <span className={styles.spinner} aria-hidden="true" />
-            <span>{label}</span>
+        <div className={`${styles.loading} ${compact ? styles.compact : ''}`} data-delayed={delay} role="status">
+            <FontAwesomeIcon icon={faCircleNotch} className={styles.icon} aria-hidden="true" />
+            <span className={styles.label}>{label}</span>
         </div>
     );
 }

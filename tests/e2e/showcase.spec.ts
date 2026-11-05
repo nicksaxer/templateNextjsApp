@@ -1,43 +1,85 @@
 import { test, expect } from '@playwright/test';
 
-test('the essentials support typing, native form reset, empty states, and loading', async ({page}) => {
+test('source controls support typing, steppers, custom selection, and reset', async ({page}) => {
+    const errors: string[] = [];
+    page.on('pageerror', error => errors.push(error.message));
     await page.goto('/');
-    await expect(page.getByRole('heading', {name: /Start with/})).toBeVisible();
-    await page.getByLabel('Your name', {exact: true}).fill('Alex');
-    await page.getByLabel('Password', {exact: true}).fill('a little secret');
+    await expect(page.getByRole('heading', {name: 'Component library', exact: true})).toBeVisible();
+    await page.getByLabel('Text', {exact: true}).fill('Example');
     await page.getByRole('button', {name: 'Show password'}).click();
     await expect(page.getByLabel('Password', {exact: true})).toHaveAttribute('type', 'text');
-    await page.getByRole('switch', {name: 'Keep me in the loop'}).uncheck();
-    await page.getByRole('button', {name: 'Save details'}).click();
-    await expect(page.getByText('Looking good. Your details are ready.')).toBeVisible();
-    await page.getByRole('button', {name: 'Reset', exact: true}).click();
-    await expect(page.getByLabel('Your name', {exact: true})).toHaveValue('');
-    await expect(page.getByRole('switch', {name: 'Keep me in the loop'})).toBeChecked();
-    await page.getByRole('button', {name: 'Add an idea'}).click();
-    await expect(page.getByText('Your first little idea')).toBeVisible();
-    await page.getByRole('button', {name: 'Remove idea'}).click();
-    await expect(page.getByRole('heading', {name: 'Room for something good'})).toBeVisible();
-    await page.getByRole('button', {name: 'Try loading'}).click();
-    await expect(page.getByText('Getting things ready…')).toBeVisible();
-    await expect(page.getByText('Everything is up to date.')).toBeVisible();
+    await page.getByRole('button', {name: 'Increase Quantity'}).click();
+    await expect(page.getByRole('spinbutton', {name: 'Quantity', exact: true})).toHaveValue('4');
+    await page.getByRole('combobox', {name: 'Select an option'}).click();
+    await page.getByRole('option', {name: 'Third option'}).click();
+    await expect(page.getByText('Selected: third')).toBeVisible();
+    const switchInput = page.getByRole('switch', {name: 'Example switch'});
+    await switchInput.focus();
+    await page.keyboard.press('Space');
+    await expect(switchInput).not.toBeChecked();
+    await page.getByRole('button', {name: 'Reset inputs'}).click();
+    await expect(page.getByLabel('Text', {exact: true})).toHaveValue('');
+    await expect(page.getByRole('spinbutton', {name: 'Quantity', exact: true})).toHaveValue('3');
+    await expect(page.getByText('Selected: second')).toBeVisible();
+    await expect(switchInput).toBeChecked();
+    await page.getByRole('combobox', {name: 'Select an option'}).focus();
+    await page.keyboard.press('Home');
+    await page.keyboard.press('Enter');
+    await expect(page.getByText('Selected: first')).toBeVisible();
+    expect(errors).toEqual([]);
 });
 
-test('motion preserves state, keyboard tabs and dialog focus work', async ({page}) => {
+test('original palette, borders, typography, moving labels, and theme work', async ({page}) => {
+    await page.goto('/');
+    await page.getByRole('button', {name: 'GuildMarket', exact: true}).click();
+    const button = page.getByRole('button', {name: 'Default', exact: true});
+    await expect(button).toHaveCSS('border-top-color', 'rgb(0, 150, 168)');
+    await expect(button).toHaveCSS('border-top-width', '2px');
+    await expect(button).toHaveCSS('height', '48px');
+    await expect(page.locator('body')).toHaveCSS('font-family', /Rubik Variable/);
+    await button.hover();
+    await expect(button).toHaveCSS('background-color', 'rgb(0, 150, 168)');
+    const input = page.getByLabel('Text', {exact: true});
+    await input.focus();
+    await expect(page.locator('label', {hasText: /^Text$/})).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    await page.getByRole('switch', {name: 'Dark mode'}).focus();
+    await page.keyboard.press('Space');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await page.reload();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(16, 16, 16)');
+    await expect(page.getByRole('navigation')).toHaveCount(0);
+});
+
+test('feedback, tooltip, empty state, and loading examples work', async ({page}) => {
+    await page.goto('/#feedback');
+    await page.getByLabel('More information').focus();
+    await expect(page.getByRole('tooltip')).toBeVisible();
+    await page.getByRole('button', {name: 'Add item', exact: true}).click();
+    await expect(page.getByText('Example item', {exact: true})).toBeVisible();
+    await page.getByRole('button', {name: 'Remove item'}).click();
+    await expect(page.getByRole('heading', {name: 'No items'})).toBeVisible();
+    await page.getByRole('button', {name: 'Try loading'}).click();
+    await expect(page.getByRole('button', {name: 'Try loading'})).toBeDisabled();
+    await expect(page.getByText('Loading complete.')).toBeVisible();
+});
+
+test('SlideDown preserves state and tabs and dialog support the keyboard', async ({page}) => {
     await page.goto('/#motion');
     const panel = page.locator('#sliding-details');
     await expect(panel).toHaveAttribute('inert', '');
-    await page.getByRole('button', {name: 'Show the details'}).click();
-    await page.getByLabel('A detail worth keeping').fill('Keep this');
-    await page.getByRole('button', {name: 'Tell me more'}).click();
-    await expect(page.getByText('There’s always room for one more good idea. Even when the story gets a little longer.')).toBeVisible();
-    await page.getByRole('button', {name: 'Hide the details'}).click();
+    await page.getByRole('button', {name: 'Open SlideDown'}).click();
+    await page.getByLabel('Retained value').fill('Keep this');
+    await page.getByRole('button', {name: 'Add content'}).click();
+    await expect(page.getByText('Additional content changes the height of this panel.')).toBeVisible();
+    await page.getByRole('button', {name: 'Close SlideDown'}).click();
     await expect(panel).toHaveAttribute('inert', '');
-    await page.getByRole('button', {name: 'Show the details'}).click();
-    await expect(page.getByLabel('A detail worth keeping')).toHaveValue('Keep this');
-    await page.getByRole('tab', {name: 'A gentle arrival'}).focus();
+    await page.getByRole('button', {name: 'Open SlideDown'}).click();
+    await expect(page.getByLabel('Retained value')).toHaveValue('Keep this');
+    await page.getByRole('tab', {name: 'First tab', exact: true}).focus();
     await page.keyboard.press('ArrowRight');
-    await expect(page.getByRole('tab', {name: 'A focused moment'})).toHaveAttribute('aria-selected', 'true');
-    const opener = page.getByRole('button', {name: 'Open a moment'});
+    await expect(page.getByRole('tab', {name: 'Second tab', exact: true})).toHaveAttribute('aria-selected', 'true');
+    const opener = page.getByRole('button', {name: 'Open dialog'});
     await opener.click();
     await expect(page.getByRole('dialog')).toBeVisible();
     await page.keyboard.press('Escape');
@@ -45,53 +87,40 @@ test('motion preserves state, keyboard tabs and dialog focus work', async ({page
     await expect(opener).toBeFocused();
 });
 
-test('the server validates a draft and renders a real email preview', async ({page}) => {
-    const browserErrors: string[] = [];
-    page.on('pageerror', error => browserErrors.push(error.message));
+test('server validation and email previews remain functional', async ({page}) => {
     await page.goto('/project');
-    await page.getByLabel('Project name').fill('Sunday Studio');
+    await page.getByLabel('Project name').fill('Example project');
     await page.getByLabel('Your email').fill('incomplete');
-    await page.getByRole('button', {name: 'Preview my project'}).click();
+    await page.getByRole('button', {name: 'Validate form'}).click();
     await expect(page.getByText('Enter a valid email address.')).toBeVisible();
-    await expect(page.getByLabel('Project name')).toHaveValue('Sunday Studio');
+    await expect(page.getByLabel('Project name')).toHaveValue('Example project');
     await page.getByLabel('Your email').fill('alex@example.com');
-    await page.getByLabel('People', {exact: true}).fill('4');
-    await page.getByRole('button', {name: 'Preview my project'}).click();
-    await expect(page.getByRole('heading', {name: 'Sunday Studio'})).toBeVisible();
-    await expect(page.getByText('CHF 76.00').last()).toBeVisible();
-    const mail = page.frameLocator('iframe');
-    await expect(mail.getByRole('heading', {name: 'A little room for Sunday Studio.'})).toBeVisible();
-    await expect(mail.getByText('CHF 76.00')).toBeVisible();
-    await page.reload();
-    await expect(page.getByRole('heading', {name: 'Your idea goes here'})).toBeVisible();
-    expect(browserErrors).toEqual([]);
-});
-
-test('mail tabs and theme persist across navigation and reload', async ({page}) => {
+    await page.getByRole('spinbutton', {name: 'People', exact: true}).fill('4');
+    await page.getByRole('button', {name: 'Validate form'}).click();
+    await expect(page.getByRole('heading', {name: 'Example project'})).toBeVisible();
+    await expect(page.getByText('Valid form · 4 people · CHF 76.00')).toBeVisible();
+    await expect(page.frameLocator('iframe').getByRole('heading', {name: 'Example project'})).toBeVisible();
     await page.goto('/mail');
-    await expect(page.frameLocator('iframe').first().getByRole('heading', {name: 'Make yourself at home, Alex.'})).toBeVisible();
-    await page.getByRole('tab', {name: 'A new beginning'}).click();
-    await expect(page.frameLocator('iframe').nth(1).getByRole('heading', {name: 'A little room for Sunday Studio.'})).toBeVisible();
-    await page.getByRole('button', {name: 'Switch to dark mode'}).click();
-    await page.reload();
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await page.getByRole('link', {name: 'A new project', exact: true}).click();
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.frameLocator('iframe').first().getByRole('heading', {name: 'Welcome, Alex!'})).toBeVisible();
+    await page.getByRole('tab', {name: 'Project email'}).click();
+    await expect(page.frameLocator('iframe').nth(1).getByRole('heading', {name: 'Sunday Studio'})).toBeVisible();
 });
 
-test('mobile navigation, reduced motion, not-found, and health endpoint work', async ({page, request}) => {
+test('gallery fits mobile and respects reduced motion', async ({page, request}) => {
     await page.setViewportSize({width: 390, height: 844});
     await page.emulateMedia({reducedMotion: 'reduce'});
     await page.goto('/');
-    await page.getByRole('button', {name: 'Toggle navigation'}).click();
-    await page.getByRole('link', {name: 'Motion & interaction', exact: true}).click();
-    await expect(page.getByRole('button', {name: 'Toggle navigation'})).toHaveAttribute('aria-expanded', 'false');
-    await page.getByRole('button', {name: 'Show the details'}).click();
-    await expect(page.getByLabel('A detail worth keeping')).toBeVisible();
+    await page.getByRole('button', {name: 'Open SlideDown'}).click();
+    await expect(page.getByLabel('Retained value')).toBeVisible();
     expect(await page.locator('#sliding-details').evaluate(node => getComputedStyle(node).transitionDuration)).toBe('0s');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await page.getByRole('combobox', {name: 'Select an option'}).click();
+    const menu = page.getByRole('listbox');
+    await expect(menu).toBeVisible();
+    const bounds = await menu.boundingBox();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
     await page.goto('/missing-page');
-    await expect(page.getByRole('heading', {name: 'A little off the beaten path'})).toBeVisible();
-    const health = await request.get('/api/health');
-    expect(await health.json()).toEqual({status: 'ok'});
+    await expect(page.getByRole('heading', {name: 'Page not found'})).toBeVisible();
+    expect(await (await request.get('/api/health')).json()).toEqual({status: 'ok'});
 });

@@ -24,6 +24,8 @@ Read `docs/architecture.md` before changing structure, data flow, persistence, c
 
 ## UI
 
+- Preserve the source component appearance from GuildMarket and SeppOS: Rubik, original palette variables, accent borders, moving input labels, button hover glow, custom number/select controls, and compact switches. Do not replace these with a new design system.
+- Keep the app a plain component gallery with labeled variants and interactive examples; no dashboard shell, sidebar, hero, or marketing copy.
 - Reuse CSS Modules, shared tokens, and existing controls. Keep feature presentation in modules.
 - Preserve form semantics, native resets, accessible labels, error descriptions, focus, keyboard behavior, and disabled states.
 - Keep reduced-motion content visible and usable. Closed animated content must not receive focus.

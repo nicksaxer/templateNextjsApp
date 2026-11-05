@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Card from '@frontend/components/ui/elements/Card';
-import Badge from '@frontend/components/ui/elements/Badge';
 import Accordion from '@frontend/components/ui/elements/Accordion';
 import Dialog from '@frontend/components/ui/elements/Dialog';
 import Tabs from '@frontend/components/ui/elements/Tabs';
@@ -19,78 +17,35 @@ export default function MotionShowcase() {
     const [extra, setExtra] = useState(false);
     return (
         <section id="motion" className={styles.section}>
-            <div className={styles.sectionHeading}>
-                <div>
-                    <span className={styles.eyebrow}>03 / ROOM TO MOVE</span>
-                    <h2>A natural next step.</h2>
-                    <p>A little motion. A little delight. Everything in its place.</p>
-                </div>
-                <Badge tone="warning">Motion & interaction</Badge>
-            </div>
-            <div className={styles.twoColumns}>
-                <Card title="A little more to the story" description="Open, close, and make a little room.">
-                    <Button aria-expanded={open} aria-controls="sliding-details" onClick={() => setOpen(value => !value)} bsicon={open ? 'bi-chevron-up' : 'bi-chevron-down'}>
-                        {open ? 'Hide the details' : 'Show the details'}
-                    </Button>
+            <h2>Animations & interactions</h2>
+            <div className={styles.examples}>
+                <div className={styles.example}>
+                    <h3>SlideDown</h3>
+                    <Button aria-expanded={open} aria-controls="sliding-details" onClick={() => setOpen(value => !value)} bsicon={open ? 'bi-chevron-up' : 'bi-chevron-down'}>{open ? 'Close SlideDown' : 'Open SlideDown'}</Button>
                     <SlideDown open={open} id="sliding-details">
                         <div className={styles.slideContent}>
-                            <p>Some things deserve a little more space. This one opens gently, keeps your place, and grows with your idea.</p>
-                            <TextInput label="A detail worth keeping" placeholder="What’s on your mind?" />
-                            <Button simple onClick={() => setExtra(value => !value)}>
-                                {extra ? 'A little less' : 'Tell me more'}
-                            </Button>
-                            {extra && <p>There’s always room for one more good idea. Even when the story gets a little longer.</p>}
+                            <TextInput label="Retained value" placeholder="Type, close, and reopen" />
+                            <Button simple onClick={() => setExtra(value => !value)}>{extra ? 'Remove content' : 'Add content'}</Button>
+                            {extra && <p>Additional content changes the height of this panel.</p>}
                         </div>
                     </SlideDown>
-                    <div style={{marginTop: 28}}>
-                        <Accordion title="Can I make this my own?">Absolutely. Start with a small idea, pick the details that fit, and give it your own personality.</Accordion>
-                        <Accordion title="What if I prefer a little less motion?">
-                            That works too. Your device’s motion preferences are respected, so the experience stays comfortable.
-                        </Accordion>
-                    </div>
-                </Card>
-                <Card title="Small moments, thoughtfully done">
-                    <Tabs
-                        label="Interaction examples"
-                        tabs={[
-                            {
-                                label: 'A gentle arrival',
-                                content: (
-                                    <div className={styles.motionStage}>
-                                        <FadeIn key={replay}>
-                                            <div className={styles.motionSymbol}>✳</div>
-                                            <h3>Hello, possibility.</h3>
-                                            <p>A soft landing for your next idea.</p>
-                                        </FadeIn>
-                                        <Button simple bsicon="bi-arrow-clockwise" onClick={() => setReplay(value => value + 1)}>
-                                            Once more
-                                        </Button>
-                                    </div>
-                                )
-                            },
-                            {
-                                label: 'A focused moment',
-                                content: (
-                                    <div className={styles.motionStage}>
-                                        <div className={styles.motionSymbol}>◇</div>
-                                        <h3>A little space to focus.</h3>
-                                        <p>Some decisions deserve a moment of their own.</p>
-                                        <Button onClick={() => setDialog(true)}>Open a moment</Button>
-                                    </div>
-                                )
-                            }
-                        ]}
-                    />
-                </Card>
-            </div>
-            <Dialog open={dialog} onClose={() => setDialog(false)} title="A moment for your next idea">
-                <p className={styles.bodyText}>Take your time. Great things often begin with one small, thoughtful step.</p>
-                <div className={styles.buttonRow}>
-                    <Button filled onClick={() => setDialog(false)}>
-                        Sounds good
-                    </Button>
-                    <Button onClick={() => setDialog(false)}>Maybe later</Button>
+                    <h3>Accordion</h3>
+                    <Accordion title="First accordion">First panel content.</Accordion>
+                    <Accordion title="Second accordion">Second panel content.</Accordion>
                 </div>
+                <div className={styles.example}>
+                    <h3>FadeIn</h3>
+                    <FadeIn key={replay}><div className={styles.stage}>Example content</div></FadeIn>
+                    <Button simple onClick={() => setReplay(value => value + 1)}>Replay FadeIn</Button>
+                    <h3>Tabs</h3>
+                    <Tabs label="Example tabs" tabs={[{label: 'First tab', content: <p>First tab content.</p>}, {label: 'Second tab', content: <p>Second tab content.</p>}]} />
+                    <h3>Dialog</h3>
+                    <Button onClick={() => setDialog(true)}>Open dialog</Button>
+                </div>
+            </div>
+            <Dialog open={dialog} onClose={() => setDialog(false)} title="Example dialog">
+                <p>Example dialog content.</p>
+                <Button filled onClick={() => setDialog(false)}>Confirm</Button>
             </Dialog>
         </section>
     );

@@ -1,1 +1,4 @@
-export const appConfig = {name: 'Foundation', description: 'A little head start for your next big idea.', locale: 'en-CH', currency: 'CHF'} as const;
+export const appConfig = {
+    name: 'Component library',
+    description: 'Reusable components and interactive examples from GuildMarket and SeppOS.'
+} as const;

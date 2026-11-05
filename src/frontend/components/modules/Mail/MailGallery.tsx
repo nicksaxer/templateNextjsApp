@@ -8,7 +8,7 @@ import styles from './Mail.module.css';
 export default function MailGallery({mails}: {mails: RenderedMail[]}) {
     return (
         <div className={styles.gallery}>
-            <Tabs label="Choose an email" tabs={mails.map((mail, index) => ({label: index === 0 ? 'A warm welcome' : 'A new beginning', content: <MailPreview mail={mail} />}))} />
+            <Tabs label="Choose an email" tabs={mails.map((mail, index) => ({label: index === 0 ? 'Welcome email' : 'Project email', content: <MailPreview mail={mail} />}))} />
         </div>
     );
 }

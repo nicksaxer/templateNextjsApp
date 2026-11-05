@@ -1,0 +1,123 @@
+.wrapper {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+}
+
+.trigger {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6em 1em;
+    border: 2px solid var(--accent);
+    border-radius: 0.5em;
+    background: var(--background);
+    color: var(--foreground);
+    text-align: left;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.trigger > span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.trigger:hover, .trigger[aria-expanded='true'] {
+    background: color-mix(in srgb, var(--accent), var(--background) 90%);
+}
+
+.chevron {
+    width: 0.75rem;
+    flex-shrink: 0;
+    color: var(--accent);
+    transition: transform 0.2s;
+}
+
+.trigger[aria-expanded='true'] .chevron {
+    transform: rotate(180deg);
+}
+
+.trigger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.trigger[aria-invalid='true'] {
+    border-color: var(--error);
+}
+
+.native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    pointer-events: none;
+}
+
+.menu {
+    position: fixed;
+    z-index: 1000;
+    padding: 0.35rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--border);
+    border-radius: 0.7rem;
+    background: var(--surface);
+    color: var(--foreground);
+    box-shadow: 0 8px 28px rgb(0 0 0 / 0.2);
+    scrollbar-width: thin;
+    font-size: 1rem;
+}
+
+.group {
+    padding: 0.6rem 0.6rem 0.25rem;
+    color: var(--grey);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.55rem 0.65rem;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    overflow-wrap: anywhere;
+}
+
+.option[data-active='true'] {
+    background: color-mix(in srgb, var(--accent), var(--surface) 82%);
+}
+
+.option[aria-selected='true'] {
+    color: var(--foreground);
+    font-weight: 500;
+}
+
+.option[aria-disabled='true'] {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.option > svg {
+    width: 0.8rem;
+    flex-shrink: 0;
+}
+
+.error {
+    font-size: 0.8rem;
+    color: var(--error);
+}
+
+.option[aria-selected='true'] > svg {
+    color: var(--accent);
+}

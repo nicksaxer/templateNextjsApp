@@ -1,6 +1,2 @@
-.gallery { max-width: 780px; margin: 0 auto; }
-.mailHeader { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 10px; margin-bottom: 20px; font-size: .78rem; }
-.mailHeader span { color: var(--muted); font-size: .6rem; letter-spacing: 1px; padding-top: 2px; }
-.mailHeader strong { font-weight: 500; }
-.mailFrame { border: 1px solid var(--border); border-radius: 10px; background: #f2f3f5; width: 100%; height: 550px; display: block; }
-.caption { margin: 18px 0 0; font-size: .71rem; color: var(--muted); line-height: 1.7; }
+.gallery { max-width: 780px; }
+.mailFrame { border: 1px solid var(--border); border-radius: 0.5em; background: var(--background); width: 100%; height: 550px; display: block; }

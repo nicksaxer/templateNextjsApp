@@ -1,0 +1,44 @@
+.InfoWrapper {
+    display: inline;
+    margin: 0 7px;
+    font-size: inherit;
+    position: relative;
+}
+
+.icon {
+    color: var(--grey);
+    font-size: 1.25em;
+    position: absolute;
+    bottom: 0;
+    line-height: 0;
+    border-radius: 100px;
+    transition: 0.2s;
+}
+.icon:hover {
+    background-color: var(--button-background);
+    color: var(--brightaccent);
+}
+
+.text {
+    position: absolute;
+    z-index: 10;
+    width: max-content;
+    max-width: min(350px, calc(100vw - 32px));
+    overflow-wrap: anywhere;
+    height: fit-content;
+    bottom: 1.5em;
+    right: -0.5em;
+    background: rgb(from var(--surface) r g b / 0.9);
+    padding: 5px 7px;
+    border-radius: 7px 7px 1px 7px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease 1s, visibility 0s linear 1.2s;
+}
+
+.InfoWrapper:hover .text,
+.InfoWrapper:focus-within .text {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+}

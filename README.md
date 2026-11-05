@@ -2,7 +2,7 @@
 
 A reusable Next.js App Router foundation based on the structure and coding conventions in [GuildMarket](https://github.com/nicksaxer/guildmarket) and [SeppOS](https://github.com/nicksaxer/SeppOS).
 
-The running app is an interactive playground: inputs, buttons, feedback states, animations, a project preview flow, and actual HTML email previews. It contains no code tutorials or source viewers.
+The running app is an interactive playground: inputs, buttons, feedback states, animations, a small form validation example, and actual HTML email previews. It contains no code tutorials or source viewers.
 
 ## Start
 
@@ -22,7 +22,7 @@ Open http://localhost:3000. No environment variables, database, SMTP server, or 
 | `src/app/(frontend)/(public)` | Pages composing frontend modules |
 | `src/app/(frontend)` | Document layout, theme, global tokens, loading/error/not-found boundaries |
 | `src/app/api` | HTTP interfaces; includes a minimal health endpoint |
-| `src/frontend/components/layout` | Container, shell, navigation, theme switch |
+| `src/frontend/components/layout` | Container; gallery appearance controls live with the examples |
 | `src/frontend/components/modules` | Removable example features: Showcase, Project, Mail |
 | `src/frontend/components/ui/inputs` | Button, TextInput, NumberInput, SelectInput, TextArea, Switch, Checkbox, shared field behavior |
 | `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, Alert, Badge, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Dialog, Icon, NavigationLink |
@@ -65,11 +65,21 @@ Copy `.env.example` to `.env.local` only when enabling an integration in your ow
 
 SMTP delivery and live MongoDB connectivity require your development credentials and are not exercised by the default checks. SMTP settings must match the provider's TLS requirements; port 465 normally uses `SMTP_SECURE=true`, while STARTTLS on port 587 uses `false`.
 
+## Component sources
+
+The gallery is a plain collection of labeled, interactive examples. It has no product shell, sidebar, hero, or marketing content.
+
+The original component implementations and CSS Modules come from SeppOS commit `ab08d9219f0ead2a0ee4551fbdd488fec0326ad4`: Button, TextInput, NumberInput, SelectInput, Switch, InfoBox, LoadingIndicator, and HLine. GuildMarket commit `2501a4bf939fcb546dec363c41c54ad99bfa0cde` supplies the alternate cyan palette, input error treatment, and email layout conventions. Rubik is bundled locally using Fontsource; the original Bootstrap and Font Awesome icons are retained.
+
+The SeppOS colors are the default. The gallery’s GuildMarket button applies its original palette; light/dark mode uses the source theme colors. Changing these controls does not introduce a separate component design.
+
+Small template additions preserve the source appearance: error/hint associations, pending button state, a compact spinner option, and a form name on Switch. TextArea and the additional feedback/interaction components use the same tokens. SlideDown and FadeIn remain standalone reusable animations. The numbered backend layers remain unchanged.
+
 ## UI conventions
 
 - CSS Modules and shared theme variables; no utility CSS framework or component library.
-- Buttons preserve `filled`, `simple`, `danger`, `iconOnly`, and `bsicon` conventions. `icon` accepts a React node; icon-only controls require an accessible label. Pending buttons are disabled and expose busy state.
-- Inputs preserve native value/defaultValue, reset, keyboard, disabled, and form submission semantics. Text inputs also support password reveal, field errors, hints, refs, and end adornments. NumberInput deliberately uses the native number control; SelectInput uses the native select for reliable keyboard and mobile behavior.
+- Buttons preserve `filled`, `simple`, `danger`, `iconOnly`, and `bsicon` conventions. `icon` accepts a Font Awesome IconDefinition; icon-only controls require an accessible label. Pending buttons are disabled and expose busy state.
+- Inputs preserve native value/defaultValue, reset, keyboard, disabled, and form submission semantics. Text inputs also support password reveal, field errors, hints, refs, and end adornments. NumberInput uses SeppOS’s custom stepper with native number semantics. SelectInput uses its portaled dropdown, keyboard navigation, typeahead, and hidden native select for form submission.
 - `SlideDown` replaces the familiar expand/collapse interaction declaratively: pass `open`, keep content inside. It animates between zero and intrinsic height without fixed height limits or timeout cleanup. Closed content is inert and hidden from assistive technology; state is retained while closed. Prefer the reusable Accordion for a labeled disclosure.
 - FadeIn, loading, skeleton, and slide effects respect reduced-motion preferences. Native dialogs provide focus trapping, Escape dismissal, and return focus. Tabs support arrow keys, Home, and End.
 - Themes are rendered from the same-site preference cookie, then updated in the document and cookie together. All tokens are scoped at the document level so dialogs inherit them. This preference cookie is not an authentication mechanism.
@@ -83,6 +93,6 @@ npx playwright install chromium
 npm run test:e2e    # starts the production server; build first
 ```
 
-Backend tests cover validation, forged prices, serialization, FormData failures, checkbox semantics, mail escaping/template allowlisting, lazy configuration, and cancellation. Browser tests cover form failure/retry/success, email rendering, reset behavior, loading/empty states, motion, keyboard tabs/dialog focus, theme reload/navigation, mobile navigation, reduced motion, and error-free client execution. CI runs these checks on Node.js 24 using the Chrome already installed on GitHub's Ubuntu 24.04 runner. Local browser tests use Playwright's Chromium by default; `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing browser instead.
+Backend tests cover validation, forged prices, serialization, FormData failures, checkbox semantics, mail escaping/template allowlisting, lazy configuration, and cancellation. Browser tests cover form failure/retry/success, email rendering, reset behavior, loading/empty states, motion, keyboard tabs/dialog focus, theme reload/navigation, mobile gallery layout, reduced motion, and error-free client execution. CI runs these checks on Node.js 24 using the Chrome already installed on GitHub's Ubuntu 24.04 runner. Local browser tests use Playwright's Chromium by default; `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing browser instead.
 
 This repository intentionally has no project-specific auth, payment, analytics, storage provider, or user data copied from either source project.

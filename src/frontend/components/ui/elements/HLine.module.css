@@ -1,0 +1,11 @@
+.Line {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    line-height: 0;
+}
+.Line span {
+    color: var(--grey);
+    padding: 0 10px;
+    background-color: var(--background);
+}
