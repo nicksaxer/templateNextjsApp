@@ -1,4 +1,4 @@
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import ErrorMessage from '../elements/ErrorMessage';
 import styles from './Inputs.module.css';
 

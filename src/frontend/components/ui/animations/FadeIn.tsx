@@ -1,4 +1,4 @@
-import type {ComponentPropsWithoutRef} from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 import styles from './Motion.module.css';
 
 export default function FadeIn({children, className = '', ...props}: ComponentPropsWithoutRef<'div'>) {

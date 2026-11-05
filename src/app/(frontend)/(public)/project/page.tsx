@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import { getShowcase } from '@backend/queries/example';
 import Container from '@frontend/components/layout/Container';
 import ProjectForm from '@frontend/components/modules/Project/ProjectForm';

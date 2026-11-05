@@ -1,4 +1,4 @@
-import type {ComponentPropsWithoutRef} from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 import styles from './Feedback.module.css';
 
 export default function ErrorMessage({children, className = '', ...props}: ComponentPropsWithoutRef<'p'>) {

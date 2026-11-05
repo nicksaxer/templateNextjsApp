@@ -1,4 +1,4 @@
-import type {ComponentPropsWithoutRef, ReactNode} from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { classNames } from '@frontend/utils/classnames';
 import styles from './Button.module.css';
 

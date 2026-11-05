@@ -1,6 +1,6 @@
 'use client';
 
-import type {RenderedMail} from '@backend/types';
+import type { RenderedMail } from '@backend/types';
 import Tabs from '@frontend/components/ui/elements/Tabs';
 import MailPreview from './MailPreview';
 import styles from './Mail.module.css';

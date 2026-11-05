@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState } from 'react';
 import { previewProjectAction } from '@backend/actions/example/project.actions';
-import type {ExamplePlan} from '@backend/types';
+import type { ExamplePlan } from '@backend/types';
 import TextInput from '@frontend/components/ui/inputs/TextInput';
 import NumberInput from '@frontend/components/ui/inputs/NumberInput';
 import SelectInput from '@frontend/components/ui/inputs/SelectInput';

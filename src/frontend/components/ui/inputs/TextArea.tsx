@@ -1,7 +1,7 @@
 'use client';
 
 import { type ComponentPropsWithoutRef, useId } from 'react';
-import Field, {describedBy, type FieldProps} from './Field';
+import Field, { describedBy, type FieldProps } from './Field';
 import styles from './Inputs.module.css';
 
 export default function TextArea({label, hint, error, id, className, ...props}: ComponentPropsWithoutRef<'textarea'> & FieldProps) {

@@ -23,6 +23,9 @@ test('unknown template names cannot traverse the filesystem', async () => {
 
 test('configuration is lazy and missing integrations fail clearly', () => {
     assert.throws(() => requiredEnv('TEST_MISSING_SETTING'), AppError);
+    process.env.TEST_CONFIG_SECRET = ' a secret with spaces ';
+    try {assert.equal(requiredEnv('TEST_CONFIG_SECRET'), ' a secret with spaces ');}
+    finally {delete process.env.TEST_CONFIG_SECRET;}
     const previous = process.env.SMTP_PORT;
     try {
         process.env.SMTP_PORT = 'invalid';

@@ -1,4 +1,4 @@
-import type {ComponentPropsWithoutRef, ReactNode} from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import styles from './Feedback.module.css';
 
 export default function Card({

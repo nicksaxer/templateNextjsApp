@@ -1,8 +1,8 @@
 'use client';
 
 import { type ComponentPropsWithoutRef, useId } from 'react';
-import type {SelectOption} from '@backend/types';
-import Field, {describedBy, type FieldProps} from './Field';
+import type { SelectOption } from '@backend/types';
+import Field, { describedBy, type FieldProps } from './Field';
 import styles from './Inputs.module.css';
 
 export interface SelectInputProps extends ComponentPropsWithoutRef<'select'>, FieldProps {

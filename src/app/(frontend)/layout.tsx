@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { appConfig } from '@backend/config/app.config';
 import { getTheme } from '@frontend/utils/prefs';

@@ -1,4 +1,5 @@
-import type {RenderedMail} from '@backend/types';
+import type { RenderedMail } from '@backend/types';
+import { appConfig } from '@backend/config/app.config';
 import Card from '@frontend/components/ui/elements/Card';
 import Badge from '@frontend/components/ui/elements/Badge';
 import styles from './Mail.module.css';
@@ -8,7 +9,7 @@ export default function MailPreview({mail}: {mail: RenderedMail}) {
         <Card title="A note in your inbox" action={<Badge>Preview only</Badge>}>
             <div className={styles.mailHeader}>
                 <span>FROM</span>
-                <strong>Foundation</strong>
+                <strong>{appConfig.name}</strong>
                 <span>SUBJECT</span>
                 <strong>{mail.subject}</strong>
             </div>

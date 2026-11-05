@@ -1,4 +1,4 @@
-import type {ComponentPropsWithoutRef} from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 import Icon from './Icon';
 import styles from './Feedback.module.css';
 

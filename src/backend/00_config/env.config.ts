@@ -2,8 +2,8 @@ import 'server-only';
 import { AppError } from '../06_utils/error.util';
 
 export function requiredEnv(name: string): string {
-    const value = process.env[name]?.trim();
-    if (!value) {throw new AppError(503, 'This integration has not been configured.');}
+    const value = process.env[name];
+    if (!value?.trim()) {throw new AppError(503, 'This integration has not been configured.');}
     return value;
 }
 

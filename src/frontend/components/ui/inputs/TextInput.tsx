@@ -1,7 +1,7 @@
 'use client';
 
 import { type ComponentPropsWithoutRef, type ReactNode, type Ref, useId, useState } from 'react';
-import Field, {describedBy, type FieldProps} from './Field';
+import Field, { describedBy, type FieldProps } from './Field';
 import styles from './Inputs.module.css';
 
 export interface TextInputProps extends ComponentPropsWithoutRef<'input'>, FieldProps {

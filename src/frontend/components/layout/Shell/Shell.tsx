@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { appConfig } from '@backend/config/app.config';
 import { type ReactNode, useState } from 'react';
-import type {Theme} from '@frontend/utils/prefs';
+import type { Theme } from '@frontend/utils/prefs';
 import Icon from '@frontend/components/ui/elements/Icon';
 import Button from '@frontend/components/ui/inputs/Button';
 import ThemeSwitch from './ThemeSwitch';
@@ -29,10 +30,10 @@ export default function Shell({children, initialTheme}: {children: ReactNode; in
                     <span className={styles.brandMark}>
                         <Icon name="intersect" />
                     </span>
-                    foundation<span className={styles.dot}>.</span>
+                    {appConfig.name.toLowerCase()}<span className={styles.dot}>.</span>
                 </Link>
                 <div className={styles.workspace}>
-                    <span className={styles.workspaceIcon}>F</span>
+                    <span className={styles.workspaceIcon}>{appConfig.name[0]}</span>
                     <div>
                         Your next chapter<small>A fresh start</small>
                     </div>
