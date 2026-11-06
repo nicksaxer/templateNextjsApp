@@ -39,8 +39,12 @@ test('source controls support typing, steppers, custom selection, and reset', as
 });
 
 test('original palette, borders, typography, moving labels, and theme work', async ({page}) => {
-    await page.goto('/');
-    await page.getByRole('button', {name: 'GuildMarket', exact: true}).click();
+    const response = await page.goto('/');
+    expect(await response!.text()).toMatch(/<html[^>]*data-theme="dark"[^>]*data-palette="guildmarket"/);
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('html')).toHaveAttribute('data-palette', 'guildmarket');
+    await expect(page.getByRole('button', {name: 'GuildMarket', exact: true})).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('switch', {name: 'Dark mode'})).toBeChecked();
     const button = page.getByRole('button', {name: 'Default', exact: true});
     await expect(button).toHaveCSS('border-top-color', 'rgb(0, 150, 168)');
     await expect(button).toHaveCSS('border-top-width', '2px');
@@ -53,7 +57,15 @@ test('original palette, borders, typography, moving labels, and theme work', asy
     await expect(page.locator('label', {hasText: /^Text$/})).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     await page.getByRole('switch', {name: 'Dark mode'}).focus();
     await page.keyboard.press('Space');
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await page.reload();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect(page.getByRole('switch', {name: 'Dark mode'})).not.toBeChecked();
+    await page.getByRole('button', {name: 'SeppOS', exact: true}).click();
+    await expect(page.locator('html')).toHaveAttribute('data-palette', 'seppos');
+    await page.getByRole('button', {name: 'GuildMarket', exact: true}).click();
+    await page.getByRole('switch', {name: 'Dark mode'}).focus();
+    await page.keyboard.press('Space');
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
     await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(16, 16, 16)');

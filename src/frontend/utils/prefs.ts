@@ -1,7 +1,7 @@
 export type Theme = 'light' | 'dark';
 
 export function getTheme(value: string | undefined): Theme {
-    return value === 'dark' ? 'dark' : 'light';
+    return value === 'light' ? 'light' : 'dark';
 }
 
 export function setTheme(theme: Theme): void {

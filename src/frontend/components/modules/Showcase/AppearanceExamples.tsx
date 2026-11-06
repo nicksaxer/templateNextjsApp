@@ -8,7 +8,7 @@ import styles from './Showcase.module.css';
 
 export default function AppearanceExamples({initialTheme}: {initialTheme: Theme}) {
     const [theme, updateTheme] = useState(initialTheme);
-    const [palette, setPalette] = useState('seppos');
+    const [palette, setPalette] = useState('guildmarket');
     function choosePalette(value: string) {
         document.documentElement.dataset.palette = value;
         setPalette(value);

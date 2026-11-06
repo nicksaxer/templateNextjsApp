@@ -75,9 +75,9 @@ SMTP delivery and live MongoDB connectivity require your development credentials
 
 The gallery is a plain collection of labeled, interactive examples. It has no product shell, sidebar, hero, or marketing content.
 
-The original component implementations and CSS Modules come from SeppOS commit `ab08d9219f0ead2a0ee4551fbdd488fec0326ad4`: Button, TextInput, NumberInput, SelectInput, Switch, InfoBox, LoadingIndicator, and HLine. GuildMarket commit `2501a4bf939fcb546dec363c41c54ad99bfa0cde` supplies the alternate cyan palette, input error treatment, and email layout conventions. Rubik is bundled locally using Fontsource; the original Bootstrap and Font Awesome icons are retained.
+The original component implementations and CSS Modules come from SeppOS commit `ab08d9219f0ead2a0ee4551fbdd488fec0326ad4`: Button, TextInput, NumberInput, SelectInput, Switch, InfoBox, LoadingIndicator, and HLine. GuildMarket commit `2501a4bf939fcb546dec363c41c54ad99bfa0cde` supplies the default cyan palette, input error treatment, and email layout conventions. Rubik is bundled locally using Fontsource; the original Bootstrap and Font Awesome icons are retained.
 
-The SeppOS colors are the default. The gallery’s GuildMarket button applies its original palette; light/dark mode uses the source theme colors. Changing these controls does not introduce a separate component design.
+GuildMarket colors and dark mode are the defaults, rendered before hydration. The gallery also offers the SeppOS palette, and an explicitly saved light/dark preference is respected. Changing these controls does not introduce a separate component design.
 
 Small template additions preserve the source appearance: error/hint associations, pending button state, a compact spinner option, and a form name on Switch. TextArea and the additional feedback/interaction components use the same tokens. SlideDown and FadeIn remain standalone reusable animations. The numbered backend layers remain unchanged.
 

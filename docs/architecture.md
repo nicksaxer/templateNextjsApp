@@ -51,7 +51,7 @@ SlideDown uses grid track interpolation with an overflow-clipped child, avoiding
 
 `modules/Alert` provides `showAlert(type, title, content)` for browser handlers and a single `AlertHost` in the root layout. It queues requests on the client and resolves each call after dismissal. The host composes the reusable Dialog as an accessible alert dialog; native dialogs close before unmounting so focus returns to the caller. No alert state is created during server rendering.
 
-The default colors and component CSS come from SeppOS; the gallery can preview GuildMarket’s original palette. Do not redesign the shared controls or add a product-style shell to the gallery. The theme is initially rendered from a validated cookie. Client changes update both document tokens and the cookie so navigation and reload agree. Tokens live on the document, including for native top-layer dialogs. The cookie stores only a presentation preference.
+The default palette is GuildMarket and the default theme is dark. Component CSS comes from SeppOS, with both original palettes available in the gallery. Do not redesign the shared controls or add a product-style shell to the gallery. The GuildMarket palette is set on the server-rendered document. The theme is initially rendered from a validated cookie, falling back to dark. Client changes update both document tokens and the cookie so navigation and reload agree. Tokens live on the document, including for native top-layer dialogs. The cookie stores only a presentation preference.
 
 ## Extending the template
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {title: {default: appConfig.name, template: `%
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
     const theme = getTheme((await cookies()).get('theme')?.value);
     return (
-        <html lang="en" data-theme={theme} data-scroll-behavior="smooth">
+        <html lang="en" data-theme={theme} data-palette="guildmarket" data-scroll-behavior="smooth">
             <body>
                 <a href="#main" className="skipLink">Skip to content</a>
                 <main id="main">{children}</main>
