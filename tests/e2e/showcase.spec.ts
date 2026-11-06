@@ -1,4 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
+
+const test = base.extend({
+    page: async ({page}, runPage) => {
+        const errors: string[] = [];
+        page.on('pageerror', error => errors.push(error.message));
+        await runPage(page);
+        expect(errors, 'Client-side errors').toEqual([]);
+    }
+});
 
 test('source controls support typing, steppers, custom selection, and reset', async ({page}) => {
     const errors: string[] = [];
@@ -123,4 +132,20 @@ test('gallery fits mobile and respects reduced motion', async ({page, request}) 
     await page.goto('/missing-page');
     await expect(page.getByRole('heading', {name: 'Page not found'})).toBeVisible();
     expect(await (await request.get('/api/health')).json()).toEqual({status: 'ok'});
+});
+
+test('development assets allow the Coder workspace and reject unrelated origins', async ({request}) => {
+    test.skip(process.env.PLAYWRIGHT_DEV !== '1', 'Development-only asset restrictions');
+    const html = await (await request.get('/')).text();
+    const scripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map(match => match[1].replaceAll('&amp;', '&')).filter(src => src.startsWith('/_next/'));
+    expect(scripts.length).toBeGreaterThan(0);
+    const origin = 'https://3000--main--seppos--nicksaxer.dev.guildmarket.net';
+    for (const src of scripts) {
+        const response = await request.get(src, {headers: {Origin: origin}});
+        expect(response.status(), src).toBe(200);
+        expect(response.headers()['content-type']).toContain('javascript');
+    }
+    const script = await request.get(scripts[0], {headers: {'Sec-Fetch-Mode': 'no-cors', 'Sec-Fetch-Site': 'cross-site', Referer: `${origin}/`}});
+    expect(script.status()).toBe(200);
+    expect((await request.get(scripts[0], {headers: {Origin: 'https://untrusted.example'}})).status()).toBe(403);
 });

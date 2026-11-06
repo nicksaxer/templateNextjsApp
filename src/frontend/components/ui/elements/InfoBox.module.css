@@ -14,6 +14,7 @@
     border-radius: 100px;
     transition: 0.2s;
 }
+
 .icon:hover {
     background-color: var(--button-background);
     color: var(--brightaccent);
@@ -33,7 +34,9 @@
     border-radius: 7px 7px 1px 7px;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.2s ease 1s, visibility 0s linear 1.2s;
+    transition:
+        opacity 0.2s ease 1s,
+        visibility 0s linear 1.2s;
 }
 
 .InfoWrapper:hover .text,

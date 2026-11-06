@@ -15,6 +15,7 @@
     line-height: 0;
     text-decoration: none;
 }
+
 .filled {
     background-color: var(--accent);
     color: white;
@@ -32,6 +33,7 @@
     height: 2em;
     color: var(--foreground);
 }
+
 .buttonSimple:hover {
     box-shadow: none;
     background-color: rgb(from var(--grey) r g b / 0.4);
@@ -41,6 +43,7 @@
 .buttonSimple.filled {
     background-color: rgb(from var(--brightaccent) r g b / 0.2);
 }
+
 .buttonSimple:hover.filled {
     background-color: rgb(from var(--brightaccent) r g b / 0.5);
 }
@@ -87,5 +90,12 @@
     cursor: not-allowed;
 }
 
-.pending { animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.pending {
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

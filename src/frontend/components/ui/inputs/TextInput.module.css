@@ -18,9 +18,11 @@
     transition: 0.2s;
     font-size: 0.8em;
 }
+
 .labelPassword {
     padding-right: 3em !important;
 }
+
 .wrapper:hover > .label,
 .wrapper:focus-within > .label {
     background-color: transparent;
@@ -45,6 +47,7 @@
     position: relative;
     width: 100%;
 }
+
 .wrapper:hover > .input,
 .wrapper:focus-within > .input {
     background-color: rgb(from var(--accent) r g b / 0.3);
@@ -66,6 +69,7 @@
     color: var(--accent);
     transition: 0.2s;
 }
+
 .wrapper:hover .viewPasswordWrapper > i,
 .wrapper:focus-within .viewPasswordWrapper > i {
     color: var(--foreground);
@@ -112,7 +116,6 @@
     }
 }
 
-
 .hasAdornment {
     padding-right: 3.3rem;
 }
@@ -126,8 +129,25 @@
     align-items: stretch;
 }
 
-.wrapper[data-invalid='true'] > .label { color: var(--error); }
-.input[aria-invalid='true'] { border-color: var(--error); }
-.wrapper:hover > .input[aria-invalid='true'] { background-color: rgb(from var(--error) r g b / 0.2); }
-.input:disabled { opacity: 0.6; cursor: not-allowed; }
-.hint { margin: 0.35rem 0 0; color: var(--grey); font-size: 0.8em; }
+.wrapper[data-invalid='true'] > .label {
+    color: var(--error);
+}
+
+.input[aria-invalid='true'] {
+    border-color: var(--error);
+}
+
+.wrapper:hover > .input[aria-invalid='true'] {
+    background-color: rgb(from var(--error) r g b / 0.2);
+}
+
+.input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.hint {
+    margin: 0.35rem 0 0;
+    color: var(--grey);
+    font-size: 0.8em;
+}

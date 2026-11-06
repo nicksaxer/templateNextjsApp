@@ -26,11 +26,15 @@
 }
 
 @keyframes spin {
-    to {transform: rotate(360deg);}
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes reveal {
-    to {visibility: visible;}
+    to {
+        visibility: visible;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -39,5 +43,13 @@
     }
 }
 
-.compact { min-height: 0; padding: 1rem; }
-@media (prefers-reduced-motion: reduce) { .loading[data-delayed='true'] { visibility: visible; } }
+.compact {
+    min-height: 0;
+    padding: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loading[data-delayed='true'] {
+        visibility: visible;
+    }
+}

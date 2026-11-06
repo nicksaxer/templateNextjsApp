@@ -1,15 +1,95 @@
-.title { justify-content: flex-start; font-size: 2rem; margin: 0 0 1.5rem; }
-.section { padding: 2rem 0; border-bottom: 1px solid var(--border); scroll-margin-top: 1rem; }
-.section > h2 { justify-content: flex-start; font-size: 1.5rem; margin: 0 0 1.5rem; }
-.examples { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 3rem; margin-bottom: 1.5rem; }
-.example { min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 1rem; }
-.example h3 { font-size: 1.05rem; font-weight: 500; margin: 0; }
-.example p { margin: 0; }
-.buttonRow, .row { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
-.stack { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
-.twoColumns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
-.slideContent { padding: 1.5rem 0 0.5rem; display: flex; flex-direction: column; gap: 1rem; }
-.stage { padding: 2rem; border: 1px solid var(--border); border-radius: 0.5rem; }
-.adornment { display: flex; align-items: center; color: var(--grey); padding-right: 0.25rem; }
-.tooltipExample { align-self: flex-end; margin: 2rem; }
-@media (max-width: 700px) { .examples, .twoColumns { grid-template-columns: 1fr; } }
+.title {
+    justify-content: flex-start;
+    font-size: 2rem;
+    margin: 0 0 1.5rem;
+}
+
+.section {
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 1rem;
+}
+
+.section > h2 {
+    justify-content: flex-start;
+    font-size: 1.5rem;
+    margin: 0 0 1.5rem;
+}
+
+.examples {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.example {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+}
+
+.example h3 {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.example p {
+    margin: 0;
+}
+
+.buttonRow,
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.twoColumns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+}
+
+.slideContent {
+    padding: 1.5rem 0 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.stage {
+    padding: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+}
+
+.adornment {
+    display: flex;
+    align-items: center;
+    color: var(--grey);
+    padding-right: 0.25rem;
+}
+
+.tooltipExample {
+    align-self: flex-end;
+    margin: 2rem;
+}
+
+@media (max-width: 700px) {
+    .examples,
+    .twoColumns {
+        grid-template-columns: 1fr;
+    }
+}

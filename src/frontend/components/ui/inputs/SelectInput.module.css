@@ -17,7 +17,9 @@
     background: var(--background);
     color: var(--foreground);
     text-align: left;
-    transition: background 0.2s, border-color 0.2s;
+    transition:
+        background 0.2s,
+        border-color 0.2s;
 }
 
 .trigger > span {
@@ -26,7 +28,8 @@
     text-overflow: ellipsis;
 }
 
-.trigger:hover, .trigger[aria-expanded='true'] {
+.trigger:hover,
+.trigger[aria-expanded='true'] {
     background: color-mix(in srgb, var(--accent), var(--background) 90%);
 }
 

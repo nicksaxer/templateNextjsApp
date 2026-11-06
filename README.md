@@ -15,6 +15,12 @@ npm run dev
 
 Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. `npm run build` and `npm run start` run the production app.
 
+## Coder development
+
+The dev server allows `3000--main--seppos--nicksaxer.dev.guildmarket.net`, matching the existing SeppOS workspace. Localhost remains supported automatically. For another workspace, update `allowedDevOrigins` in `next.config.ts` with its exact browser hostname (no `https://`, port, or path), then restart `npm run dev`.
+
+If HTML/CSS loads but clicks do nothing, check the browser console and terminal for blocked `/_next/` requests. The production and development servers have different asset checks, so the browser suite runs against both. Coder’s port subdomain is the supported workspace entry point; a path-based proxy needs its own routing setup.
+
 ## Structure
 
 | Location | Responsibility |
@@ -91,6 +97,7 @@ npm run check       # lint, strict typecheck, backend/utility tests
 npm run build       # production compile and route validation
 npx playwright install chromium
 npm run test:e2e    # starts the production server; build first
+PLAYWRIGHT_DEV=1 npm run test:e2e  # development interactions and origin checks
 ```
 
 Backend tests cover validation, forged prices, serialization, FormData failures, checkbox semantics, mail escaping/template allowlisting, lazy configuration, and cancellation. Browser tests cover form failure/retry/success, email rendering, reset behavior, loading/empty states, motion, keyboard tabs/dialog focus, theme reload/navigation, mobile gallery layout, reduced motion, and error-free client execution. CI runs these checks on Node.js 24 using the Chrome already installed on GitHub's Ubuntu 24.04 runner. Local browser tests use Playwright's Chromium by default; `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing browser instead.
