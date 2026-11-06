@@ -21,6 +21,21 @@ export default function Dialog({open, onClose, title, children, role = 'dialog',
             aria-describedby={descriptionId}
             aria-labelledby={id}
             className={styles.dialog}
+            onKeyDown={event => {
+                if (event.key !== 'Tab' || event.defaultPrevented) {return;}
+                const dialog = event.currentTarget;
+                const candidates = dialog.querySelectorAll<HTMLElement>('a[href], button, input, select, textarea, [tabindex]');
+                const controls = [...candidates].filter(node => node.tabIndex >= 0 && !node.matches(':disabled') && !node.closest('[inert], [hidden]') && node.getClientRects().length > 0);
+                const first = controls[0];
+                const last = controls.at(-1);
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last?.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first?.focus();
+                }
+            }}
             onCancel={event => {
                 event.preventDefault();
                 onClose();
