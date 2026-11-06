@@ -2,7 +2,7 @@
 
 import { type ReactNode, useId, useSyncExternalStore } from 'react';
 import Dialog from '@frontend/components/ui/elements/Dialog';
-import Icon from '@frontend/components/ui/elements/Icon';
+import AlertIcon from './AlertIcon';
 import Button from '@frontend/components/ui/inputs/Button';
 import styles from './Alert.module.css';
 
@@ -16,7 +16,6 @@ interface AlertRequest {
     resolve: () => void;
 }
 
-const icons: Record<AlertType, string> = {info: 'info-circle', warning: 'exclamation-triangle', error: 'x-circle', success: 'check-circle'};
 const listeners = new Set<() => void>();
 let requests: AlertRequest[] = [];
 let nextId = 0;
@@ -59,7 +58,7 @@ function AlertBox({request}: {request: AlertRequest}) {
         <div className={styles.alert} data-type={request.type}>
             <Dialog open role="alertdialog" title={request.title} descriptionId={contentId} onClose={() => dismiss(request)}>
                 <div className={styles.message}>
-                    <Icon name={icons[request.type]} className={styles.icon} />
+                    <AlertIcon type={request.type} />
                     <div id={contentId} className={styles.content}>{request.content}</div>
                 </div>
                 <div className={styles.actions}>

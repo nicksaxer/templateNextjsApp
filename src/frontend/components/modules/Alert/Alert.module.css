@@ -16,21 +16,15 @@
 
 .message {
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
     margin-bottom: 1.5rem;
-}
-
-.icon {
-    color: var(--alert-color);
-    font-size: 2rem;
-    line-height: 1;
-    flex-shrink: 0;
+    text-align: center;
 }
 
 .content {
     min-width: 0;
-    padding-top: 0.2rem;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
 }

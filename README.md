@@ -102,7 +102,7 @@ await showAlert('success', 'Saved', 'Your changes have been saved.');
 
 Types are `info`, `warning`, `error`, and `success`. Content accepts plain text or React content; strings are escaped rather than interpreted as HTML. The returned promise resolves when the user dismisses the dialog with OK, the close button, Escape, or the backdrop. Calls made while an alert is open are displayed in order.
 
-`<AlertHost />` is already mounted once in the root layout. Keep it there when reusing the template. The dialog uses the existing buttons, theme tokens, and native modal behavior for keyboard focus. The gallery has editable title/content fields and buttons for all four types. The existing inline `ui/elements/Alert` remains available for messages within a page.
+`<AlertHost />` is already mounted once in the root layout. Keep it there when reusing the template. The dialog uses the existing buttons, theme tokens, and native modal behavior for keyboard focus. Large, centered SVG icons draw in when each alert opens: a checkmark, cross, exclamation mark, or information symbol. Each animation runs once and respects reduced-motion preferences. The gallery has editable title/content fields and buttons for all four types. The existing inline `ui/elements/Alert` remains available for messages within a page.
 
 ## Verification
 

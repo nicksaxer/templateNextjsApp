@@ -151,6 +151,7 @@ test('development assets allow the Coder workspace and reject unrelated origins'
 });
 
 test('alert variants show supplied text, trap focus, and resolve after dismissal', async ({page}) => {
+    await page.emulateMedia({reducedMotion: 'no-preference'});
     await page.goto('/#feedback');
     await page.getByLabel('Alert title', {exact: true}).fill('Saved <example>');
     await page.getByLabel('Alert content', {exact: true}).fill('First line\n<strong>Literal text</strong>');
@@ -162,6 +163,18 @@ test('alert variants show supplied text, trap focus, and resolve after dismissal
         await expect(alert).toHaveAccessibleDescription('First line <strong>Literal text</strong>');
         await expect(alert.locator('strong')).toHaveCount(0);
         await expect(alert).toHaveAttribute('aria-modal', 'true');
+        const icon = alert.locator('svg');
+        const animationCount = await icon.evaluate(async node => {
+            const animations = node.getAnimations({subtree: true});
+            await Promise.all(animations.map(animation => animation.finished));
+            return animations.length;
+        });
+        expect(animationCount).toBeGreaterThan(0);
+        const iconBounds = (await icon.boundingBox())!;
+        const dialogBounds = (await alert.boundingBox())!;
+        expect(iconBounds.width).toBeGreaterThanOrEqual(96);
+        expect(Math.abs(iconBounds.x + iconBounds.width / 2 - dialogBounds.x - dialogBounds.width / 2)).toBeLessThan(1);
+        await expect(icon).toBeVisible();
         await alert.getByRole('button', {name: 'OK', exact: true}).focus();
         await page.keyboard.press('Tab');
         await expect(alert.getByRole('button', {name: 'Close dialog'})).toBeFocused();
@@ -195,4 +208,23 @@ test('queued alerts display once in order and restore focus after the last dismi
     await expect(alert).toHaveCount(0);
     await expect(opener).toBeFocused();
     await expect(page.getByText('Both alerts dismissed.')).toBeVisible();
+});
+
+test('alert icons remain fully visible without animation when reduced motion is requested', async ({page}) => {
+    await page.setViewportSize({width: 390, height: 844});
+    await page.emulateMedia({reducedMotion: 'reduce'});
+    await page.goto('/#feedback');
+    for (const type of ['info', 'warning', 'error', 'success']) {
+        await page.getByRole('button', {name: `Show ${type} alert`, exact: true}).click();
+        const alert = page.getByRole('alertdialog');
+        const icon = alert.locator('svg');
+        await expect(icon).toBeVisible();
+        await expect(icon).toHaveCSS('opacity', '1');
+        expect(await icon.evaluate(node => node.getAnimations({subtree: true}).length)).toBe(0);
+        const offsets = await icon.locator('path').evaluateAll(paths => paths.map(path => parseFloat(getComputedStyle(path).strokeDashoffset)));
+        expect(offsets.every(offset => offset === 0)).toBe(true);
+        await expect(alert.getByText('Example alert message.', {exact: true})).toBeVisible();
+        await page.keyboard.press('Escape');
+        await expect(alert).toHaveCount(0);
+    }
 });
