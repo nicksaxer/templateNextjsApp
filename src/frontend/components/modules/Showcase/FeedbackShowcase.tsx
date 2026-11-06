@@ -43,7 +43,7 @@ export default function FeedbackShowcase() {
             <div className={styles.examples}>
                 <div className={styles.example}>
                     <h3>InfoBox</h3>
-                    <span className={styles.tooltipExample}>Hover or focus the icon <InfoBox>Example information tooltip.</InfoBox></span>
+                    <span>Hover or focus the icon <InfoBox>Example information tooltip.</InfoBox></span>
                     <h3>ErrorMessage</h3>
                     <ErrorMessage>Example error message.</ErrorMessage>
                     <h3>LoadingIndicator</h3>

@@ -21,6 +21,10 @@
     color: white;
 }
 
+.wide {
+    padding: 0 2em;
+}
+
 .button:hover {
     background-color: var(--accent);
     color: white;

@@ -13,6 +13,7 @@
     line-height: 0;
     border-radius: 100px;
     transition: 0.2s;
+    width: 1em;
 }
 
 .icon:hover {
@@ -39,8 +40,7 @@
         visibility 0s linear 1.2s;
 }
 
-.InfoWrapper:hover .text,
-.InfoWrapper:focus-within .text {
+.InfoWrapper:hover .text, .InfoWrapper:focus-within .text {
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;

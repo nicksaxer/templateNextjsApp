@@ -82,11 +82,6 @@
     padding-right: 0.25rem;
 }
 
-.tooltipExample {
-    align-self: flex-end;
-    margin: 2rem;
-}
-
 @media (max-width: 700px) {
     .examples,
     .twoColumns {

@@ -62,7 +62,7 @@ function AlertBox({request}: {request: AlertRequest}) {
                     <div id={contentId} className={styles.content}>{request.content}</div>
                 </div>
                 <div className={styles.actions}>
-                    <Button filled autoFocus onClick={() => dismiss(request)}>OK</Button>
+                    <Button filled autoFocus simple wide onClick={() => dismiss(request)}>OK</Button>
                 </div>
             </Dialog>
         </div>
