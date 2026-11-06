@@ -1,0 +1,49 @@
+.alert {
+    --alert-color: var(--accent);
+}
+
+.alert[data-type='warning'] {
+    --alert-color: #d99d24;
+}
+
+.alert[data-type='error'] {
+    --alert-color: var(--error);
+}
+
+.alert[data-type='success'] {
+    --alert-color: var(--success);
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.icon {
+    color: var(--alert-color);
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.content {
+    min-width: 0;
+    padding-top: 0.2rem;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.content > :first-child {
+    margin-top: 0;
+}
+
+.content > :last-child {
+    margin-bottom: 0;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}

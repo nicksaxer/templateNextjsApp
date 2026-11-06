@@ -149,3 +149,50 @@ test('development assets allow the Coder workspace and reject unrelated origins'
     expect(script.status()).toBe(200);
     expect((await request.get(scripts[0], {headers: {Origin: 'https://untrusted.example'}})).status()).toBe(403);
 });
+
+test('alert variants show supplied text, trap focus, and resolve after dismissal', async ({page}) => {
+    await page.goto('/#feedback');
+    await page.getByLabel('Alert title', {exact: true}).fill('Saved <example>');
+    await page.getByLabel('Alert content', {exact: true}).fill('First line\n<strong>Literal text</strong>');
+    for (const type of ['info', 'warning', 'error', 'success']) {
+        const opener = page.getByRole('button', {name: `Show ${type} alert`, exact: true});
+        await opener.click();
+        const alert = page.getByRole('alertdialog');
+        await expect(alert).toHaveAccessibleName('Saved <example>');
+        await expect(alert).toHaveAccessibleDescription('First line <strong>Literal text</strong>');
+        await expect(alert.locator('strong')).toHaveCount(0);
+        await expect(alert).toHaveAttribute('aria-modal', 'true');
+        await alert.getByRole('button', {name: 'OK', exact: true}).focus();
+        await page.keyboard.press('Tab');
+        await expect(alert.getByRole('button', {name: 'Close dialog'})).toBeFocused();
+        await page.keyboard.press('Shift+Tab');
+        await expect(alert.getByRole('button', {name: 'OK', exact: true})).toBeFocused();
+        if (type === 'info') {await page.keyboard.press('Escape');}
+        else if (type === 'warning') {await alert.getByRole('button', {name: 'Close dialog'}).click();}
+        else if (type === 'error') {await page.mouse.click(2, 2);}
+        else {await alert.getByRole('button', {name: 'OK', exact: true}).click();}
+        await expect(alert).toHaveCount(0);
+        await expect(opener).toBeFocused();
+        await expect(page.getByText(`${type[0].toUpperCase()}${type.slice(1)} alert dismissed.`, {exact: true})).toBeVisible();
+    }
+});
+
+test('queued alerts display once in order and restore focus after the last dismissal', async ({page}) => {
+    await page.setViewportSize({width: 390, height: 844});
+    await page.goto('/#feedback');
+    const opener = page.getByRole('button', {name: 'Show queued alerts'});
+    await opener.click();
+    const alert = page.getByRole('alertdialog');
+    await expect(alert).toHaveCount(1);
+    await expect(alert).toHaveAccessibleName('First alert');
+    const bounds = await alert.boundingBox();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
+    await alert.getByRole('button', {name: 'OK', exact: true}).click();
+    await expect(alert).toHaveCount(1);
+    await expect(alert).toHaveAccessibleName('Second alert');
+    await page.keyboard.press('Escape');
+    await expect(alert).toHaveCount(0);
+    await expect(opener).toBeFocused();
+    await expect(page.getByText('Both alerts dismissed.')).toBeVisible();
+});

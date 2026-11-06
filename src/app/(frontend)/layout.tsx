@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { appConfig } from '@backend/config/app.config';
+import { AlertHost } from '@frontend/components/modules/Alert';
 import { getTheme } from '@frontend/utils/prefs';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -19,6 +20,7 @@ export default async function RootLayout({children}: Readonly<{children: React.R
             <body>
                 <a href="#main" className="skipLink">Skip to content</a>
                 <main id="main">{children}</main>
+                <AlertHost />
             </body>
         </html>
     );

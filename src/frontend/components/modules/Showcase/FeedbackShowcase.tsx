@@ -12,7 +12,10 @@ import Skeleton from '@frontend/components/ui/elements/Skeleton';
 import Progress from '@frontend/components/ui/elements/Progress';
 import HLine from '@frontend/components/ui/elements/HLine';
 import Button from '@frontend/components/ui/inputs/Button';
+import TextInput from '@frontend/components/ui/inputs/TextInput';
+import TextArea from '@frontend/components/ui/inputs/TextArea';
 import delay from '@frontend/utils/delay';
+import { showAlert } from '@frontend/components/modules/Alert';
 import { formatCurrency, formatDate } from '@frontend/utils/format';
 import styles from './Showcase.module.css';
 
@@ -21,6 +24,9 @@ export default function FeedbackShowcase() {
     const [loaded, setLoaded] = useState(false);
     const [items, setItems] = useState(0);
     const [progress, setProgress] = useState(40);
+    const [alertStatus, setAlertStatus] = useState('');
+    const [alertTitle, setAlertTitle] = useState('Example alert');
+    const [alertContent, setAlertContent] = useState('Example alert message.');
     const controller = useRef<AbortController | null>(null);
     useEffect(() => () => controller.current?.abort(), []);
     async function reload() {
@@ -54,6 +60,26 @@ export default function FeedbackShowcase() {
                     <Alert tone="success">Success message</Alert>
                     <Alert tone="warning">Warning message</Alert>
                     <Alert tone="danger">Error message</Alert>
+                    <h3>Alert dialog</h3>
+                    <TextInput label="Alert title" value={alertTitle} onChange={event => setAlertTitle(event.target.value)} />
+                    <TextArea label="Alert content" value={alertContent} onChange={event => setAlertContent(event.target.value)} />
+                    <div className={styles.buttonRow}>
+                        {(['info', 'warning', 'error', 'success'] as const).map(type => (
+                            <Button key={type} onClick={async () => {
+                                setAlertStatus('');
+                                await showAlert(type, alertTitle, alertContent);
+                                setAlertStatus(`${type[0].toUpperCase()}${type.slice(1)} alert dismissed.`);
+                            }}>Show {type} alert</Button>
+                        ))}
+                        <Button simple onClick={async () => {
+                            setAlertStatus('');
+                            const first = showAlert('info', 'First alert', 'First queued message.');
+                            const second = showAlert('success', 'Second alert', 'Second queued message.');
+                            await Promise.all([first, second]);
+                            setAlertStatus('Both alerts dismissed.');
+                        }}>Show queued alerts</Button>
+                    </div>
+                    <span role="status">{alertStatus}</span>
                     <h3>Badge</h3>
                     <div className={styles.buttonRow}><Badge>Info</Badge><Badge tone="success">Success</Badge><Badge tone="warning">Warning</Badge><Badge tone="danger">Error</Badge></div>
                 </div>
