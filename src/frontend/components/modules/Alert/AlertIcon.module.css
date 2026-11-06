@@ -19,6 +19,7 @@
     stroke-dasharray: 1;
     stroke-dashoffset: 0;
     animation: draw 450ms ease-out both;
+    stroke-width: 4px;
 }
 
 .stroke {
@@ -26,6 +27,7 @@
     stroke-dasharray: 1;
     stroke-dashoffset: 0;
     animation: draw 320ms 260ms ease-out both;
+    stroke-width: 6px;
 }
 
 .secondStroke {
