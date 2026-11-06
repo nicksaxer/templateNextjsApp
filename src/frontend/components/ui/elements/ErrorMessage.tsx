@@ -5,7 +5,6 @@ export default function ErrorMessage({children, className = '', ...props}: Compo
     if (!children) {return null;}
     return (
         <p {...props} role="alert" className={`${styles.error} ${className}`}>
-            <i className="bi bi-exclamation-circle" aria-hidden="true" />
             <span>{children}</span>
         </p>
     );
