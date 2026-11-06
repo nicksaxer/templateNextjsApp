@@ -5,8 +5,8 @@ Read `docs/architecture.md` before changing structure, data flow, persistence, c
 ## Coding style
 
 - Use TypeScript, four-space indentation, single quotes, and semicolons in handwritten code.
-- Format CSS with four-space indentation, one declaration per line, and a blank line between rules. Never compress handwritten styles into single-line blocks.
-- Keep function signatures, calls, imports, destructuring, and simple expressions on one line when readable. Use multiline blocks for complex structures.
+- Format CSS with four-space indentation, one declaration per line, and a blank line between rules. Never compress stylesheets into single-line blocks.
+- For JavaScript, TypeScript, and HTML, keep function signatures, calls, imports, destructuring, and simple expressions on one line when readable. CSS follows the separate formatting rule above.
 - Prefer compact guards: `if (invalid) {throw new AppError(...);}`.
 - Preserve naming, capitalization, terminology, aliases, component props, and export patterns.
 - Use meaningful types and type-only imports for client-safe contracts. Avoid `any`, unchecked assertions, and suppressions used to hide errors.
