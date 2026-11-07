@@ -74,10 +74,12 @@ test('original palette, borders, typography, moving labels, and theme work', asy
 
 test('feedback, tooltip, empty state, and loading examples work', async ({page}) => {
     await page.goto('/#feedback');
-    await page.getByLabel('More information').focus();
-    await expect(page.getByRole('tooltip')).toBeVisible();
     await page.getByRole('button', {name: 'Add item', exact: true}).click();
     await expect(page.getByText('Example item', {exact: true})).toBeVisible();
+    const icon = page.getByLabel('More information');
+    await icon.focus();
+    await expect(icon).toBeFocused();
+    await expect(page.getByRole('tooltip')).toBeVisible();
     await page.getByRole('button', {name: 'Remove item'}).click();
     await expect(page.getByRole('heading', {name: 'No items'})).toBeVisible();
     await page.getByRole('button', {name: 'Try loading'}).click();
