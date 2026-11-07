@@ -1,16 +1,21 @@
 .tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.1rem;
     margin-bottom: 1rem;
+    border-radius: 0.5em;
+    background: var(--border);
+    width: fit-content;
+    padding: 0.25em;
+    position: relative;
 }
 
 .tabs button {
-    border-radius: 0.55em;
-    padding: 0.4em 1em;
-    background: rgb(from var(--grey) r g b / 0.2);
+    border-radius: 0.4em; 
+    padding: 0.3em 0.7em;
     color: var(--foreground);
     font-weight: 500;
+    transition: 0.2s;
 }
 
 .tabs button:hover {
