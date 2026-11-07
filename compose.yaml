@@ -20,8 +20,3 @@ services:
             timeout: 5s
             retries: 3
             start_period: 15s
-
-networks:
-    default:
-        name: "${APP_NETWORK_NAME:-${COMPOSE_PROJECT_NAME}_default}"
-        external: ${APP_NETWORK_EXTERNAL:-false}
