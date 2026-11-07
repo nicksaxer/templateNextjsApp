@@ -17,15 +17,24 @@ Open http://localhost:3000. No environment variables, database, SMTP server, or 
 
 ## Docker and Portainer
 
-On a local Docker Standalone environment in Portainer, add a **Git Repository** stack and select this repository. Use `refs/heads/main` as the repository reference and `compose.yaml` as the Compose path. Enable repository authentication for a private repo. Leave **Re-pull image** off so Compose builds the image from the checked-out source. The stack serves port 3000 by default. Set `APP_PORT` in the stack variables if that host port is in use. [Portainer stack setup](https://docs.portainer.io/user/docker/stacks/add)
+One `compose.yaml` works on local Docker Standalone and remote Agent environments. After the checks pass on the default branch, GitHub Actions builds and publishes the image for Linux AMD64 and ARM64. Portainer pulls the image, runs the container, and monitors `/api/health`. Pulling the image avoids the BuildKit session that fails through the Agent. [Portainer remote-build limitations](https://docs.portainer.io/faqs/known-issues/docker-compose-files-including-build-steps-fail)
 
-You can run the same stack from a checkout with `docker compose up --build -d`. Set any optional MongoDB or SMTP values as Portainer stack variables or in your local `.env` file. Portainer environments that cannot build from Compose need an image built externally and made available to the Docker host. [Portainer remote-build limitations](https://docs.portainer.io/faqs/known-issues/docker-compose-files-including-build-steps-fail)
+1. Wait for **Publish the versioned image to GHCR** to succeed in GitHub Actions.
+2. In Portainer, add `ghcr.io` under **Registries → Add registry → Custom registry**. Enable authentication and enter your GitHub username and a classic GitHub token with `read:packages` and access to the private package. Make the registry available to each target environment. [Portainer registry setup](https://docs.portainer.io/admin/registries/add/custom) · [GitHub registry authentication](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+3. Create or update the **Git Repository** stack with `refs/heads/main` and Compose path `compose.yaml`. Use repository authentication for the private Git checkout and the GHCR registry for the image pull. Set `APP_PORT` if the default host port 3000 is already in use. Supply optional MongoDB or SMTP settings as stack variables. [Portainer stack setup](https://docs.portainer.io/user/docker/stacks/add)
+4. For later deployments, use **Pull and redeploy** once publication succeeds. Each successful default-branch build refreshes the image tag for its package version. The Portainer image status badge compares the local image against the registry. [Portainer image status](https://docs.portainer.io/user/docker/containers)
 
-If Portainer fails at `listing workers for Build` with an HTTP/2 framing error, check its Docker environment and server logs. The failure happens while connecting to BuildKit, before the Dockerfile runs. If another stack already publishes port 3000 on the same host, set `APP_PORT` to a free host port for this stack. [Portainer BuildKit issue](https://github.com/portainer/portainer/issues/13255)
+Run `npm version patch` (or `minor` or `major`) to update the package files and Compose tag in one release commit. GitHub uses that package version for the Docker build, which sets the image's `org.opencontainers.image.version` label. The footer reads the same version. For example, Portainer deploys `ghcr.io/nicksaxer/templatenextjsapp:0.1.0` and the footer shows `v0.1.0`.
 
-The footer reads the version from `package.json`. Run `npm version patch` (or `minor` or `major`) on a clean checkout to update the package files, Compose image tag, and Docker build argument in the same release commit. Push the release commit, then use **Pull and redeploy** or configure GitOps updates in Portainer. Docker checks the build argument against the package version and sets the `org.opencontainers.image.version` label. Portainer shows the image as `template-nextjs-app:0.1.0` for version `0.1.0`, and the app shows `v0.1.0`.
+For a repo created from this template, GitHub publishes to the lowercase repository path under `ghcr.io`. Update the default image name in `compose.yaml` or set `APP_IMAGE` to that path without the tag in Portainer.
 
-The **Images up to date** badge compares registry digests. A locally built image can show a dash there. To use the badge, publish an image to a registry and deploy a registry tag that receives updates. For source builds, use GitOps to track changes to the configured Git ref. [Portainer image status](https://docs.portainer.io/user/docker/containers)
+To test a local source build with the same Compose file:
+
+```sh
+version=$(node -p "require('./package.json').version")
+docker build --build-arg "APP_VERSION=$version" -t "$(docker compose config --images app)" .
+docker compose up -d --pull never
+```
 
 ## Coder development
 

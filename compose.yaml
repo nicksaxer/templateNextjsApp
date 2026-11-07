@@ -1,12 +1,7 @@
 services:
     app:
-        image: template-nextjs-app:0.1.0 # Managed by npm version
-        pull_policy: build
-        build:
-            context: .
-            dockerfile: Dockerfile
-            args:
-                APP_VERSION: '0.1.0'
+        image: ${APP_IMAGE:-ghcr.io/nicksaxer/templatenextjsapp}:0.1.0 # Managed by npm version
+        pull_policy: always
         restart: unless-stopped
         ports:
             - "${APP_PORT:-3000}:3000"
