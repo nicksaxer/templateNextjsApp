@@ -1,5 +1,5 @@
 services:
-    app:
+    nextlib:
         image: ${APP_IMAGE:-ghcr.io/nicksaxer/templatenextjsapp}:0.1.0 # Managed by npm version
         pull_policy: always
         container_name: nextlib
