@@ -24,8 +24,10 @@
 
 .progress progress::-webkit-progress-value {
     background: var(--accent);
+    border-radius: 999px;
 }
 
 .progress progress::-moz-progress-bar {
     background: var(--accent);
+    border-radius: 999px;
 }
