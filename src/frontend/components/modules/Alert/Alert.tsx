@@ -95,11 +95,11 @@ function AlertBox({request}: {request: AlertRequest}) {
         >
             <div className={styles.inner}>
                 <div className={styles.header}>
-                    <h2 id={titleId}>{request.title}</h2>
                     <Button simple iconOnly bsicon="bi-x-lg" aria-label="Close alert" onClick={close} />
                 </div>
                 <div className={styles.message}>
                     <AlertIcon type={request.type} />
+                    <div id={titleId} className={styles.title}>{request.title}</div>
                     <div id={contentId} className={styles.content}>{request.content}</div>
                 </div>
                 <div className={styles.actions}>

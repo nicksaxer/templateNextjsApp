@@ -45,6 +45,9 @@ export default function MotionShowcase() {
                         <Tab label="Second tab">
                             <p>Second tab content.</p>
                         </Tab>
+                        <Tab label="Third tab">
+                            <p>Third tab content.</p>
+                        </Tab>
                     </Tabs>
                 </div>
             </div>

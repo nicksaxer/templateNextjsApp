@@ -14,6 +14,7 @@
     border-radius: 100px;
     transition: 0.2s;
     width: 1em;
+    outline-color: var(--accent);
 }
 
 .icon:hover {
@@ -36,8 +37,8 @@
     opacity: 0;
     visibility: hidden;
     transition:
-        opacity 0.2s ease 1s,
-        visibility 0s linear 1.2s;
+        opacity 0.2s ease,
+        visibility 0s linear 0.2s;
 }
 
 .InfoWrapper:hover .text, .InfoWrapper:focus-within .text {

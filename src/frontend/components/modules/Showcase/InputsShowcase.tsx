@@ -31,7 +31,7 @@ export default function InputsShowcase() {
                     <Button danger onClick={() => setClicks(value => value + 1)}>Danger</Button>
                     <Button danger filled onClick={() => setClicks(value => value + 1)}>Danger filled</Button>
                     <Button disabled>Disabled</Button>
-                    <Button pending>Loading</Button>
+                    <Button pending>Loading...</Button>
                 </div>
                 <p role="status">Clicked {clicks} times</p>
             </section>

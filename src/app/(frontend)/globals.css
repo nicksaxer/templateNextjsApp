@@ -31,6 +31,7 @@
     --foreground: #171717;
     --grey: #474a50;
     --border: #e2e5e9;
+    --success: #00d81d;
 
     --button-background: rgb(from var(--accent) r g b / 0.1);
     --surface: #ffffff;
@@ -157,11 +158,6 @@ kbd {
     --blackaccent: #080e13;
     --darkaccent: #111e27;
     --mediumaccent: #172b3a;
-    --surface: var(--mediumaccent);
-}
-
-:root[data-palette='guildmarket'][data-theme='light'] {
-    --surface: #ffffff;
 }
 
 .skipLink {

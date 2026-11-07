@@ -1,7 +1,7 @@
 .tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.1rem;
+    gap: 3px;
     margin-bottom: 1rem;
     border-radius: 0.5em;
     background: var(--border);
@@ -13,7 +13,8 @@
 
 .tabs button {
     border-radius: 0.4em;
-    padding: 0.3em 0.7em;
+    padding: 0.25em 1em;
+    min-width: 10em;
     color: var(--foreground);
     font-weight: 500;
     transition: background-color 0.2s;
@@ -25,7 +26,7 @@
 }
 
 .tabs button:hover {
-    background: rgb(from var(--grey) r g b / 0.4);
+    background: rgb(from var(--grey) r g b / 0.1);
 }
 
 .tabs button[aria-selected='true'] {

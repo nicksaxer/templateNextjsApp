@@ -1,7 +1,7 @@
 .alert {
     --alert-color: var(--accent);
     padding: 0;
-    border: 1px solid var(--border);
+    border: 2px solid var(--border);
     border-radius: 0.5em;
     background: var(--background);
     color: var(--foreground);
@@ -20,18 +20,18 @@
 .header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: flex-end;
     margin-bottom: 1rem;
 }
 
-.header h2 {
-    margin: 0;
+.title {
+    margin: 0.5em 0 0 0;
     font-size: 1.25rem;
+    font-weight: 500;
 }
 
 .alert[data-type='warning'] {
-    --alert-color: #d99d24;
+    --alert-color: #d98524;
 }
 
 .alert[data-type='error'] {
@@ -46,7 +46,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
     margin-bottom: 1.5rem;
     text-align: center;
 }
@@ -55,6 +54,7 @@
     min-width: 0;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
+    margin-top: 0.3em;
 }
 
 .content > :first-child {
