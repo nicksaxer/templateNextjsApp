@@ -22,15 +22,11 @@ One `compose.yaml` works on local Docker Standalone and remote Agent environment
 1. Wait for **Publish the versioned image to GHCR** to succeed in GitHub Actions.
 2. Create or update the **Git Repository** stack with `refs/heads/main` and Compose path `compose.yaml`. Set `APP_PORT` if the default host port 3000 is already in use. Supply optional MongoDB or SMTP settings as stack variables. [Portainer stack setup](https://docs.portainer.io/user/docker/stacks/add)
 3. For a private copy of the project, configure Git authentication for the repository and add an authenticated `ghcr.io` custom registry for the image. Use a classic GitHub token with `read:packages` and access to the package. [Portainer registry setup](https://docs.portainer.io/admin/registries/add/custom) · [GitHub registry authentication](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
-4. For later deployments, use **Pull and redeploy** once publication succeeds. Each successful default-branch build refreshes the image tag for its package version. The Portainer image status badge compares the local image against the registry. [Portainer image status](https://docs.portainer.io/user/docker/containers)
+4. For later deployments, use **Pull and redeploy** once publication succeeds. Each successful default-branch build publishes the same image as `latest` and under its package version. The Portainer image status badge compares the local image against the registry. [Portainer image status](https://docs.portainer.io/user/docker/containers)
 
 Run `npm version patch` (or `minor` or `major`) to update the package files and Compose tag in one release commit. GitHub uses that package version for the Docker build, which sets the image's `org.opencontainers.image.version` label. The footer reads the same version. For example, Portainer deploys `ghcr.io/nicksaxer/templatenextjsapp:0.1.0` and the footer shows `v0.1.0`.
 
 For a repo created from this template, GitHub publishes to the lowercase repository path under `ghcr.io`. Update the default image name in `compose.yaml` or set `APP_IMAGE` to that path without the tag in Portainer.
-
-If Caddy runs in Docker on the same host, set `APP_NETWORK_NAME=caddy_parent_network` and `APP_NETWORK_EXTERNAL=true` in the app's Portainer stack variables, using the name of the existing network that the Caddy service joins. Redeploy the app and use `reverse_proxy nextlib:3000`. The default deployment uses its own stack network. [Docker Compose networking](https://docs.docker.com/compose/how-tos/networking/)
-
-For Caddy on another machine, use the app's Docker host address and published port as the upstream, for example `reverse_proxy 192.168.1.20:3000`. Use the value of `APP_PORT` if you set it.
 
 To test a local source build with the same Compose file:
 
