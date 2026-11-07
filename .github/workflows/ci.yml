@@ -20,6 +20,18 @@ jobs:
             - run: npm ci
             - run: npm run check
             - run: npm run build
+            - name: Check Docker deployment and version
+              run: |
+                  trap 'docker compose down' EXIT
+                  docker compose up -d --build --wait --wait-timeout 90 || { docker compose logs; exit 1; }
+                  version=$(node -p "require('./package.json').version")
+                  container=$(docker compose ps -q app)
+                  image=$(docker inspect --format '{{.Config.Image}}' "$container")
+                  test "${image##*:}" = "$version"
+                  test "$(docker inspect --format '{{index .Config.Labels "org.opencontainers.image.version"}}' "$container")" = "$version"
+                  html=$(curl -fsS http://127.0.0.1:3000)
+                  grep -Fq "v$version</footer>" <<< "$html"
+                  grep -Fq 'id="mail"' <<< "$html"
             - run: npm run test:e2e
               env:
                   PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH: /usr/bin/google-chrome
