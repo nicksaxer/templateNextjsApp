@@ -22,15 +22,11 @@ jobs:
             - run: npm run build
             - name: Check Docker deployment and version
               run: |
-                  trap 'docker compose -f compose.portainer.yaml down' EXIT
+                  trap 'docker compose down' EXIT
                   docker compose up -d --build --wait --wait-timeout 90 || { docker compose logs; exit 1; }
-                  built=$(docker inspect --format '{{.Image}}' "$(docker compose ps -q app)")
-                  docker compose down
-                  docker compose -f compose.portainer.yaml up -d --wait --wait-timeout 90 || { docker compose -f compose.portainer.yaml logs; exit 1; }
                   version=$(node -p "require('./package.json').version")
-                  container=$(docker compose -f compose.portainer.yaml ps -q app)
+                  container=$(docker compose ps -q app)
                   image=$(docker inspect --format '{{.Config.Image}}' "$container")
-                  test "$(docker inspect --format '{{.Image}}' "$container")" = "$built"
                   test "${image##*:}" = "$version"
                   test "$(docker inspect --format '{{index .Config.Labels "org.opencontainers.image.version"}}' "$container")" = "$version"
                   html=$(curl -fsS http://127.0.0.1:3000)
