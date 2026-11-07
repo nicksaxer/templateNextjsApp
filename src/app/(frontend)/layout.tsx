@@ -12,7 +12,12 @@ import './globals.css';
 
 config.autoAddCss = false;
 
-export const metadata: Metadata = {title: {default: appConfig.name, template: `%s · ${appConfig.name}`}, description: appConfig.description, robots: {index: false, follow: false}};
+export const metadata: Metadata = {
+    title: {default: appConfig.name, template: `%s · ${appConfig.name}`},
+    description: appConfig.description,
+    robots: {index: false, follow: false},
+    icons: {icon: '/favicon.ico'}
+};
 
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
     const theme = getTheme((await cookies()).get('theme')?.value);
