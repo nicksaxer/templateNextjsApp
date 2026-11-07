@@ -45,6 +45,8 @@ Email rendering uses an allowlist of template filenames, escaped Handlebars vari
 
 The Docker builder enables Next.js standalone output with `NEXT_STANDALONE=1`. The runtime image runs the standalone server as an unprivileged user and includes the static and public assets. GitHub Actions builds and publishes the image to GHCR after the checks pass on the default branch. The same Compose stack pulls that image on a local Docker host or through Portainer Agent and checks `/api/health`. The npm version hook keeps the Compose tag in sync with the package version. GitHub passes that version as a build argument, Docker validates it before setting the image's version label, and the footer reads it from the package manifest.
 
+Compose creates a stack network by default. A same-host reverse proxy can share its existing Docker network with the app through `APP_NETWORK_NAME` and `APP_NETWORK_EXTERNAL`. A proxy on another host reaches the app through its published port.
+
 There is no authentication system in this template. Before exposing private reads or persistent writes, choose a supported authentication solution, establish identity at protected entry points, and enforce resource permissions in the application call path. Never accept client-supplied identity as authorization. Do not present the public stateless example as a secure CRUD implementation.
 
 ## Interaction and preferences

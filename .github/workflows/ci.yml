@@ -28,14 +28,18 @@ jobs:
               run: |
                   export APP_IMAGE=template-nextjs-app
                   version=$(node -p "require('./package.json').version")
-                  image=$(docker compose config --images app)
+                  image=$(docker compose config --images)
                   test "$image" = "$APP_IMAGE:$version"
                   docker build --build-arg "APP_VERSION=$version" --tag "$image" .
-                  trap 'docker compose down' EXIT
+                  export APP_NETWORK_NAME=caddy-check APP_NETWORK_EXTERNAL=true
+                  docker network create "$APP_NETWORK_NAME"
+                  trap 'docker compose down; docker network rm "$APP_NETWORK_NAME"' EXIT
                   docker compose up -d --pull never --wait --wait-timeout 90 || { docker compose logs; exit 1; }
-                  container=$(docker compose ps -q app)
+                  container=$(docker compose ps -q)
                   test "$(docker inspect --format '{{.Config.Image}}' "$container")" = "$image"
                   test "$(docker inspect --format '{{index .Config.Labels "org.opencontainers.image.version"}}' "$container")" = "$version"
+                  service=$(docker compose config --services)
+                  docker run --rm --network "$APP_NETWORK_NAME" "$image" node -e 'fetch(process.argv[1]).then(response => {if (!response.ok) process.exit(1);}).catch(() => process.exit(1));' "http://$service:3000/api/health"
                   html=$(curl -fsS http://127.0.0.1:3000)
                   grep -Fq "v$version</footer>" <<< "$html"
                   grep -Fq 'id="mail"' <<< "$html"
@@ -79,7 +83,7 @@ jobs:
               run: |
                   export APP_IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
                   version=$(node -p "require('./package.json').version")
-                  image=$(docker compose config --images app)
+                  image=$(docker compose config --images)
                   test "$image" = "$APP_IMAGE:$version"
                   printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
                   docker buildx build --platform linux/amd64,linux/arm64 --push \
