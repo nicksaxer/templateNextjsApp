@@ -104,12 +104,13 @@ test('SlideDown preserves state and tabs support the keyboard', async ({page}) =
 
 test('server validation and email previews work on the main gallery', async ({page}) => {
     await page.goto('/');
+    const email = page.getByLabel('Your email');
     await page.getByLabel('Project name').fill('Example project');
-    await page.getByLabel('Your email').fill('incomplete');
+    await email.fill('incomplete');
     await page.getByRole('button', {name: 'Validate form'}).click();
-    await expect(page.getByText('Enter a valid email address.')).toBeVisible();
+    await expect(email).toHaveAccessibleDescription('Enter a valid email address.');
     await expect(page.getByLabel('Project name')).toHaveValue('Example project');
-    await page.getByLabel('Your email').fill('alex@example.com');
+    await email.fill('alex@example.com');
     await page.getByRole('spinbutton', {name: 'People', exact: true}).fill('4');
     await page.getByRole('button', {name: 'Validate form'}).click();
     await expect(page.getByRole('heading', {name: 'Example project'})).toBeVisible();
