@@ -3,7 +3,7 @@
 import type { RenderedMail } from '@backend/types';
 import Tabs from '@frontend/components/ui/elements/Tabs';
 import MailPreview from './MailPreview';
-import styles from './Mail.module.css';
+import styles from './MailGallery.module.css';
 
 export default function MailGallery({mails}: {mails: RenderedMail[]}) {
     return (

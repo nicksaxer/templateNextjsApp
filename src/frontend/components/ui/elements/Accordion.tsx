@@ -3,7 +3,7 @@
 import { type ReactNode, useId, useState } from 'react';
 import SlideDown from '../animations/SlideDown';
 import Icon from './Icon';
-import styles from './Interactive.module.css';
+import styles from './Accordion.module.css';
 
 export default function Accordion({title, children, defaultOpen = false}: {title: string; children: ReactNode; defaultOpen?: boolean}) {
     const [open, setOpen] = useState(defaultOpen);

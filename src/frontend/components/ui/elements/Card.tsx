@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import styles from './Feedback.module.css';
+import styles from './Card.module.css';
 
 export default function Card({
     title,

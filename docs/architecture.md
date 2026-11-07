@@ -6,7 +6,9 @@ This project preserves the shared architecture of GuildMarket and SeppOS while r
 
 `src/app` owns routing, document layout, loading/error boundaries, and HTTP interfaces. Pages load their data through queries and compose frontend modules. Server Components are the default. Interactive modules and controls declare their client boundaries explicitly.
 
-`src/frontend/components/layout` owns the shared container. `modules` owns complete features. `ui/inputs`, `ui/elements`, and `ui/animations` own reusable presentation and behavior. Shared presentation tokens live in the frontend root's `globals.css`; component styling uses CSS Modules. `src/frontend/utils` contains browser-compatible functions without backend runtime dependencies.
+`src/frontend/components/layout` owns the shared container. `modules` owns complete features. `ui/inputs`, `ui/elements`, and `ui/animations` own reusable presentation and behavior. Each styled UI component has an adjacent, same-named CSS Module. Shared presentation tokens live in the frontend root's `globals.css`. `src/frontend/utils` contains browser-compatible functions without backend runtime dependencies.
+
+The form validation and email preview demos live with the other gallery examples in `modules/Showcase` and render on the home page. `Showcase.module.css` contains the shared gallery layout. Demo-specific styles live beside their components.
 
 The backend layers are ordered by responsibility, not a rule requiring a wrapper for every call:
 
@@ -47,9 +49,9 @@ There is no authentication system in this template. Before exposing private read
 
 Native form semantics are preserved through reusable wrappers. Field IDs connect labels, hints and errors. SelectInput retains SeppOS’s custom portaled menu, keyboard navigation, typeahead, and hidden native select. NumberInput retains its custom stepper and native number input events. Button defaults to `type="button"` so accidental form submission is avoided. Form submission buttons explicitly opt into submit behavior.
 
-SlideDown uses grid track interpolation with an overflow-clipped child, avoiding fixed maximum heights and imperative timers. Closed children retain state but are inert and aria-hidden. The trigger owns its expanded state, controls relationship, and focus. FadeIn, loaders, and skeletons have usable reduced-motion states. Dialog uses the native modal API. Tabs implement one active tab stop and arrow/Home/End navigation.
+SlideDown uses grid track interpolation with an overflow-clipped child, avoiding fixed maximum heights and imperative timers. Closed children retain state but are inert and aria-hidden. The trigger owns its expanded state, controls relationship, and focus. FadeIn, loaders, and skeletons have usable reduced-motion states. Tabs implement one active tab stop and arrow/Home/End navigation.
 
-`modules/Alert` provides `showAlert(type, title, content)` for browser handlers and a single `AlertHost` in the root layout. It queues requests on the client and resolves each call after dismissal. The host composes the reusable Dialog as an accessible alert dialog; native dialogs close before unmounting so focus returns to the caller. No alert state is created during server rendering.
+`modules/Alert` provides `showAlert(type, title, content)` for browser handlers and a single `AlertHost` in the root layout. It queues requests on the client and resolves each call after dismissal. The alert uses a native `<dialog>` internally and closes it before unmounting so focus returns to the caller. No alert state is created during server rendering.
 
 The default palette is GuildMarket and the default theme is dark. Component CSS comes from SeppOS, with both original palettes available in the gallery. Do not redesign the shared controls or add a product-style shell to the gallery. The GuildMarket palette is set on the server-rendered document. The theme is initially rendered from a validated cookie, falling back to dark. Client changes update both document tokens and the cookie so navigation and reload agree. Tokens live on the document, including for native top-layer dialogs. The cookie stores only a presentation preference.
 

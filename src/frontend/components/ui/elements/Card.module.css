@@ -1,0 +1,26 @@
+.card {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5em;
+    background: var(--surface);
+    min-width: 0;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cardHeader h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.cardHeader p {
+    margin: 0.5rem 0 0;
+    color: var(--grey);
+}

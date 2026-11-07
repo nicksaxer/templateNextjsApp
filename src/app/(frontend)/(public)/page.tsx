@@ -6,8 +6,8 @@ import InputsShowcase from '@frontend/components/modules/Showcase/InputsShowcase
 import FeedbackShowcase from '@frontend/components/modules/Showcase/FeedbackShowcase';
 import MotionShowcase from '@frontend/components/modules/Showcase/MotionShowcase';
 import AppearanceExamples from '@frontend/components/modules/Showcase/AppearanceExamples';
-import ProjectForm from '@frontend/components/modules/Project/ProjectForm';
-import MailGallery from '@frontend/components/modules/Mail/MailGallery';
+import ProjectForm from '@frontend/components/modules/Showcase/ProjectForm';
+import MailGallery from '@frontend/components/modules/Showcase/MailGallery';
 import styles from '@frontend/components/modules/Showcase/Showcase.module.css';
 
 export default async function HomePage() {

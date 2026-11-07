@@ -11,9 +11,9 @@ import Switch from '@frontend/components/ui/inputs/Switch';
 import Button from '@frontend/components/ui/inputs/Button';
 import ErrorMessage from '@frontend/components/ui/elements/ErrorMessage';
 import { formatCurrency } from '@frontend/utils/format';
-import MailPreview from '../Mail/MailPreview';
-import styles from '../Showcase/Showcase.module.css';
-import projectStyles from './Project.module.css';
+import MailPreview from './MailPreview';
+import galleryStyles from './Showcase.module.css';
+import styles from './ProjectForm.module.css';
 
 export default function ProjectForm({plans}: {plans: ExamplePlan[]}) {
     const [state, action, pending] = useActionState(previewProjectAction, null);
@@ -26,7 +26,7 @@ export default function ProjectForm({plans}: {plans: ExamplePlan[]}) {
     return (
         <div className={styles.twoColumns}>
             <form action={action} noValidate className={styles.stack}>
-                <fieldset disabled={pending} className={projectStyles.fields}>
+                <fieldset disabled={pending} className={styles.fields}>
                     <TextInput label="Project name" name="name" required maxLength={80} placeholder="Example project" error={errors?.name} value={draft.name} onChange={event => setDraft({...draft, name: event.target.value})} />
                     <TextInput label="Your email" name="email" type="email" required maxLength={254} error={errors?.email} value={draft.email} onChange={event => setDraft({...draft, email: event.target.value})} />
                     <SelectInput label="Choose a plan" name="plan" value={plan} onChange={event => setPlan(event.target.value)} aria-invalid={!!errors?.plan} aria-describedby={errors?.plan ? 'plan-error' : undefined}>
@@ -35,7 +35,7 @@ export default function ProjectForm({plans}: {plans: ExamplePlan[]}) {
                     <ErrorMessage id="plan-error">{errors?.plan}</ErrorMessage>
                     <NumberInput label="People" name="seats" min={1} max={50} value={seats} onChange={event => setSeats(event.target.value)} error={errors?.seats} />
                     <TextArea label="Notes" name="notes" maxLength={500} error={errors?.notes} value={draft.notes} onChange={event => setDraft({...draft, notes: event.target.value})} />
-                    <div className={styles.row}><Switch label="Email updates" name="updates" checked={draft.updates} onChange={updates => setDraft({...draft, updates})} /><span>Email updates</span></div>
+                    <div className={galleryStyles.row}><Switch label="Email updates" name="updates" checked={draft.updates} onChange={updates => setDraft({...draft, updates})} /><span>Email updates</span></div>
                 </fieldset>
                 <Button type="submit" filled pending={pending}>{pending ? 'Validating…' : 'Validate form'}</Button>
                 <p>No data is saved and no email is sent.</p>

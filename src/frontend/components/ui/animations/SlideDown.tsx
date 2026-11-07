@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react';
-import styles from './Motion.module.css';
+import styles from './SlideDown.module.css';
 
 export default function SlideDown({open, children, className = '', ...props}: ComponentPropsWithoutRef<'div'> & {open: boolean}) {
     return (

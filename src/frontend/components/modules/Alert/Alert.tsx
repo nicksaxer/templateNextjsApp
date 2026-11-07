@@ -1,7 +1,6 @@
 'use client';
 
-import { type ReactNode, useId, useSyncExternalStore } from 'react';
-import Dialog from '@frontend/components/ui/elements/Dialog';
+import { type ReactNode, useId, useLayoutEffect, useRef, useSyncExternalStore } from 'react';
 import AlertIcon from './AlertIcon';
 import Button from '@frontend/components/ui/inputs/Button';
 import styles from './Alert.module.css';
@@ -53,24 +52,66 @@ function dismiss(request: AlertRequest) {
 }
 
 function AlertBox({request}: {request: AlertRequest}) {
+    const ref = useRef<HTMLDialogElement>(null);
+    const titleId = useId();
     const contentId = useId();
+    const close = () => dismiss(request);
+    useLayoutEffect(() => {
+        const alert = ref.current;
+        if (!alert) {return;}
+        alert.showModal();
+        return () => {if (alert.open) {alert.close();}};
+    }, []);
     return (
-        <div className={styles.alert} data-type={request.type}>
-            <Dialog open role="alertdialog" title={request.title} descriptionId={contentId} onClose={() => dismiss(request)}>
+        <dialog
+            ref={ref}
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            aria-describedby={contentId}
+            className={styles.alert}
+            data-type={request.type}
+            onKeyDown={event => {
+                if (event.key !== 'Tab' || event.defaultPrevented) {return;}
+                const candidates = event.currentTarget.querySelectorAll<HTMLElement>('a[href], button, input, select, textarea, [tabindex]');
+                const controls = [...candidates].filter(node => node.tabIndex >= 0 && !node.matches(':disabled') && !node.closest('[inert], [hidden]') && node.getClientRects().length > 0);
+                const first = controls[0];
+                const last = controls.at(-1);
+                if (event.shiftKey && document.activeElement === first) {
+                    event.preventDefault();
+                    last?.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                    event.preventDefault();
+                    first?.focus();
+                }
+            }}
+            onCancel={event => {
+                event.preventDefault();
+                close();
+            }}
+            onClick={event => {
+                if (event.target === event.currentTarget) {close();}
+            }}
+        >
+            <div className={styles.inner}>
+                <div className={styles.header}>
+                    <h2 id={titleId}>{request.title}</h2>
+                    <Button simple iconOnly bsicon="bi-x-lg" aria-label="Close alert" onClick={close} />
+                </div>
                 <div className={styles.message}>
                     <AlertIcon type={request.type} />
                     <div id={contentId} className={styles.content}>{request.content}</div>
                 </div>
                 <div className={styles.actions}>
-                    <Button filled autoFocus simple wide onClick={() => dismiss(request)}>OK</Button>
+                    <Button filled autoFocus simple wide onClick={close}>OK</Button>
                 </div>
-            </Dialog>
-        </div>
+            </div>
+        </dialog>
     );
 }
 
 export default function AlertHost() {
     const request = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-    // Key each request so queued dialogs get a fresh native focus lifecycle.
+    // Key each request so queued alerts get a fresh native focus lifecycle.
     return request ? <AlertBox key={request.id} request={request} /> : null;
 }

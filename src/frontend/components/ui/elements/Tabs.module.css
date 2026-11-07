@@ -1,0 +1,22 @@
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tabs button {
+    border-radius: 0.55em;
+    padding: 0.4em 1em;
+    background: rgb(from var(--grey) r g b / 0.2);
+    color: var(--foreground);
+    font-weight: 500;
+}
+
+.tabs button:hover {
+    background: rgb(from var(--grey) r g b / 0.4);
+}
+
+.tabs button[aria-selected='true'] {
+    background: rgb(from var(--brightaccent) r g b / 0.2);
+}

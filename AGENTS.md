@@ -27,7 +27,8 @@ Read `docs/architecture.md` before changing structure, data flow, persistence, c
 
 - Preserve the source component appearance from GuildMarket and SeppOS: Rubik, original palette variables, accent borders, moving input labels, button hover glow, custom number/select controls, and compact switches. Do not replace these with a new design system.
 - Keep the app a plain component gallery with labeled variants and interactive examples; no dashboard shell, sidebar, hero, or marketing copy.
-- Reuse CSS Modules, shared tokens, and existing controls. Keep feature presentation in modules.
+- Give each styled UI component its own adjacent, same-named CSS Module. Use shared tokens for common values and keep gallery layout styles separate from component styles.
+- Keep gallery-only examples in `modules/Showcase` and render them on the gallery page.
 - Preserve form semantics, native resets, accessible labels, error descriptions, focus, keyboard behavior, and disabled states.
 - Keep reduced-motion content visible and usable. Closed animated content must not receive focus.
 - The running app demonstrates components through interactions. Do not add code viewers, code samples, or architecture explanations to the UI.

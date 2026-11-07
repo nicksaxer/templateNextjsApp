@@ -3,7 +3,7 @@
 import { type ComponentPropsWithoutRef, useId } from 'react';
 import ErrorMessage from '../elements/ErrorMessage';
 import { describedBy, type FieldProps } from './Field';
-import styles from './TextInput.module.css';
+import styles from './TextArea.module.css';
 
 export default function TextArea({label, hint, error, id, className = '', ...props}: ComponentPropsWithoutRef<'textarea'> & FieldProps) {
     const generatedId = useId();

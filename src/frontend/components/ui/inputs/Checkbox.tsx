@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react';
-import styles from './Inputs.module.css';
+import styles from './Checkbox.module.css';
 
 export default function Checkbox({label, className = '', ...props}: Omit<ComponentPropsWithoutRef<'input'>, 'type'> & {label: string}) {
     return (

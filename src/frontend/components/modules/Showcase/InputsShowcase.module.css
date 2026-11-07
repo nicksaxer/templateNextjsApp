@@ -1,0 +1,6 @@
+.adornment {
+    display: flex;
+    align-items: center;
+    color: var(--grey);
+    padding-right: 0.25rem;
+}

@@ -1,5 +1,5 @@
 import type { RenderedMail } from '@backend/types';
-import styles from './Mail.module.css';
+import styles from './MailPreview.module.css';
 
 export default function MailPreview({mail}: {mail: RenderedMail}) {
     return (

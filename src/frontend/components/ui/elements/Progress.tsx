@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import styles from './Feedback.module.css';
+import styles from './Progress.module.css';
 
 export default function Progress({value, label, max = 100}: {value: number; label: string; max?: number}) {
     const id = useId();

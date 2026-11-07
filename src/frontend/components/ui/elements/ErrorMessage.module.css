@@ -1,0 +1,13 @@
+.error {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35em;
+    color: var(--error);
+    font-weight: 500;
+    font-size: 0.8em;
+    margin: 0.35rem 0 0;
+}
+
+.error i {
+    font-size: 1.7em;
+}

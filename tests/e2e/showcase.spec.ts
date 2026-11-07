@@ -85,7 +85,7 @@ test('feedback, tooltip, empty state, and loading examples work', async ({page})
     await expect(page.getByText('Loading complete.')).toBeVisible();
 });
 
-test('SlideDown preserves state and tabs and dialog support the keyboard', async ({page}) => {
+test('SlideDown preserves state and tabs support the keyboard', async ({page}) => {
     await page.goto('/#motion');
     const panel = page.locator('#sliding-details');
     await expect(panel).toHaveAttribute('inert', '');
@@ -100,16 +100,10 @@ test('SlideDown preserves state and tabs and dialog support the keyboard', async
     await page.getByRole('tab', {name: 'First tab', exact: true}).focus();
     await page.keyboard.press('ArrowRight');
     await expect(page.getByRole('tab', {name: 'Second tab', exact: true})).toHaveAttribute('aria-selected', 'true');
-    const opener = page.getByRole('button', {name: 'Open dialog'});
-    await opener.click();
-    await expect(page.getByRole('dialog')).toBeVisible();
-    await page.keyboard.press('Escape');
-    await expect(page.getByRole('dialog')).not.toBeVisible();
-    await expect(opener).toBeFocused();
 });
 
-test('server validation and email previews remain functional', async ({page}) => {
-    await page.goto('/project');
+test('server validation and email previews work on the main gallery', async ({page}) => {
+    await page.goto('/');
     await page.getByLabel('Project name').fill('Example project');
     await page.getByLabel('Your email').fill('incomplete');
     await page.getByRole('button', {name: 'Validate form'}).click();
@@ -120,11 +114,16 @@ test('server validation and email previews remain functional', async ({page}) =>
     await page.getByRole('button', {name: 'Validate form'}).click();
     await expect(page.getByRole('heading', {name: 'Example project'})).toBeVisible();
     await expect(page.getByText('Valid form · 4 people · CHF 76.00')).toBeVisible();
-    await expect(page.frameLocator('iframe').getByRole('heading', {name: 'Example project'})).toBeVisible();
-    await page.goto('/mail');
-    await expect(page.frameLocator('iframe').first().getByRole('heading', {name: 'Welcome, Alex!'})).toBeVisible();
+    await expect(page.frameLocator('#server-example iframe').getByRole('heading', {name: 'Example project'})).toBeVisible();
+    const mail = page.locator('#mail');
+    await expect(mail.frameLocator('iframe').first().getByRole('heading', {name: 'Welcome, Alex!'})).toBeVisible();
     await page.getByRole('tab', {name: 'Project email'}).click();
-    await expect(page.frameLocator('iframe').nth(1).getByRole('heading', {name: 'Sunday Studio'})).toBeVisible();
+    await expect(mail.frameLocator('iframe').nth(1).getByRole('heading', {name: 'Sunday Studio'})).toBeVisible();
+    await expect(page).toHaveURL('/');
+    for (const path of ['/project', '/mail']) {
+        await page.goto(path);
+        await expect(page.getByRole('heading', {name: 'Page not found'})).toBeVisible();
+    }
 });
 
 test('gallery fits mobile and respects reduced motion', async ({page, request}) => {
@@ -189,11 +188,11 @@ test('alert variants show supplied text, trap focus, and resolve after dismissal
         await expect(icon).toBeVisible();
         await alert.getByRole('button', {name: 'OK', exact: true}).focus();
         await page.keyboard.press('Tab');
-        await expect(alert.getByRole('button', {name: 'Close dialog'})).toBeFocused();
+        await expect(alert.getByRole('button', {name: 'Close alert'})).toBeFocused();
         await page.keyboard.press('Shift+Tab');
         await expect(alert.getByRole('button', {name: 'OK', exact: true})).toBeFocused();
         if (type === 'info') {await page.keyboard.press('Escape');}
-        else if (type === 'warning') {await alert.getByRole('button', {name: 'Close dialog'}).click();}
+        else if (type === 'warning') {await alert.getByRole('button', {name: 'Close alert'}).click();}
         else if (type === 'error') {await page.mouse.click(2, 2);}
         else {await alert.getByRole('button', {name: 'OK', exact: true}).click();}
         await expect(alert).toHaveCount(0);

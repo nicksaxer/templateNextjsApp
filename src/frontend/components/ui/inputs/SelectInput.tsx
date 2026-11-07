@@ -5,7 +5,6 @@ import { createPortal } from 'react-dom';
 import { faCheck, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getSelectOptions } from './select-input.utils';
-import inputStyles from './TextInput.module.css';
 import styles from './SelectInput.module.css';
 
 interface SelectInputProps extends Omit<ComponentPropsWithoutRef<'select'>, 'multiple' | 'size' | 'value' | 'defaultValue' | 'onFocus' | 'onBlur' | 'onKeyDown'> {
@@ -148,8 +147,8 @@ export default function SelectInput({label, id, children, className = '', value,
     }, []);
 
     return (
-        <div ref={wrapperRef} className={`${inputStyles.wrapper} ${styles.wrapper} ${className}`}>
-            <label id={labelId} htmlFor={inputId} className={inputStyles.label}>{label}</label>
+        <div ref={wrapperRef} className={`${styles.wrapper} ${className}`}>
+            <label id={labelId} htmlFor={inputId} className={styles.label}>{label}</label>
             <select {...props} ref={nativeRef} id={`${inputId}-native`} className={styles.native} value={selected >= 0 ? selectedValue : ''} disabled={disabled} tabIndex={-1} aria-hidden="true" onChange={event => {
                 if (value === undefined) {setInternalValue(event.target.value);}
                 setInvalid(false);

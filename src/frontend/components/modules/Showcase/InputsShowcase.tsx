@@ -10,6 +10,7 @@ import TextArea from '@frontend/components/ui/inputs/TextArea';
 import Switch from '@frontend/components/ui/inputs/Switch';
 import Checkbox from '@frontend/components/ui/inputs/Checkbox';
 import styles from './Showcase.module.css';
+import inputStyles from './InputsShowcase.module.css';
 
 export default function InputsShowcase() {
     const [clicks, setClicks] = useState(0);
@@ -47,7 +48,7 @@ export default function InputsShowcase() {
                             <TextInput label="Input with error" defaultValue="invalid@" error="Enter a valid email address." />
                             <TextInput label="Input with hint" hint="Example hint below the input." />
                             <div className={styles.row}><span>Inline:</span><TextInput label="Inline text" inline defaultValue="Edit this text" /></div>
-                            <TextInput label="End adornment" endAdornment={<span className={styles.adornment}>CHF</span>} />
+                            <TextInput label="End adornment" endAdornment={<span className={inputStyles.adornment}>CHF</span>} />
                         </div>
                         <div className={styles.example}>
                             <h3>NumberInput</h3>

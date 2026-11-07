@@ -1,0 +1,25 @@
+.badge[data-tone='info'] {
+    --tone: var(--accent);
+}
+
+.badge[data-tone='success'] {
+    --tone: var(--success);
+}
+
+.badge[data-tone='warning'] {
+    --tone: #d99d24;
+}
+
+.badge[data-tone='danger'] {
+    --tone: var(--error);
+}
+
+.badge {
+    display: inline-flex;
+    padding: 0.2em 0.6em;
+    border: 1px solid var(--tone);
+    background: color-mix(in srgb, var(--tone), transparent 85%);
+    border-radius: 0.4em;
+    font-size: 0.8em;
+    font-weight: 500;
+}

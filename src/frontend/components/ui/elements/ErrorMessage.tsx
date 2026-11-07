@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react';
-import styles from './Feedback.module.css';
+import styles from './ErrorMessage.module.css';
 
 export default function ErrorMessage({children, className = '', ...props}: ComponentPropsWithoutRef<'p'>) {
     if (!children) {return null;}

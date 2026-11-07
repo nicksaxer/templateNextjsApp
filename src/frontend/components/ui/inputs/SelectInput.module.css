@@ -1,7 +1,36 @@
 .wrapper {
+    position: relative;
+    margin-top: 1.3em;
+    width: 100%;
     display: grid;
     gap: 0.35rem;
     min-width: 0;
+}
+
+.label {
+    position: absolute;
+    z-index: 1;
+    padding: 0 0.4em;
+    margin: 0 0;
+    left: 0.7em;
+    top: -0.1em;
+    background-color: var(--background);
+    line-height: 0.3;
+    color: var(--accent);
+    font-weight: 500;
+    transition: 0.2s;
+    font-size: 0.8em;
+}
+
+.wrapper:hover > .label,
+.wrapper:focus-within > .label {
+    background-color: transparent;
+    color: var(--foreground);
+    top: -0.9em;
+    left: 0;
+    padding: 0;
+    padding-bottom: 0.65rem;
+    margin: 0 0.5em;
 }
 
 .trigger {

@@ -1,0 +1,29 @@
+.skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 0.5rem 0;
+}
+
+.skeleton span {
+    height: 0.7rem;
+    background: var(--border);
+    border-radius: 0.25em;
+    animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+.skeleton span:last-child {
+    width: 65%;
+}
+
+@keyframes pulse {
+    to {
+        opacity: 0.4;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton span {
+        animation: none;
+    }
+}

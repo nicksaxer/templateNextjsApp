@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import ErrorMessage from '../elements/ErrorMessage';
-import styles from './Inputs.module.css';
+import styles from './Field.module.css';
 
 export interface FieldProps {
     label: string;

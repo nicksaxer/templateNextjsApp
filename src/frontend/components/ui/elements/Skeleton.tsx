@@ -1,4 +1,4 @@
-import styles from './Feedback.module.css';
+import styles from './Skeleton.module.css';
 
 export default function Skeleton({lines = 3}: {lines?: number}) {
     return (

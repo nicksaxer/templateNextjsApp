@@ -29,9 +29,9 @@ If HTML/CSS loads but clicks do nothing, check the browser console and terminal 
 | `src/app/(frontend)` | Document layout, theme, global tokens, loading/error/not-found boundaries |
 | `src/app/api` | HTTP interfaces; includes a minimal health endpoint |
 | `src/frontend/components/layout` | Container; gallery appearance controls live with the examples |
-| `src/frontend/components/modules` | Removable example features: Showcase, Project, Mail |
+| `src/frontend/components/modules` | Showcase gallery and reusable Alert module |
 | `src/frontend/components/ui/inputs` | Button, TextInput, NumberInput, SelectInput, TextArea, Switch, Checkbox, shared field behavior |
-| `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, Alert, Badge, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Dialog, Icon, NavigationLink |
+| `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, inline Alert, Badge, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Icon, NavigationLink |
 | `src/frontend/components/ui/animations` | SlideDown and FadeIn |
 | `src/frontend/utils` | Formatting, class names, cancellable delay, theme preferences |
 | `src/backend/00_config` | App, environment, MongoDB, example plans and limits |
@@ -57,7 +57,7 @@ Read [docs/architecture.md](docs/architecture.md) for boundaries, data flow, and
 
 ## The example flow
 
-`/project` submits to a Server Action, parses FormData, validates untrusted values in the service, validates a Mongoose document without saving it, calculates prices using server-owned configuration, and returns a serializable project DTO plus rendered email. Errors are returned through `ActionResult<T>` with field messages. The UI displays the actual result.
+The gallery's form validation example submits to a Server Action, parses FormData, validates untrusted values in the service, validates a Mongoose document without saving it, calculates prices using server-owned configuration, and returns a serializable project DTO plus rendered email. Errors are returned through `ActionResult<T>` with field messages. The result and the separate mail template examples both appear on the main gallery page.
 
 Drafts are **not persisted**; they disappear on reload. The public example neither writes to MongoDB nor sends SMTP mail, even when integration credentials are present. It does not claim to demonstrate authentication, authorization, durable storage, or a payment flow.
 
@@ -83,11 +83,11 @@ Small template additions preserve the source appearance: error/hint associations
 
 ## UI conventions
 
-- CSS Modules and shared theme variables; no utility CSS framework or component library.
+- Each styled component has its own adjacent, same-named CSS Module. Shared theme variables live in `globals.css`.
 - Buttons preserve `filled`, `simple`, `danger`, `iconOnly`, and `bsicon` conventions. `icon` accepts a Font Awesome IconDefinition; icon-only controls require an accessible label. Pending buttons are disabled and expose busy state.
 - Inputs preserve native value/defaultValue, reset, keyboard, disabled, and form submission semantics. Text inputs also support password reveal, field errors, hints, refs, and end adornments. NumberInput uses SeppOS’s custom stepper with native number semantics. SelectInput uses its portaled dropdown, keyboard navigation, typeahead, and hidden native select for form submission.
 - `SlideDown` replaces the familiar expand/collapse interaction declaratively: pass `open`, keep content inside. It animates between zero and intrinsic height without fixed height limits or timeout cleanup. Closed content is inert and hidden from assistive technology; state is retained while closed. Prefer the reusable Accordion for a labeled disclosure.
-- FadeIn, loading, skeleton, and slide effects respect reduced-motion preferences. Native dialogs provide focus trapping, Escape dismissal, and return focus. Tabs support arrow keys, Home, and End.
+- FadeIn, loading, skeleton, and slide effects respect reduced-motion preferences. The alert traps focus, supports Escape dismissal, and returns focus on close. Tabs support arrow keys, Home, and End.
 - Themes are rendered from the same-site preference cookie, then updated in the document and cookie together. All tokens are scoped at the document level so dialogs inherit them. This preference cookie is not an authentication mechanism.
 
 ## Alert dialog

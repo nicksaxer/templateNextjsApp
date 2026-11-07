@@ -1,7 +1,7 @@
 'use client';
 
 import { type ReactNode, useId, useRef, useState } from 'react';
-import styles from './Interactive.module.css';
+import styles from './Tabs.module.css';
 
 export interface Tab {
     label: string;

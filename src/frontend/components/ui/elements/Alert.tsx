@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import Icon from './Icon';
-import styles from './Feedback.module.css';
+import styles from './Alert.module.css';
 
 export type Tone = 'info' | 'success' | 'warning' | 'danger';
 
