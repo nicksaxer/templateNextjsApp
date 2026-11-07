@@ -90,6 +90,27 @@ Small template additions preserve the source appearance: error/hint associations
 - FadeIn, loading, skeleton, and slide effects respect reduced-motion preferences. The alert traps focus, supports Escape dismissal, and returns focus on close. Tabs support arrow keys, Home, and End.
 - Themes are rendered from the same-site preference cookie, then updated in the document and cookie together. All tokens are scoped at the document level so dialogs inherit them. This preference cookie is not an authentication mechanism.
 
+## Tabs
+
+Give each panel a label and place its content inside a `Tab` child.
+
+```tsx
+import Tabs, { Tab } from '@frontend/components/ui/elements/Tabs';
+
+<Tabs label="Project details">
+    <Tab label="Overview">
+        <h2>Overview</h2>
+        <p>Project details go here.</p>
+    </Tab>
+    <Tab label="Settings">
+        <h2>Settings</h2>
+        <p>Project preferences go here.</p>
+    </Tab>
+</Tabs>
+```
+
+Panels stay mounted as you switch, so input values and local state are retained. The highlight moves with the active tab and snaps into place when reduced motion is requested.
+
 ## Alert dialog
 
 `showAlert(type, title, content)` is the SweetAlert replacement. Import it from a Client Component or browser event handler:

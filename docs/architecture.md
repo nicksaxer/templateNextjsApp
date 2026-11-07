@@ -51,6 +51,8 @@ Native form semantics are preserved through reusable wrappers. Field IDs connect
 
 SlideDown uses grid track interpolation with an overflow-clipped child, avoiding fixed maximum heights and imperative timers. Closed children retain state but are inert and aria-hidden. The trigger owns its expanded state, controls relationship, and focus. FadeIn, loaders, and skeletons have usable reduced-motion states. Tabs implement one active tab stop and arrow/Home/End navigation.
 
+Tabs take labeled `Tab` children, including panels composed on the server. Inactive panels stay mounted and hidden. A separate highlight follows the active button's size and position across clicks, keyboard navigation, and layout changes. Reduced-motion preferences skip the animation.
+
 `modules/Alert` provides `showAlert(type, title, content)` for browser handlers and a single `AlertHost` in the root layout. It queues requests on the client and resolves each call after dismissal. The alert uses a native `<dialog>` internally and closes it before unmounting so focus returns to the caller. No alert state is created during server rendering.
 
 The default palette is GuildMarket and the default theme is dark. Component CSS comes from SeppOS, with both original palettes available in the gallery. Do not redesign the shared controls or add a product-style shell to the gallery. The GuildMarket palette is set on the server-rendered document. The theme is initially rendered from a validated cookie, falling back to dark. Client changes update both document tokens and the cookie so navigation and reload agree. Tokens live on the document, including for native top-layer dialogs. The cookie stores only a presentation preference.

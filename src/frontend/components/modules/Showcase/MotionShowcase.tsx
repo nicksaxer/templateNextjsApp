@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Accordion from '@frontend/components/ui/elements/Accordion';
-import Tabs from '@frontend/components/ui/elements/Tabs';
+import Tabs, { Tab } from '@frontend/components/ui/elements/Tabs';
 import SlideDown from '@frontend/components/ui/animations/SlideDown';
 import FadeIn from '@frontend/components/ui/animations/FadeIn';
 import Button from '@frontend/components/ui/inputs/Button';
@@ -37,7 +37,15 @@ export default function MotionShowcase() {
                     <FadeIn key={replay}><div className={motionStyles.stage}>Example content</div></FadeIn>
                     <Button simple onClick={() => setReplay(value => value + 1)}>Replay FadeIn</Button>
                     <h3>Tabs</h3>
-                    <Tabs label="Example tabs" tabs={[{label: 'First tab', content: <p>First tab content.</p>}, {label: 'Second tab', content: <p>Second tab content.</p>}]} />
+                    <Tabs label="Example tabs">
+                        <Tab label="First tab">
+                            <p>First tab content.</p>
+                            <TextInput label="Tab draft" placeholder="Type and switch tabs" />
+                        </Tab>
+                        <Tab label="Second tab">
+                            <p>Second tab content.</p>
+                        </Tab>
+                    </Tabs>
                 </div>
             </div>
         </section>

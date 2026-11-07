@@ -8,14 +8,20 @@
     width: fit-content;
     padding: 0.25em;
     position: relative;
+    isolation: isolate;
 }
 
 .tabs button {
-    border-radius: 0.4em; 
+    border-radius: 0.4em;
     padding: 0.3em 0.7em;
     color: var(--foreground);
     font-weight: 500;
-    transition: 0.2s;
+    transition: background-color 0.2s;
+}
+
+.tabs button > span {
+    position: relative;
+    z-index: 2;
 }
 
 .tabs button:hover {
@@ -24,4 +30,17 @@
 
 .tabs button[aria-selected='true'] {
     background: rgb(from var(--brightaccent) r g b / 0.2);
+}
+
+.highlight {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 0.4em;
+    background: rgb(from var(--brightaccent) r g b / 0.2);
+}
+
+.highlight[data-ready] ~ button[aria-selected='true'] {
+    background: transparent;
+    transition: none;
 }

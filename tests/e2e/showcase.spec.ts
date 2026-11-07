@@ -97,9 +97,65 @@ test('SlideDown preserves state and tabs support the keyboard', async ({page}) =
     await expect(panel).toHaveAttribute('inert', '');
     await page.getByRole('button', {name: 'Open SlideDown'}).click();
     await expect(page.getByLabel('Retained value')).toHaveValue('Keep this');
+    await page.getByLabel('Tab draft').fill('Retained draft');
     await page.getByRole('tab', {name: 'First tab', exact: true}).focus();
     await page.keyboard.press('ArrowRight');
     await expect(page.getByRole('tab', {name: 'Second tab', exact: true})).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByRole('tabpanel', {name: 'Second tab'})).toBeVisible();
+    await expect(page.getByLabel('Tab draft')).toBeHidden();
+    await page.keyboard.press('Home');
+    await expect(page.getByLabel('Tab draft')).toHaveValue('Retained draft');
+});
+
+test('the tab highlight stretches in motion and stays aligned when tabs wrap', async ({page}) => {
+    await page.emulateMedia({reducedMotion: 'no-preference'});
+    await page.goto('/#motion');
+    const list = page.getByRole('tablist', {name: 'Example tabs'});
+    const highlight = list.locator('[data-ready]');
+    await expect(highlight).toBeVisible();
+
+    async function expectAligned() {
+        await expect.poll(() => list.evaluate(node => {
+            const current = node.querySelector('[aria-selected="true"]')!.getBoundingClientRect();
+            const fill = node.querySelector('[data-ready]')!.getBoundingClientRect();
+            return Math.max(Math.abs(fill.left - current.left), Math.abs(fill.top - current.top), Math.abs(fill.width - current.width), Math.abs(fill.height - current.height));
+        })).toBeLessThanOrEqual(1);
+    }
+
+    await expectAligned();
+    const moving = await list.evaluate(async node => {
+        const fill = node.querySelector('[data-ready]')!;
+        const [first, second] = node.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+        second.click();
+        await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+        const animation = fill.getAnimations()[0];
+        if (!animation) {return null;}
+        animation.pause();
+        animation.currentTime = Number(animation.effect?.getTiming().duration) / 2;
+        const bounds = fill.getBoundingClientRect();
+        const style = getComputedStyle(fill);
+        const result = {
+            betweenTabs: bounds.left > first.getBoundingClientRect().left && bounds.left < second.getBoundingClientRect().left,
+            wider: bounds.width > parseFloat(style.width),
+            shorter: bounds.height < parseFloat(style.height)
+        };
+        animation.finish();
+        return result;
+    });
+    expect(moving).toEqual({betweenTabs: true, wider: true, shorter: true});
+    await expectAligned();
+
+    const first = list.getByRole('tab', {name: 'First tab'});
+    const second = list.getByRole('tab', {name: 'Second tab'});
+    await list.evaluate(node => {node.style.width = '8rem';});
+    expect((await second.boundingBox())!.y).toBeGreaterThan((await first.boundingBox())!.y);
+    await expectAligned();
+
+    await page.emulateMedia({reducedMotion: 'reduce'});
+    await first.click();
+    await expect(first).toHaveAttribute('aria-selected', 'true');
+    expect(await highlight.evaluate(node => node.getAnimations().length)).toBe(0);
+    await expectAligned();
 });
 
 test('server validation and email previews work on the main gallery', async ({page}) => {
