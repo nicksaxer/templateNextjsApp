@@ -19,7 +19,11 @@ Open http://localhost:3000. No environment variables, database, SMTP server, or 
 
 On a local Docker Standalone environment in Portainer, add a **Git Repository** stack and select this repository. Use `refs/heads/main` as the repository reference and `compose.yaml` as the Compose path. Enable repository authentication for a private repo. Leave **Re-pull image** off so Compose builds the image from the checked-out source. The stack serves port 3000 by default. Set `APP_PORT` in the stack variables if that host port is in use. [Portainer stack setup](https://docs.portainer.io/user/docker/stacks/add)
 
-You can run the same stack from a checkout with `docker compose up --build -d`. Set any optional MongoDB or SMTP values as Portainer stack variables or in your local `.env` file. Portainer environments that cannot build from Compose need an image built externally and made available to the Docker host. [Portainer remote-build limitations](https://docs.portainer.io/faqs/known-issues/docker-compose-files-including-build-steps-fail)
+You can run the same stack from a checkout with `docker compose up --build -d`. Set any optional MongoDB or SMTP values as Portainer stack variables or in your local `.env` file.
+
+### Deploy through a Portainer Agent
+
+If deployment fails at `listing workers for Build` with an HTTP/2 framing error, build the image directly on the Docker host managed by the Agent. Run `docker compose build app` from a checkout of the same repository ref you plan to deploy. In Portainer, use `compose.portainer.yaml` as the Git stack's Compose path and leave **Re-pull image** off. This stack starts the image already on that host. For each update, build from the updated checkout before using **Pull and redeploy**. [Portainer remote-build limitations](https://docs.portainer.io/faqs/known-issues/docker-compose-files-including-build-steps-fail)
 
 The footer reads the version from `package.json`. Run `npm version patch` (or `minor` or `major`) on a clean checkout to update the package files, Compose image tag, and Docker build argument in the same release commit. Push the release commit, then use **Pull and redeploy** or configure GitOps updates in Portainer. Docker checks the build argument against the package version and sets the `org.opencontainers.image.version` label. Portainer shows the image as `template-nextjs-app:0.1.0` for version `0.1.0`, and the app shows `v0.1.0`.
 
