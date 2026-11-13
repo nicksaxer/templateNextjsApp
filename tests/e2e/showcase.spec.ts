@@ -9,7 +9,7 @@ const test = base.extend({
     }
 });
 
-test('source controls support typing, steppers, custom selection, and reset', async ({page}) => {
+test('source controls support typing, steppers, native selection, and reset', async ({page}) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     await page.goto('/');
@@ -19,9 +19,16 @@ test('source controls support typing, steppers, custom selection, and reset', as
     await expect(page.getByLabel('Password', {exact: true})).toHaveAttribute('type', 'text');
     await page.getByRole('button', {name: 'Increase Quantity'}).click();
     await expect(page.getByRole('spinbutton', {name: 'Quantity', exact: true})).toHaveValue('4');
-    await page.getByRole('combobox', {name: 'Select an option'}).click();
-    await page.getByRole('option', {name: 'Third option'}).click();
+    const selection = page.getByLabel('Select an option', {exact: true});
+    await expect(selection).toHaveJSProperty('tagName', 'SELECT');
+    await selection.selectOption('third');
     await expect(page.getByText('Selected: third')).toBeVisible();
+    const required = page.getByLabel('Required select', {exact: true});
+    await expect(required).toHaveJSProperty('willValidate', true);
+    expect(await required.evaluate((node: HTMLSelectElement) => node.validity.valueMissing)).toBe(true);
+    await required.selectOption('available');
+    expect(await required.evaluate((node: HTMLSelectElement) => new FormData(node.form!).get(node.name))).toBe('available');
+    await expect(page.getByLabel('Disabled select', {exact: true})).toBeDisabled();
     const switchInput = page.getByRole('switch', {name: 'Example switch'});
     await switchInput.focus();
     await page.keyboard.press('Space');
@@ -30,9 +37,12 @@ test('source controls support typing, steppers, custom selection, and reset', as
     await expect(page.getByLabel('Text', {exact: true})).toHaveValue('');
     await expect(page.getByRole('spinbutton', {name: 'Quantity', exact: true})).toHaveValue('3');
     await expect(page.getByText('Selected: second')).toBeVisible();
+    await expect(selection).toHaveValue('second');
+    await expect(required).toHaveValue('');
     await expect(switchInput).toBeChecked();
-    await page.getByRole('combobox', {name: 'Select an option'}).focus();
-    await page.keyboard.press('Home');
+    await selection.focus();
+    await page.keyboard.press('Space');
+    await page.keyboard.press('ArrowUp');
     await page.keyboard.press('Enter');
     await expect(page.getByText('Selected: first')).toBeVisible();
     expect(errors).toEqual([]);
@@ -81,6 +91,12 @@ test('feedback, tooltip, empty state, and loading examples work', async ({page})
     await expect(icon).toBeFocused();
     await expect(page.getByRole('tooltip')).toBeVisible();
     await page.getByRole('button', {name: 'Remove item'}).click();
+    const confirm = page.getByRole('alertdialog', {name: 'Remove item?'});
+    await expect(confirm.getByRole('button', {name: 'Cancel'})).toBeFocused();
+    await confirm.getByRole('button', {name: 'Cancel'}).click();
+    await expect(page.getByText('Example item', {exact: true})).toBeVisible();
+    await page.getByRole('button', {name: 'Remove item'}).click();
+    await confirm.getByRole('button', {name: 'Remove', exact: true}).click();
     await expect(page.getByRole('heading', {name: 'No items'})).toBeVisible();
     await page.getByRole('button', {name: 'Try loading'}).click();
     await expect(page.getByRole('button', {name: 'Try loading'})).toBeDisabled();
@@ -107,6 +123,27 @@ test('SlideDown preserves state and tabs support the keyboard', async ({page}) =
     await expect(page.getByLabel('Tab draft')).toBeHidden();
     await page.keyboard.press('Home');
     await expect(page.getByLabel('Tab draft')).toHaveValue('Retained draft');
+    await page.getByRole('button', {name: 'Select third tab'}).click();
+    await expect(page.getByRole('tab', {name: 'Third tab', exact: true})).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByRole('tabpanel', {name: 'Third tab'})).toBeVisible();
+});
+
+test('native disclosures keep drafts and skip closed content during collapse', async ({page}) => {
+    await page.goto('/#motion');
+    const summary = page.locator('summary').filter({hasText: 'Native disclosure'});
+    const draft = page.getByLabel('Disclosure draft');
+    const panel = page.locator('#native-disclosure');
+    await expect(summary).toBeVisible();
+    await summary.press('Enter');
+    await expect(draft).toBeVisible();
+    await draft.fill('Keep this too');
+    await expect(panel.locator(':scope > div')).toHaveCSS('overflow', 'visible');
+    await summary.press('Enter');
+    await page.keyboard.press('Tab');
+    await expect(page.getByRole('button', {name: 'First accordion'})).toBeFocused();
+    await expect(draft).toBeHidden();
+    await summary.press('Space');
+    await expect(draft).toHaveValue('Keep this too');
 });
 
 test('the tab highlight stretches in motion and stays aligned when tabs wrap', async ({page}) => {
@@ -193,12 +230,14 @@ test('gallery fits mobile and respects reduced motion', async ({page, request}) 
     await expect(page.getByLabel('Retained value')).toBeVisible();
     expect(await page.locator('#sliding-details').evaluate(node => getComputedStyle(node).transitionDuration)).toBe('0s');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.getByRole('combobox', {name: 'Select an option'}).click();
-    const menu = page.getByRole('listbox');
-    await expect(menu).toBeVisible();
-    const bounds = await menu.boundingBox();
+    const selection = page.getByRole('combobox', {name: 'Select an option'});
+    const bounds = await selection.boundingBox();
     expect(bounds!.x).toBeGreaterThanOrEqual(0);
     expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(390);
+    await selection.selectOption('third');
+    await expect(selection).toHaveValue('third');
+    const tabs = await page.getByRole('tablist', {name: 'Example tabs'}).boundingBox();
+    expect(tabs!.x + tabs!.width).toBeLessThanOrEqual(390);
     await page.goto('/missing-page');
     await expect(page.getByRole('heading', {name: 'Page not found'})).toBeVisible();
     expect(await (await request.get('/api/health')).json()).toEqual({status: 'ok'});
@@ -218,6 +257,30 @@ test('development assets allow the Coder workspace and reject unrelated origins'
     const script = await request.get(scripts[0], {headers: {'Sec-Fetch-Mode': 'no-cors', 'Sec-Fetch-Site': 'cross-site', Referer: `${origin}/`}});
     expect(script.status()).toBe(200);
     expect((await request.get(scripts[0], {headers: {Origin: 'https://untrusted.example'}})).status()).toBe(403);
+});
+
+test('a pending navigation hint leaves the current page visible', async ({page}) => {
+    let finishRequest: () => void = () => {};
+    const responseGate = new Promise<void>(resolve => {finishRequest = resolve;});
+    await page.route(url => url.pathname === '/' && url.searchParams.has('_rsc'), async route => {
+        const headers = route.request().headers();
+        if (headers['next-router-prefetch'] || headers['next-router-segment-prefetch']) {await route.abort(); return;}
+        await responseGate;
+        await route.continue();
+    });
+    try {
+        await page.goto('/missing-page');
+        const link = page.getByRole('link', {name: 'Back to component library'});
+        const hint = link.locator('[data-pending]');
+        await expect(hint).toHaveAttribute('data-pending', 'false');
+        await link.click();
+        await expect(hint).toHaveAttribute('data-pending', 'true');
+        await expect.poll(() => hint.evaluate(node => getComputedStyle(node, '::after').opacity)).toBe('1');
+        await expect(page.getByRole('heading', {name: 'Page not found'})).toBeVisible();
+    } finally {
+        finishRequest();
+    }
+    await expect(page.getByRole('heading', {name: 'Component library', exact: true})).toBeVisible();
 });
 
 test('alert variants show supplied text, trap focus, and resolve after dismissal', async ({page}) => {
@@ -278,6 +341,17 @@ test('queued alerts display once in order and restore focus after the last dismi
     await expect(alert).toHaveCount(0);
     await expect(opener).toBeFocused();
     await expect(page.getByText('Both alerts dismissed.')).toBeVisible();
+});
+
+test('profile pictures use the fallback when their image fails', async ({page}) => {
+    await page.route('**/favicon.ico', route => route.fulfill({status: 404}));
+    await page.goto('/#feedback');
+    const fallback = page.getByRole('img', {name: 'Default profile picture'});
+    await fallback.scrollIntoViewIfNeeded();
+    await expect(fallback).toBeVisible();
+    const avatar = page.getByRole('img', {name: 'Template icon'});
+    await expect(avatar).toHaveJSProperty('tagName', 'SPAN');
+    await expect(avatar).toBeVisible();
 });
 
 test('alert icons remain fully visible without animation when reduced motion is requested', async ({page}) => {

@@ -4,21 +4,31 @@ import { Children, isValidElement, type KeyboardEvent, type ReactElement, type R
 import styles from './Tabs.module.css';
 
 interface TabProps {
+    id?: string;
     label: string;
     children: ReactNode;
+}
+
+interface TabsProps {
+    children: ReactNode;
+    label: string;
+    activeId?: string;
+    onChange?: (id: string) => void;
+    center?: boolean;
 }
 
 export function Tab({children}: TabProps) {
     return children;
 }
 
-export default function Tabs({children, label}: {children: ReactNode; label: string}) {
+export default function Tabs({children, label, activeId, onChange, center = false}: TabsProps) {
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
     const listRef = useRef<HTMLDivElement>(null);
     const highlightRef = useRef<HTMLSpanElement>(null);
     const id = useId();
     const tabs = Children.toArray(children).filter((child): child is ReactElement<TabProps> => isValidElement<TabProps>(child) && typeof child.props.label === 'string');
-    const active = Math.max(0, tabs.findIndex(tab => tab.key === selectedKey));
+    const tabIds = tabs.map((tab, index) => tab.props.id ?? String(index));
+    const active = Math.max(0, activeId === undefined ? tabs.findIndex(tab => tab.key === selectedKey) : tabIds.indexOf(activeId));
 
     useLayoutEffect(() => {
         const list = listRef.current;
@@ -58,6 +68,11 @@ export default function Tabs({children, label}: {children: ReactNode; label: str
         };
     });
 
+    function select(index: number) {
+        if (activeId === undefined) {setSelectedKey(tabs[index].key);}
+        if (tabIds[index] !== (activeId ?? tabIds[active])) {onChange?.(tabIds[index]);}
+    }
+
     function keyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
         let next = index;
         if (event.key === 'ArrowRight') {next = (index + 1) % tabs.length;}
@@ -66,17 +81,17 @@ export default function Tabs({children, label}: {children: ReactNode; label: str
         else if (event.key === 'End') {next = tabs.length - 1;}
         else {return;}
         event.preventDefault();
-        setSelectedKey(tabs[next].key);
+        select(next);
         listRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus();
     }
 
     if (!tabs.length) {return null;}
     return (
         <div>
-            <div ref={listRef} role="tablist" aria-label={label} className={styles.tabs}>
+            <div ref={listRef} role="tablist" aria-label={label} className={center ? `${styles.tabs} ${styles.center}` : styles.tabs}>
                 <span ref={highlightRef} className={styles.highlight} aria-hidden="true" />
                 {tabs.map((tab, index) => (
-                    <button key={tab.key} id={`${id}-tab-${index}`} type="button" role="tab" aria-selected={active === index} aria-controls={`${id}-panel-${index}`} tabIndex={active === index ? 0 : -1} onClick={() => setSelectedKey(tab.key)} onKeyDown={event => keyDown(event, index)}>
+                    <button key={tab.key} id={`${id}-tab-${index}`} type="button" role="tab" aria-selected={active === index} aria-controls={`${id}-panel-${index}`} tabIndex={active === index ? 0 : -1} onClick={() => select(index)} onKeyDown={event => keyDown(event, index)}>
                         <span>{tab.props.label}</span>
                     </button>
                 ))}

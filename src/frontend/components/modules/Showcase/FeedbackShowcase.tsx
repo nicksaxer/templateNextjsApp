@@ -11,11 +11,13 @@ import LoadingIndicator from '@frontend/components/ui/elements/LoadingIndicator'
 import Skeleton from '@frontend/components/ui/elements/Skeleton';
 import Progress from '@frontend/components/ui/elements/Progress';
 import HLine from '@frontend/components/ui/elements/HLine';
+import Icon from '@frontend/components/ui/elements/Icon';
+import ProfilePicture from '@frontend/components/ui/elements/ProfilePicture';
 import Button from '@frontend/components/ui/inputs/Button';
 import TextInput from '@frontend/components/ui/inputs/TextInput';
 import TextArea from '@frontend/components/ui/inputs/TextArea';
 import delay from '@frontend/utils/delay';
-import { showAlert } from '@frontend/components/modules/Alert';
+import { showAlert, showConfirm } from '@frontend/components/modules/Alert';
 import { formatCurrency, formatDate } from '@frontend/utils/format';
 import styles from './Showcase.module.css';
 
@@ -91,11 +93,23 @@ export default function FeedbackShowcase() {
                     <h3>Formatting</h3>
                     <p>{formatCurrency(1234.5)}</p>
                     <p>{formatDate('2026-01-15T12:00:00.000Z')}</p>
+                    <h3>ProfilePicture</h3>
+                    <div className={styles.row}>
+                        <ProfilePicture src="/favicon.ico" alt="Template icon" size={48} />
+                        <ProfilePicture alt="Default profile picture" size={48} />
+                    </div>
                 </div>
                 <div className={styles.example}>
                     <h3>Card & empty state</h3>
                     <Card title="Example card">
-                        {items ? <div className={styles.row}><span>Example item</span><Button simple onClick={() => setItems(0)}>Remove item</Button></div> : <EmptyState title="No items" action={<Button onClick={() => setItems(1)}>Add item</Button>}>Example empty state.</EmptyState>}
+                        {items ? (
+                            <div className={styles.row}>
+                                <span>Example item</span>
+                                <Button simple onClick={async () => {
+                                    if (await showConfirm('Remove item?', 'Remove the example item from this card.', 'Remove')) {setItems(0);}
+                                }}>Remove item</Button>
+                            </div>
+                        ) : <EmptyState title="No items" icon={<Icon name="box-seam" />} action={<Button onClick={() => setItems(1)}>Add item</Button>}>Example empty state.</EmptyState>}
                     </Card>
                 </div>
             </div>

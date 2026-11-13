@@ -4,9 +4,11 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    text-align: center;
 }
 
-.empty > i {
+.empty > i,
+.empty > svg {
     font-size: 2rem;
     color: var(--grey);
 }

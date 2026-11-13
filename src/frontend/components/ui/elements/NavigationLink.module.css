@@ -1,0 +1,22 @@
+.hint {
+    display: inline-grid;
+    place-items: center;
+    width: 0.8em;
+    height: 0.8em;
+    margin-inline-start: 0.3em;
+    vertical-align: baseline;
+}
+
+.hint::after {
+    content: '';
+    width: 0.45em;
+    height: 0.45em;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+}
+
+.hint[data-pending='true']::after {
+    opacity: 1;
+    transition: opacity 0s linear 150ms;
+}
