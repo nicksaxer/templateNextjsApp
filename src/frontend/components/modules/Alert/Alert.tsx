@@ -12,7 +12,8 @@ interface AlertRequest {
     type: AlertType;
     title: string;
     content: ReactNode;
-    resolve: () => void;
+    confirmLabel?: string;
+    resolve: (confirmed: boolean) => void;
 }
 
 const listeners = new Set<() => void>();
@@ -36,30 +37,41 @@ function getServerSnapshot() {
     return null;
 }
 
-export function showAlert(type: AlertType, title: string, content: ReactNode): Promise<void> {
-    if (typeof window === 'undefined') {throw new Error('showAlert must be called in the browser.');}
+function enqueueAlert(type: AlertType, title: string, content: ReactNode, confirmLabel?: string): Promise<boolean> {
+    if (typeof window === 'undefined') {throw new Error('Alert dialogs must be shown in the browser.');}
     return new Promise(resolve => {
-        requests = [...requests, {id: nextId++, type, title, content, resolve}];
+        requests = [...requests, {id: nextId++, type, title, content, confirmLabel, resolve}];
         notify();
     });
 }
 
-function dismiss(request: AlertRequest) {
+export function showAlert(type: AlertType, title: string, content: ReactNode): Promise<void> {
+    return enqueueAlert(type, title, content).then(() => undefined);
+}
+
+export function showConfirm(title: string, content: ReactNode, confirmLabel = 'Confirm'): Promise<boolean> {
+    return enqueueAlert('warning', title, content, confirmLabel);
+}
+
+function dismiss(request: AlertRequest, confirmed = false) {
     if (requests[0] !== request) {return;}
     requests = requests.slice(1);
     notify();
-    request.resolve();
+    request.resolve(confirmed);
 }
 
 function AlertBox({request}: {request: AlertRequest}) {
     const ref = useRef<HTMLDialogElement>(null);
+    const actions = useRef<HTMLDivElement>(null);
     const titleId = useId();
     const contentId = useId();
     const close = () => dismiss(request);
+    const confirming = request.confirmLabel !== undefined;
     useLayoutEffect(() => {
         const alert = ref.current;
         if (!alert) {return;}
         alert.showModal();
+        actions.current?.querySelector('button')?.focus();
         return () => {if (alert.open) {alert.close();}};
     }, []);
     return (
@@ -102,8 +114,9 @@ function AlertBox({request}: {request: AlertRequest}) {
                     <div id={titleId} className={styles.title}>{request.title}</div>
                     <div id={contentId} className={styles.content}>{request.content}</div>
                 </div>
-                <div className={styles.actions}>
-                    <Button filled autoFocus simple wide onClick={close}>OK</Button>
+                <div ref={actions} className={styles.actions}>
+                    {confirming && <Button simple onClick={close}>Cancel</Button>}
+                    <Button filled simple wide={!confirming} onClick={() => dismiss(request, true)}>{request.confirmLabel ?? 'OK'}</Button>
                 </div>
             </div>
         </dialog>

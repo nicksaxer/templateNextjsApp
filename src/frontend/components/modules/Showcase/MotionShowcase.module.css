@@ -5,6 +5,15 @@
     gap: 1rem;
 }
 
+.disclosure {
+    --slide-down-duration: 400ms;
+}
+
+.disclosure > summary {
+    cursor: pointer;
+    width: fit-content;
+}
+
 .stage {
     padding: 2rem;
     border: 1px solid var(--border);

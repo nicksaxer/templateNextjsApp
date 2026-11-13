@@ -25,7 +25,7 @@ Read `docs/architecture.md` before changing structure, data flow, persistence, c
 
 ## UI
 
-- Preserve the source component appearance from GuildMarket and SeppOS: Rubik, original palette variables, accent borders, moving input labels, button hover glow, custom number/select controls, and compact switches. Do not replace these with a new design system.
+- Preserve the source component appearance from GuildMarket and SeppOS: Rubik, original palette variables, accent borders, moving input labels, button hover glow, the number stepper, themed native selects, and compact switches. Do not replace these with a new design system.
 - Keep the app a plain component gallery with labeled variants and interactive examples; no dashboard shell, sidebar, hero, or marketing copy.
 - Give each styled UI component its own adjacent, same-named CSS Module. Use shared tokens for common values and keep gallery layout styles separate from component styles.
 - Keep gallery-only examples in `modules/Showcase` and render them on the gallery page.
@@ -42,3 +42,13 @@ Read `docs/architecture.md` before changing structure, data flow, persistence, c
 - Never weaken checks to make them pass. Distinguish mocked or local validation from live integration verification.
 - Keep secrets out of code/logs. Update `.env.example`, README, and architecture documentation when lasting conventions change.
 - Review the final diff and report actual checks and limitations. Preserve unrelated user work.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

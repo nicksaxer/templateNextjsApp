@@ -62,6 +62,10 @@ export default function InputsShowcase() {
                                 <optgroup label="More options"><option value="third">Third option</option><option value="unavailable" disabled>Unavailable option</option></optgroup>
                             </SelectInput>
                             <p role="status">Selected: {selection}</p>
+                            <SelectInput label="Required select" name="requiredSelection" defaultValue="" required>
+                                <option value="" disabled>Choose an option</option>
+                                <option value="available">Available option</option>
+                            </SelectInput>
                             <SelectInput label="Disabled select" disabled><option>Disabled option</option></SelectInput>
                             <h3>Switch & checkbox</h3>
                             <div className={styles.row}><Switch label="Example switch" checked={enabled} onChange={setEnabled} /><span>{enabled ? 'On' : 'Off'}</span></div>

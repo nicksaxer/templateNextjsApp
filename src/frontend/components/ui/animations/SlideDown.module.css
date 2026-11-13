@@ -1,27 +1,68 @@
 .slideDown {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    min-width: 0;
+    visibility: hidden;
+    transition:
+        grid-template-rows var(--slide-down-duration, 260ms) var(--slide-down-easing, cubic-bezier(0.2, 0.8, 0.2, 1)),
+        visibility 0s linear var(--slide-down-duration, 260ms);
 }
 
-.slideDown[data-open='true'] {
+.slideDown[data-open='true'],
+details[open] > .slideDown:not([data-open]) {
     grid-template-rows: 1fr;
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+@supports (interactivity: inert) and selector(::details-content) {
+    details:has(> .slideDown:not([data-open]))::details-content {
+        /* Keep the closing grid rendered while its contents are inert. */
+        transition: content-visibility var(--slide-down-duration, 260ms) allow-discrete;
+    }
+
+    details:not([open]):has(> .slideDown:not([data-open]))::details-content {
+        interactivity: inert;
+    }
 }
 
 .clip {
+    display: flow-root;
     min-height: 0;
-    overflow: hidden;
-    visibility: hidden;
-    transition: visibility 260ms;
+    min-width: 0;
+    overflow: clip;
 }
 
-.slideDown[data-open='true'] > .clip {
-    visibility: visible;
+.slideDown[data-open='true'] > .clip,
+details[open] > .slideDown:not([data-open]) > .clip {
+    animation: releaseOverflow 0s var(--slide-down-duration, 260ms) forwards;
+}
+
+@keyframes releaseOverflow {
+    to {
+        overflow: visible;
+    }
+}
+
+@starting-style {
+    .slideDown[data-open='true'],
+    details[open] > .slideDown:not([data-open]) {
+        grid-template-rows: 0fr;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .slideDown,
-    .clip {
+    .slideDown {
         transition: none;
+    }
+
+    details:has(> .slideDown:not([data-open]))::details-content {
+        transition: none;
+    }
+
+    .slideDown[data-open='true'] > .clip,
+    details[open] > .slideDown:not([data-open]) > .clip {
+        animation: none;
+        overflow: visible;
     }
 }

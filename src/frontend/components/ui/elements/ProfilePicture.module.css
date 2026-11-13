@@ -1,0 +1,12 @@
+.image {
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.fallback {
+    display: inline-grid;
+    place-items: center;
+    line-height: 1;
+    color: var(--grey);
+}

@@ -14,6 +14,7 @@ export default function MotionShowcase() {
     const [open, setOpen] = useState(false);
     const [replay, setReplay] = useState(0);
     const [extra, setExtra] = useState(false);
+    const [activeTab, setActiveTab] = useState('first');
     return (
         <section id="motion" className={styles.section}>
             <h2>Animations & interactions</h2>
@@ -28,6 +29,14 @@ export default function MotionShowcase() {
                             {extra && <p>Additional content changes the height of this panel.</p>}
                         </div>
                     </SlideDown>
+                    <details className={motionStyles.disclosure}>
+                        <summary>Native disclosure</summary>
+                        <SlideDown id="native-disclosure">
+                            <div className={motionStyles.slideContent}>
+                                <TextInput label="Disclosure draft" placeholder="Type, close, and reopen" />
+                            </div>
+                        </SlideDown>
+                    </details>
                     <h3>Accordion</h3>
                     <Accordion title="First accordion">First panel content.</Accordion>
                     <Accordion title="Second accordion">Second panel content.</Accordion>
@@ -37,18 +46,19 @@ export default function MotionShowcase() {
                     <FadeIn key={replay}><div className={motionStyles.stage}>Example content</div></FadeIn>
                     <Button simple onClick={() => setReplay(value => value + 1)}>Replay FadeIn</Button>
                     <h3>Tabs</h3>
-                    <Tabs label="Example tabs">
-                        <Tab label="First tab">
+                    <Tabs label="Example tabs" activeId={activeTab} onChange={setActiveTab} center>
+                        <Tab id="first" label="First tab">
                             <p>First tab content.</p>
                             <TextInput label="Tab draft" placeholder="Type and switch tabs" />
                         </Tab>
-                        <Tab label="Second tab">
+                        <Tab id="second" label="Second tab">
                             <p>Second tab content.</p>
                         </Tab>
-                        <Tab label="Third tab">
+                        <Tab id="third" label="Third tab">
                             <p>Third tab content.</p>
                         </Tab>
                     </Tabs>
+                    <Button simple onClick={() => setActiveTab('third')}>Select third tab</Button>
                 </div>
             </div>
         </section>

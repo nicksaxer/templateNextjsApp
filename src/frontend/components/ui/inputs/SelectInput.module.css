@@ -1,153 +1,92 @@
 .wrapper {
-    position: relative;
-    margin-top: 1.3em;
-    width: 100%;
-    display: grid;
-    gap: 0.35rem;
     min-width: 0;
 }
 
-.label {
-    position: absolute;
-    z-index: 1;
-    padding: 0 0.4em;
-    margin: 0 0;
-    left: 0.7em;
-    top: -0.1em;
-    background-color: var(--background);
-    line-height: 0.3;
-    color: var(--accent);
-    font-weight: 500;
-    transition: 0.2s;
-    font-size: 0.8em;
-}
-
-.wrapper:hover > .label, .wrapper:focus-within > .label {
-    background-color: transparent;
-    color: var(--foreground);
-    top: -0.9em;
-    left: 0;
-    padding: 0;
-    padding-bottom: 0.65rem;
-    margin: 0 0.5em;
-}
-
-.trigger {
+.input {
+    appearance: none;
     width: 100%;
     min-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.6em 1em;
+    padding: 0.6em 2.5em 0.6em 1em;
     border: 2px solid var(--accent);
     border-radius: 0.5em;
     background: var(--background);
     color: var(--foreground);
-    text-align: left;
-    transition:
-        background 0.2s,
-        border-color 0.2s;
-}
-
-.trigger > span {
-    overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
 }
 
-.trigger:hover, .trigger[aria-expanded='true'] {
+.input:hover, .input:focus {
     background: color-mix(in srgb, var(--accent), var(--background) 90%);
 }
 
-.chevron {
-    width: 0.75rem;
-    flex-shrink: 0;
-    color: var(--accent);
-    transition: transform 0.2s;
+.input:is([aria-invalid='true'], :user-invalid) {
+    border-color: var(--error);
 }
 
-.trigger[aria-expanded='true'] .chevron {
-    transform: rotate(180deg);
-}
-
-.trigger:disabled {
+.input:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-.trigger[aria-invalid='true'] {
-    border-color: var(--error);
-}
-
-.native {
+.chevron {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    border: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    pointer-events: none;
-}
-
-.menu {
-    position: fixed;
-    z-index: 1000;
-    padding: 0.35rem;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    border: 2px solid var(--border);
-    border-radius: 0.7rem;
-    background: var(--surface);
-    color: var(--foreground);
-    box-shadow: 0 8px 28px rgb(0 0 0 / 0.2);
-    scrollbar-width: thin;
-    font-size: 1rem;
-}
-
-.group {
-    padding: 0.6rem 0.6rem 0.25rem;
-    color: var(--grey);
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.55rem 0.65rem;
-    border-radius: 0.4rem;
-    cursor: pointer;
-    overflow-wrap: anywhere;
-}
-
-.option[data-active='true'] {
-    background: color-mix(in srgb, var(--accent), var(--surface) 82%);
-}
-
-.option[aria-selected='true'] {
-    color: var(--foreground);
-    font-weight: 500;
-}
-
-.option[aria-disabled='true'] {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.option > svg {
-    width: 0.8rem;
-    flex-shrink: 0;
-}
-
-.error {
-    font-size: 0.8rem;
-    color: var(--error);
-}
-
-.option[aria-selected='true'] > svg {
+    top: 50%;
+    inset-inline-end: 1em;
+    translate: 0 -50%;
+    width: 0.75rem;
     color: var(--accent);
+    pointer-events: none;
+    transition: rotate 0.2s;
+}
+
+.input:open + .chevron {
+    rotate: 180deg;
+}
+
+@supports (appearance: base-select) and selector(::picker(select)) {
+    .input, .input::picker(select) {
+        appearance: base-select;
+    }
+
+    .input::picker-icon {
+        display: none;
+    }
+
+    .input::picker(select) {
+        max-height: min(17.5rem, 50dvh);
+        max-width: calc(100vw - 1rem);
+        margin-block: 0.35rem;
+        padding: 0.35rem;
+        border: 1px solid var(--border);
+        border-radius: 0.7rem;
+        background: var(--surface);
+        color: var(--foreground);
+        box-shadow: 0 8px 28px rgb(0 0 0 / 0.2);
+    }
+
+    .input optgroup {
+        color: var(--grey);
+        font-size: 0.8rem;
+    }
+
+    .input option {
+        padding: 0.55rem 0.65rem;
+        border-radius: 0.4rem;
+        color: var(--foreground);
+        font-size: 1rem;
+        overflow-wrap: anywhere;
+    }
+
+    .input option:hover, .input option:focus {
+        background: color-mix(in srgb, var(--accent), var(--surface) 82%);
+    }
+
+    .input option:checked {
+        font-weight: 500;
+    }
+
+    .input option:disabled {
+        opacity: 0.45;
+    }
 }

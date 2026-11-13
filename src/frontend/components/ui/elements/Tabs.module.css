@@ -6,15 +6,20 @@
     border-radius: 0.5em;
     background: var(--border);
     width: fit-content;
+    max-width: 100%;
     padding: 0.25em;
     position: relative;
     isolation: isolate;
 }
 
+.center {
+    margin-inline: auto;
+}
+
 .tabs button {
     border-radius: 0.4em;
     padding: 0.25em 1em;
-    min-width: 10em;
+    min-width: min(10em, 100%);
     color: var(--foreground);
     font-weight: 500;
     transition: background-color 0.2s;
@@ -23,6 +28,7 @@
 .tabs button > span {
     position: relative;
     z-index: 2;
+    overflow-wrap: anywhere;
 }
 
 .tabs button:hover {
@@ -44,4 +50,16 @@
 .highlight[data-ready] ~ button[aria-selected='true'] {
     background: transparent;
     transition: none;
+}
+
+@media (max-width: 550px) {
+    .tabs {
+        width: 100%;
+    }
+
+    .tabs button {
+        flex: 1 1 auto;
+        min-width: 0;
+        padding-inline: 0.65em;
+    }
 }
