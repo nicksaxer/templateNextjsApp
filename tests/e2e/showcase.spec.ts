@@ -344,12 +344,14 @@ test('queued alerts display once in order and restore focus after the last dismi
 });
 
 test('profile pictures use the fallback when their image fails', async ({page}) => {
-    await page.route('**/favicon.ico', route => route.abort());
+    await page.route('**/favicon.ico', route => route.fulfill({status: 404}));
     await page.goto('/#feedback');
-    await expect(page.getByRole('img', {name: 'Default profile picture'})).toBeVisible();
+    const fallback = page.getByRole('img', {name: 'Default profile picture'});
+    await fallback.scrollIntoViewIfNeeded();
+    await expect(fallback).toBeVisible();
     const avatar = page.getByRole('img', {name: 'Template icon'});
-    await expect(avatar).toBeVisible();
     await expect(avatar).toHaveJSProperty('tagName', 'SPAN');
+    await expect(avatar).toBeVisible();
 });
 
 test('alert icons remain fully visible without animation when reduced motion is requested', async ({page}) => {
