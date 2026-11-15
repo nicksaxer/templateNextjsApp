@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Card from '@frontend/components/ui/elements/Card';
-import Alert from '@frontend/components/ui/elements/Alert';
+import AlertBadge from '@frontend/components/ui/elements/AlertBadge';
 import Badge from '@frontend/components/ui/elements/Badge';
 import EmptyState from '@frontend/components/ui/elements/EmptyState';
 import ErrorMessage from '@frontend/components/ui/elements/ErrorMessage';
@@ -57,12 +57,12 @@ export default function FeedbackShowcase() {
                     <HLine>Divider label</HLine>
                 </div>
                 <div className={styles.example}>
-                    <h3>Alert</h3>
-                    <Alert tone="info">Information message</Alert>
-                    <Alert tone="success">Success message</Alert>
-                    <Alert tone="warning">Warning message</Alert>
-                    <Alert tone="danger">Error message</Alert>
-                    <h3>Alert dialog</h3>
+                    <h3>Alert badge</h3>
+                    <AlertBadge tone="info">Information message</AlertBadge>
+                    <AlertBadge tone="success">Success message</AlertBadge>
+                    <AlertBadge tone="warning">Warning message</AlertBadge>
+                    <AlertBadge tone="danger">Error message</AlertBadge>
+                    <h3>Alert modal</h3>
                     <TextInput label="Alert title" value={alertTitle} onChange={event => setAlertTitle(event.target.value)} />
                     <TextArea label="Alert content" value={alertContent} onChange={event => setAlertContent(event.target.value)} />
                     <div className={styles.buttonRow}>

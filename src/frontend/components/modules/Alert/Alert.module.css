@@ -7,10 +7,11 @@
     color: var(--foreground);
     max-width: min(480px, calc(100vw - 32px));
     width: 100%;
+    box-shadow: 0px 0px 15px 5px rgb(from var(--background) r g b / 0.3);
 }
 
 .alert::backdrop {
-    background: #0008;
+    backdrop-filter: brightness(0.5) blur(3px);
 }
 
 .inner {

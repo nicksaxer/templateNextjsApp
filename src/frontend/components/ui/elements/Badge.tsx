@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react';
-import type { Tone } from './Alert';
+import type { Tone } from './AlertBadge';
 import styles from './Badge.module.css';
 
 export default function Badge({tone = 'info', className, children, ...props}: ComponentPropsWithoutRef<'span'> & {tone?: Tone}) {

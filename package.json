@@ -3,7 +3,8 @@
     "version": "0.1.1",
     "description": "Reusable Next.js foundation with numbered backend layers and a live component playground",
     "scripts": {
-        "dev": "next dev",
+        "dev": "node scripts/dev.mts",
+        "dev:server": "next dev",
         "build": "next build",
         "start": "next start",
         "version": "node scripts/sync-compose-version.mjs",
