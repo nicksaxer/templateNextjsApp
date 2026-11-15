@@ -10,10 +10,13 @@ Use Node.js 24 and npm:
 
 ```sh
 npm ci
+npx playwright install chromium
 npm run dev
 ```
 
-Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. `npm run build` and `npm run start` run the production app.
+Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. The production app runs with `npm run build` and `npm run start`.
+
+Unit and browser tests run on startup and rerun when you save changes in `src`, `tests`, or `public`. Results appear in the dev terminal. Install the Playwright browser once or use `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to point to an existing Chromium. Use `npm run dev:server` to run just Next.js.
 
 ## Docker and Portainer
 
