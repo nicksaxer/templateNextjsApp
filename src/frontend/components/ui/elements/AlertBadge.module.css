@@ -1,9 +1,9 @@
 .alert {
     display: flex;
-    align-items: flex-start;
-    gap: 0.7rem;
-    padding: 0.7rem 1rem;
-    border: 1px solid var(--tone);
+    align-items: center;
+    gap: 0.7em;
+    padding: 0.7em 0.8em;
+    border: 2px solid var(--tone);
     background: color-mix(in srgb, var(--tone), transparent 90%);
     border-radius: 0.5em;
 }
@@ -29,6 +29,8 @@
     --tone: var(--error);
 }
 
-.alert > i {
+.icon {
     color: var(--tone);
+    width: 1.5em;
+    height: 1.5em;
 }
