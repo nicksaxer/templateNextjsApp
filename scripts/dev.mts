@@ -1,14 +1,13 @@
 import { spawn, type ChildProcess } from 'node:child_process';
 import { existsSync, watch } from 'node:fs';
 import { createRequire } from 'node:module';
-import { resolve } from 'node:path';
 import { createInterface } from 'node:readline';
 import { stripVTControlCharacters } from 'node:util';
 
 const npmCli = process.env.npm_execpath ?? '';
 if (!npmCli) {throw new Error('Start development with npm run dev.');}
 
-const require = createRequire(resolve('package.json'));
+const require = createRequire(import.meta.url);
 const server = spawn(process.execPath, [require.resolve('next/dist/bin/next'), 'dev', ...process.argv.slice(2)], {stdio: ['inherit', 'pipe', 'inherit']});
 server.stdout.pipe(process.stdout, {end: false});
 
