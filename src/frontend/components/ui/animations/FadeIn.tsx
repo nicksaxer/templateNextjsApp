@@ -1,9 +1,9 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import styles from './FadeIn.module.css';
 
-export default function FadeIn({children, className = '', ...props}: ComponentPropsWithoutRef<'div'>) {
+export default function FadeIn({children, className, ...props}: ComponentPropsWithoutRef<'div'>) {
     return (
-        <div {...props} className={`${styles.fadeIn} ${className}`}>
+        <div {...props} className={`${styles.fadeIn}${className ? ` ${className}` : ''}`}>
             {children}
         </div>
     );

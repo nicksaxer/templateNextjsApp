@@ -10,7 +10,7 @@ export default function TextArea({label, hint, error, id, className = '', ...pro
     const inputId = id ?? generatedId;
     return (
         <div>
-            <div className={`${styles.wrapper} ${className}`} data-invalid={!!error}>
+            <div className={`${styles.wrapper}${className ? ` ${className}` : ''}`} data-invalid={!!error}>
                 <label className={styles.label} htmlFor={inputId}>{label}</label>
                 <textarea rows={3} {...props} id={inputId} className={styles.input} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={describedBy(inputId, hint, error, props['aria-describedby'])} />
             </div>

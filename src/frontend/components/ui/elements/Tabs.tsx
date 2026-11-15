@@ -15,13 +15,14 @@ interface TabsProps {
     activeId?: string;
     onChange?: (id: string) => void;
     center?: boolean;
+    className?: string;
 }
 
 export function Tab({children}: TabProps) {
     return children;
 }
 
-export default function Tabs({children, label, activeId, onChange, center = false}: TabsProps) {
+export default function Tabs({children, label, activeId, onChange, center = false, className}: TabsProps) {
     const [selectedKey, setSelectedKey] = useState<string | null>(null);
     const listRef = useRef<HTMLDivElement>(null);
     const highlightRef = useRef<HTMLSpanElement>(null);
@@ -87,7 +88,7 @@ export default function Tabs({children, label, activeId, onChange, center = fals
 
     if (!tabs.length) {return null;}
     return (
-        <div>
+        <div className={className ? ` ${className}` : ''}>
             <div ref={listRef} role="tablist" aria-label={label} className={center ? `${styles.tabs} ${styles.center}` : styles.tabs}>
                 <span ref={highlightRef} className={styles.highlight} aria-hidden="true" />
                 {tabs.map((tab, index) => (

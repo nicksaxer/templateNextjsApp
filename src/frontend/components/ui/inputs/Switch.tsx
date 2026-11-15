@@ -13,7 +13,7 @@ interface SwitchProps extends Omit<ComponentPropsWithoutRef<"label">, 'onChange'
 
 export default function Switch({ label, name, checked, disabled = false, onChange, className, ...props }: SwitchProps) {
     return (
-        <label {...props} className={`${styles.switch} ${className || ''}`}>
+        <label {...props} className={`${styles.switch}${className ? ` ${className}` : ''}`}>
             <input name={name} type="checkbox" role="switch" aria-label={label} checked={checked} disabled={disabled} onChange={(event) => onChange(event.target.checked)} />
             <span className={styles.track} aria-hidden="true"></span>
         </label>

@@ -15,7 +15,7 @@ export function describedBy(id: string, hint?: string, error?: string, existing?
 
 export default function Field({label, error, hint, className = '', id, children}: FieldProps & {id: string; children: ReactNode}) {
     return (
-        <div className={`${styles.field} ${className}`}>
+        <div className={`${styles.field}${className ? ` ${className}` : ''}`}>
             <label className={styles.label} htmlFor={id}>
                 {label}
             </label>

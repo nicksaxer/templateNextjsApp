@@ -17,7 +17,7 @@ interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
 
 export default function Button({bsicon, icon, filled, wide, simple, iconOnly, danger, children, className = '', type = 'button', pending, disabled, ...props}: ButtonProps) {
     return (
-        <button {...props} type={type} disabled={disabled || pending} aria-busy={pending || undefined} className={`${styles.button} ${filled ? styles.filled : ''} ${wide ? styles.wide : ''} ${simple ? styles.buttonSimple : ''} ${iconOnly ? styles.iconOnly : ''} ${danger ? styles.danger : ''} ${className}`}>
+        <button {...props} type={type} disabled={disabled || pending} aria-busy={pending || undefined} aria-label={iconOnly ? "Icon only" : ''} className={`${styles.button}${filled ? ` ${styles.filled}` : ''}${wide ? ` ${styles.wide}` : ''}${simple ? ` ${styles.buttonSimple}` : ''}${iconOnly ? ` ${styles.iconOnly}` : ''}${danger ? ` ${styles.danger}` : ''}${className ? ` ${className}` : ''}`}>
             {pending ? <FontAwesomeIcon icon={faCircleNotch} className={styles.pending} aria-hidden="true" /> : icon ? <FontAwesomeIcon icon={icon} className={styles.icon} aria-hidden="true" /> : bsicon && <i className={`bi ${bsicon} ${styles.icon}`} aria-hidden="true" />}
             {iconOnly ? children : <span>{children}</span>}
         </button>

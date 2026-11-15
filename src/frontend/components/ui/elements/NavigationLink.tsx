@@ -10,13 +10,12 @@ interface NavigationLinkProps extends ComponentPropsWithoutRef<'a'> {
     showPending?: boolean;
 }
 
-export default function NavigationLink({href, children, prefetch, showPending = false, ...props}: NavigationLinkProps) {
-    // Native fragment links preserve the current page and its interaction state.
-    if (href.includes('#')) {return <a {...props} href={href}>{children}</a>;}
-    return <Link {...props} href={href} prefetch={prefetch}>{children}{showPending && <LinkPendingHint />}</Link>;
-}
-
 function LinkPendingHint() {
     const {pending} = useLinkStatus();
     return <span className={styles.hint} data-pending={pending} aria-hidden="true" />;
+}
+
+export default function NavigationLink({href, children, prefetch, showPending = false, ...props}: NavigationLinkProps) {
+    if (href.includes('#')) {return <a {...props} href={href}>{children}</a>;}
+    return <Link {...props} href={href} prefetch={prefetch}>{children}{showPending && <LinkPendingHint />}</Link>;
 }

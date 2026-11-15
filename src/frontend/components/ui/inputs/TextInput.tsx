@@ -30,9 +30,9 @@ export default function TextInput({label, type = 'text', id, className, disabled
                         <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`} aria-hidden="true" />
                     </button>
                 )}
+                {hint && <p id={`${inputId}-hint`} className={styles.hint}>{hint}</p>}
+                <ErrorMessage id={`${inputId}-error`}>{error}</ErrorMessage>
             </div>
-            {hint && <p id={`${inputId}-hint`} className={styles.hint}>{hint}</p>}
-            <ErrorMessage id={`${inputId}-error`}>{error}</ErrorMessage>
         </>
     );
 }

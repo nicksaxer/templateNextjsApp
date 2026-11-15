@@ -25,9 +25,12 @@ export default function InputsShowcase() {
                     <Button filled onClick={() => setClicks(value => value + 1)}>Filled</Button>
                     <Button simple onClick={() => setClicks(value => value + 1)}>Simple</Button>
                     <Button simple filled onClick={() => setClicks(value => value + 1)}>Simple filled</Button>
+                    <Button icon={faPlus} simple onClick={() => setClicks(value => value + 1)}>Simple icon</Button>
+                    <Button icon={faPlus} simple filled onClick={() => setClicks(value => value + 1)}>Simple filled icon</Button>
                     <Button bsicon="bi-plus-lg" onClick={() => setClicks(value => value + 1)}>Bootstrap icon</Button>
                     <Button icon={faPlus} onClick={() => setClicks(value => value + 1)}>Font Awesome icon</Button>
-                    <Button iconOnly icon={faPlus} aria-label="Icon only" onClick={() => setClicks(value => value + 1)} />
+                    <Button iconOnly icon={faPlus} onClick={() => setClicks(value => value + 1)} />
+                    <Button iconOnly simple icon={faPlus} onClick={() => setClicks(value => value + 1)} />
                     <Button danger onClick={() => setClicks(value => value + 1)}>Danger</Button>
                     <Button danger filled onClick={() => setClicks(value => value + 1)}>Danger filled</Button>
                     <Button disabled>Disabled</Button>

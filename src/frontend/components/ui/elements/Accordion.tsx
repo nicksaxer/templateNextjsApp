@@ -5,11 +5,11 @@ import SlideDown from '../animations/SlideDown';
 import Icon from './Icon';
 import styles from './Accordion.module.css';
 
-export default function Accordion({title, children, defaultOpen = false}: {title: string; children: ReactNode; defaultOpen?: boolean}) {
+export default function Accordion({title, children, defaultOpen = false, className}: {title: string; children: ReactNode; defaultOpen?: boolean; className?: string}) {
     const [open, setOpen] = useState(defaultOpen);
     const id = useId();
     return (
-        <div className={styles.accordion}>
+        <div className={`${styles.accordion}${className ? ` ${className}` : ''}`}>
             <h3>
                 <button id={`${id}-trigger`} aria-expanded={open} aria-controls={`${id}-panel`} onClick={() => setOpen(value => !value)}>
                     {title}

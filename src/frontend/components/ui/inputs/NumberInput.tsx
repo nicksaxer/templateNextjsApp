@@ -50,7 +50,7 @@ export default function NumberInput({label, id, className = '', min, max, step =
     }
 
     return (
-        <TextInput {...props} id={inputId} inputRef={numberRef} label={label} type="number" inputMode={inputMode} className={`${styles.wrapper} ${className}`} min={min} max={max} step={increment} value={value} defaultValue={defaultValue} disabled={disabled} readOnly={readOnly} onChange={event => {setCurrentValue(event.target.value); onChange?.(event);}} endAdornment={
+        <TextInput {...props} id={inputId} inputRef={numberRef} label={label} type="number" inputMode={inputMode} className={`${styles.wrapper}${className ? ` ${className}` : ''}`} min={min} max={max} step={increment} value={value} defaultValue={defaultValue} disabled={disabled} readOnly={readOnly} onChange={event => {setCurrentValue(event.target.value); onChange?.(event);}} endAdornment={
             <div className={styles.stepper}>
                 <button type="button" tabIndex={-1} aria-label={`Increase ${label}`} aria-controls={inputId} disabled={disabled || readOnly || (hasValue && max !== undefined && numericValue >= max)} onPointerDown={event => event.preventDefault()} onClick={() => changeStep(1)}>
                     <FontAwesomeIcon icon={faChevronUp} aria-hidden="true" />

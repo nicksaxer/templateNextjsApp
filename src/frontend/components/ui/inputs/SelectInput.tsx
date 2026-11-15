@@ -26,7 +26,7 @@ export default function SelectInput({label, id, className = '', children, value,
     }, [children, value]);
 
     return (
-        <div className={`${inputStyles.wrapper} ${styles.wrapper} ${className}`} data-invalid={props['aria-invalid'] === true || props['aria-invalid'] === 'true'}>
+        <div className={`${inputStyles.wrapper} ${styles.wrapper}${className ? ` ${className}` : ''}`} data-invalid={props['aria-invalid'] === true || props['aria-invalid'] === 'true'}>
             <label htmlFor={inputId} className={inputStyles.label}>{label}</label>
             <select {...props} ref={ref} id={inputId} className={styles.input} value={value} defaultValue={value === undefined ? defaultValue : undefined}>{children}</select>
             <FontAwesomeIcon icon={faChevronDown} className={styles.chevron} aria-hidden="true" />
