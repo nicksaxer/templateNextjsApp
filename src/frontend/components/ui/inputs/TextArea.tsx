@@ -2,10 +2,16 @@
 
 import { type ComponentPropsWithoutRef, useId } from 'react';
 import ErrorMessage from '../elements/ErrorMessage';
-import { describedBy, type FieldProps } from './Field';
+import describedBy from '@frontend/utils/ariaDescribedBy'
 import styles from './TextArea.module.css';
 
-export default function TextArea({label, hint, error, id, className = '', ...props}: ComponentPropsWithoutRef<'textarea'> & FieldProps) {
+interface TextAreaProps extends ComponentPropsWithoutRef<'textarea'>{
+    label: string;
+    error?: string;
+    hint?: string;
+}
+
+export default function TextArea({label, hint, error, id, className, ...props}: TextAreaProps) {
     const generatedId = useId();
     const inputId = id ?? generatedId;
     return (

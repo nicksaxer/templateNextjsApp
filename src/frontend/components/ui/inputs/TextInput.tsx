@@ -2,7 +2,7 @@
 
 import { type ComponentPropsWithoutRef, type ReactNode, type Ref, useId, useState } from 'react';
 import ErrorMessage from '../elements/ErrorMessage';
-import { describedBy } from './Field';
+import describedBy from '@frontend/utils/ariaDescribedBy'
 import styles from './TextInput.module.css';
 
 export interface TextInputProps extends ComponentPropsWithoutRef<'input'> {
