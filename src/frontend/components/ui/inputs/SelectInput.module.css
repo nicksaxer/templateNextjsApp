@@ -15,6 +15,12 @@
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s;
 }
+.grey {
+    --accent: var(--grey);
+}
+.grey > .input {
+    border-color: var(--border);
+}
 
 .input:hover, .input:focus {
     background: color-mix(in srgb, var(--accent), var(--background) 90%);
@@ -71,7 +77,8 @@
     }
 
     .input option {
-        padding: 0.55rem 0.65rem;
+        padding: 0.5rem 0.6rem;
+        margin: 0.2rem 0;
         border-radius: 0.4rem;
         color: var(--foreground);
         font-size: 1rem;

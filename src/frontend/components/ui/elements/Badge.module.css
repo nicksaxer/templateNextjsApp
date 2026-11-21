@@ -16,8 +16,8 @@
 
 .badge {
     display: inline-flex;
-    padding: 0.2em 0.6em;
-    border: 1px solid var(--tone);
+    padding: 0.2em 0.7em;
+    border: 2px solid var(--tone);
     background: color-mix(in srgb, var(--tone), transparent 85%);
     border-radius: 0.4em;
     font-size: 0.8em;

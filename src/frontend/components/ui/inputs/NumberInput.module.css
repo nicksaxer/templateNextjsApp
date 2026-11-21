@@ -28,6 +28,10 @@
     transition: background 0.2s;
 }
 
+.stepper.grey {
+    --accent: var(--grey)
+}
+
 .stepper > button:hover {
     background: color-mix(in srgb, var(--accent), transparent 80%);
 }

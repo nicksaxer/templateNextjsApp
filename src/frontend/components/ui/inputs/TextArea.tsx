@@ -7,16 +7,17 @@ import styles from './TextArea.module.css';
 
 interface TextAreaProps extends ComponentPropsWithoutRef<'textarea'>{
     label: string;
+    grey?: boolean;
     error?: string;
     hint?: string;
 }
 
-export default function TextArea({label, hint, error, id, className, ...props}: TextAreaProps) {
+export default function TextArea({label, grey, hint, error, id, className, ...props}: TextAreaProps) {
     const generatedId = useId();
     const inputId = id ?? generatedId;
     return (
         <div>
-            <div className={`${styles.wrapper}${className ? ` ${className}` : ''}`} data-invalid={!!error}>
+            <div className={`${styles.wrapper}${className ? ` ${className}` : ''}${grey ? ` ${styles.grey}` : ''}`} data-invalid={!!error}>
                 <label className={styles.label} htmlFor={inputId}>{label}</label>
                 <textarea rows={3} {...props} id={inputId} className={styles.input} aria-invalid={error ? true : props['aria-invalid']} aria-describedby={describedBy(inputId, hint, error, props['aria-describedby'])} />
             </div>

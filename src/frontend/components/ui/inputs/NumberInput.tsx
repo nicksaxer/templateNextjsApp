@@ -14,7 +14,7 @@ interface NumberInputProps extends Omit<TextInputProps, 'type' | 'min' | 'max' |
     defaultValue?: string | number;
 }
 
-export default function NumberInput({label, id, className = '', min, max, step = 1, value, defaultValue, disabled, readOnly, inputRef, onChange, inputMode = 'decimal', ...props}: NumberInputProps) {
+export default function NumberInput({label, grey, id, className = '', min, max, step = 1, value, defaultValue, disabled, readOnly, inputRef, onChange, inputMode = 'decimal', ...props}: NumberInputProps) {
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const numberRef = useRef<HTMLInputElement | null>(null);
@@ -50,8 +50,8 @@ export default function NumberInput({label, id, className = '', min, max, step =
     }
 
     return (
-        <TextInput {...props} id={inputId} inputRef={numberRef} label={label} type="number" inputMode={inputMode} className={`${styles.wrapper}${className ? ` ${className}` : ''}`} min={min} max={max} step={increment} value={value} defaultValue={defaultValue} disabled={disabled} readOnly={readOnly} onChange={event => {setCurrentValue(event.target.value); onChange?.(event);}} endAdornment={
-            <div className={styles.stepper}>
+        <TextInput grey={grey} {...props} id={inputId} inputRef={numberRef} label={label} type="number" inputMode={inputMode} className={`${styles.wrapper}${className ? ` ${className}` : ''}`} min={min} max={max} step={increment} value={value} defaultValue={defaultValue} disabled={disabled} readOnly={readOnly} onChange={event => {setCurrentValue(event.target.value); onChange?.(event);}} endAdornment={
+            <div className={`${styles.stepper}${grey ? ` ${styles.grey}` : ''}`}>
                 <button type="button" tabIndex={-1} aria-label={`Increase ${label}`} aria-controls={inputId} disabled={disabled || readOnly || (hasValue && max !== undefined && numericValue >= max)} onPointerDown={event => event.preventDefault()} onClick={() => changeStep(1)}>
                     <FontAwesomeIcon icon={faChevronUp} aria-hidden="true" />
                 </button>

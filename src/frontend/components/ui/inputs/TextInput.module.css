@@ -76,6 +76,20 @@
     color: var(--foreground);
 }
 
+.grey {
+    --accent: var(--border);
+}
+.grey > .label {
+    --accent: var(--grey);
+}
+
+.small > .label {
+    font-size: 0.7em;
+}
+.small > .input {
+    padding: 0.1em 0.5em;
+}
+
 .inline {
     display: inline-flex;
     margin-top: 0;

@@ -39,7 +39,7 @@
     font-weight: 500;
     font-size: 1em;
     background-color: var(--background);
-    transition: 0.2s;
+    transition: background 0.2s;
     position: relative;
     width: 100%;
 }
@@ -70,4 +70,11 @@
     margin: 0.35rem 0 0;
     color: var(--grey);
     font-size: 0.8em;
+}
+
+.grey {
+    --accent: var(--border);
+}
+.grey > .label {
+    --accent: var(--grey);
 }

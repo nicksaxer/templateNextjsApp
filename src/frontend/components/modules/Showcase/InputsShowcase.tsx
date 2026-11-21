@@ -50,26 +50,42 @@ export default function InputsShowcase() {
                             <TextInput label="Read-only input" defaultValue="Read-only value" readOnly />
                             <TextInput label="Input with error" defaultValue="invalid@" error="Enter a valid email address." />
                             <TextInput label="Input with hint" hint="Example hint below the input." />
+                            <TextInput label="Grey Input" grey />
+                            <TextInput label="Small Input" small />
+                            <TextInput label="Small Grey Input" small grey/>
                             <div className={styles.row}><span>Inline:</span><TextInput label="Inline text" inline defaultValue="Edit this text" /></div>
                             <TextInput label="End adornment" endAdornment={<span className={inputStyles.adornment}>CHF</span>} />
                         </div>
                         <div className={styles.example}>
                             <h3>NumberInput</h3>
-                            <NumberInput label="Quantity" name="quantity" defaultValue={3} min={0} max={10} />
-                            <NumberInput label="Decimal number" defaultValue={1.5} step={0.5} min={0} max={5} />
+                            <NumberInput label="Quantity" defaultValue={3} min={0} max={10} />
+                            <NumberInput label="Decimal number" defaultValue={1.5} step={0.1} min={0} max={5} />
+                            <NumberInput label="Grey Number Input" grey defaultValue={3} min={0} max={10} />
                             <NumberInput label="Disabled number" defaultValue={2} disabled />
                             <h3>SelectInput</h3>
                             <SelectInput label="Select an option" name="selection" value={selection} onChange={event => setSelection(event.target.value)}>
                                 <option value="first">First option</option>
                                 <option value="second">Second option</option>
-                                <optgroup label="More options"><option value="third">Third option</option><option value="unavailable" disabled>Unavailable option</option></optgroup>
+                                <optgroup label="More options">
+                                    <option value="third">Third option</option>
+                                    <option value="unavailable" disabled>Unavailable option</option>
+                                </optgroup>
                             </SelectInput>
                             <p role="status">Selected: {selection}</p>
                             <SelectInput label="Required select" name="requiredSelection" defaultValue="" required>
                                 <option value="" disabled>Choose an option</option>
                                 <option value="available">Available option</option>
+                                <option value="available">Available option 2</option>
+                                <option value="available">Available option 3</option>
                             </SelectInput>
-                            <SelectInput label="Disabled select" disabled><option>Disabled option</option></SelectInput>
+                            <SelectInput label="Grey select" name="greySelection" defaultValue="" grey>
+                                <option value="available">Available option</option>
+                                <option value="available">Available option 2</option>
+                                <option value="available">Available option 3</option>
+                            </SelectInput>
+                            <SelectInput label="Disabled select" disabled>
+                                <option>Disabled option</option>
+                            </SelectInput>
                             <h3>Switch & checkbox</h3>
                             <div className={styles.row}><Switch label="Example switch" checked={enabled} onChange={setEnabled} /><span>{enabled ? 'On' : 'Off'}</span></div>
                             <div className={styles.row}><Switch label="Disabled switch" checked disabled onChange={() => {}} /><span>Disabled</span></div>
@@ -79,6 +95,7 @@ export default function InputsShowcase() {
                         <div className={styles.example}>
                             <h3>TextArea</h3>
                             <TextArea label="Multiline text" name="notes" placeholder="Type a few lines" />
+                            <TextArea label="Grey multiline text" name="greyNotes" placeholder="Type a few lines" grey />
                             <TextArea label="Textarea with error" error="Example validation message." />
                         </div>
                     </div>
