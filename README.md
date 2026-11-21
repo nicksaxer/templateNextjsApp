@@ -15,7 +15,7 @@ npm run dev
 
 Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. The production app runs with `npm run build` and `npm run start`.
 
-`npm run dev` starts Next.js with hot reload. Run `npm run check` when you want to run lint, type checking, and tests.
+`npm run dev` runs the Node tests once, then starts Next.js with hot reload. Run `npm run check` for lint, type checking, and the same tests.
 
 ## Docker and Portainer
 
@@ -161,6 +161,6 @@ npm run check       # lint, strict typecheck, backend/utility tests
 npm run build       # production compile and route validation
 ```
 
-Backend and utility tests cover validation, forged prices, serialization, FormData failures, checkbox semantics, mail escaping/template allowlisting, lazy configuration, and cancellation. CI runs `npm run check` and `npm run build` on Node.js 24 and checks that the Docker image starts and serves the gallery.
+The Node tests cover form input parsing, server-owned prices, validation, serialization, gallery mail previews and escaping, theme preferences, lazy configuration, and cancellation. CI runs `npm run check` and `npm run build` on Node.js 24 and checks that the Docker image starts and serves the gallery.
 
 This repository intentionally has no project-specific auth, payment, analytics, storage provider, or user data copied from either source project.
