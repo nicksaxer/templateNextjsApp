@@ -37,7 +37,7 @@ Read `docs/architecture.md` before changing structure, data flow, persistence, c
 
 - Use Node.js 24, npm, and the committed lockfile (`npm ci`).
 - Run `npm run check`; run `npm run build` for routing, configuration, dependencies, server/client, or production changes.
-- For relevant UI changes, build and run `npm run test:e2e` against production. Add tests for meaningful behavior without mirroring trivial implementation.
+- Add tests for meaningful behavior without mirroring trivial implementation.
 - Read version-specific Next.js documentation in `node_modules/next/dist/docs/` before changing framework behavior.
 - Never weaken checks to make them pass. Distinguish mocked or local validation from live integration verification.
 - Keep secrets out of code/logs. Update `.env.example`, README, and architecture documentation when lasting conventions change.

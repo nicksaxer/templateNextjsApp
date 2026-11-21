@@ -10,13 +10,12 @@ Use Node.js 24 and npm:
 
 ```sh
 npm ci
-npx playwright install chromium
 npm run dev
 ```
 
 Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. The production app runs with `npm run build` and `npm run start`.
 
-Unit and browser tests run on startup and rerun when you save changes in `src`, `tests`, or `public`. Results appear in the dev terminal. Install the Playwright browser once or use `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to point to an existing Chromium. Use `npm run dev:server` to run just Next.js.
+`npm run dev` starts Next.js with hot reload. Run `npm run check` when you want to run lint, type checking, and tests.
 
 ## Docker and Portainer
 
@@ -43,7 +42,7 @@ docker compose up -d --pull never
 
 The dev server allows `3000--main--seppos--nicksaxer.dev.guildmarket.net`, matching the existing SeppOS workspace. Localhost remains supported automatically. For another workspace, update `allowedDevOrigins` in `next.config.ts` with its exact browser hostname (no `https://`, port, or path), then restart `npm run dev`.
 
-If HTML/CSS loads but clicks do nothing, check the browser console and terminal for blocked `/_next/` requests. The production and development servers have different asset checks, so the browser suite runs against both. Coder’s port subdomain is the supported workspace entry point; a path-based proxy needs its own routing setup.
+If HTML/CSS loads but clicks do nothing, check the browser console and terminal for blocked `/_next/` requests. Use Coder’s port subdomain to open the app. A path-based proxy needs its own routing setup.
 
 ## Structure
 
@@ -160,11 +159,8 @@ Types are `info`, `warning`, `error`, and `success`. Content accepts plain text 
 ```sh
 npm run check       # lint, strict typecheck, backend/utility tests
 npm run build       # production compile and route validation
-npx playwright install chromium
-npm run test:e2e    # starts the production server; build first
-PLAYWRIGHT_DEV=1 npm run test:e2e  # development interactions and origin checks
 ```
 
-Backend tests cover validation, forged prices, serialization, FormData failures, checkbox semantics, mail escaping/template allowlisting, lazy configuration, and cancellation. Browser tests cover form failure/retry/success, email rendering, reset behavior, loading/empty states, motion, keyboard tabs/dialog focus, theme reload/navigation, mobile gallery layout, reduced motion, and error-free client execution. CI runs these checks on Node.js 24 using the Chrome already installed on GitHub's Ubuntu 24.04 runner. Local browser tests use Playwright's Chromium by default; `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` can select an existing browser instead.
+Backend and utility tests cover validation, forged prices, serialization, FormData failures, checkbox semantics, mail escaping/template allowlisting, lazy configuration, and cancellation. CI runs `npm run check` and `npm run build` on Node.js 24 and checks that the Docker image starts and serves the gallery.
 
 This repository intentionally has no project-specific auth, payment, analytics, storage provider, or user data copied from either source project.
