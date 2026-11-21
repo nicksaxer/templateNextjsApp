@@ -6,5 +6,5 @@ export default defineConfig([
     ...nextVitals,
     ...nextTs,
     {rules: {'@typescript-eslint/no-unused-vars': ['error', {argsIgnorePattern: '^_'}]}},
-    globalIgnores(['.next/**', 'out/**', 'next-env.d.ts', 'playwright-report/**', 'test-results/**'])
+    globalIgnores(['.next/**', 'out/**', 'next-env.d.ts'])
 ]);

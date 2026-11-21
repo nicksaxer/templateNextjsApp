@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { renderMail } from '../src/backend/03_services/system/mail.service';
+import { getShowcase } from '../src/backend/04_queries/example/showcase.query';
 import { AppError } from '../src/backend/06_utils/error.util';
 import { getMailConfig, requiredEnv } from '../src/backend/00_config/env.config';
 
@@ -13,6 +14,14 @@ test('mail rendering includes layout and partials and escapes all substituted us
     assert.doesNotMatch(mail.html, /{{/);
     assert.match(mail.text, /<img/);
     assert.equal(mail.subject, 'Welcome to Component library');
+});
+
+test('the gallery receives rendered welcome and project email previews', async () => {
+    const {mails} = await getShowcase();
+    assert.equal(mails.length, 2);
+    assert.match(mails[0].html, /Welcome, <span[^>]*>Alex<\/span>!/);
+    assert.match(mails[1].html, /<h1[^>]*>Sunday Studio<\/h1>/);
+    assert.match(mails[1].html, /CHF 57\.00/);
 });
 
 test('unknown template names cannot traverse the filesystem', async () => {

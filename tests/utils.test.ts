@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import delay from '../src/frontend/utils/delay';
 import { formatDate } from '../src/frontend/utils/format';
+import { getTheme } from '../src/frontend/utils/prefs';
 
 test('delay supports cancellation before and during a pending operation', async () => {
     const controller = new AbortController();
@@ -13,4 +14,11 @@ test('delay supports cancellation before and during a pending operation', async 
 
 test('date formatting is deterministic across server and browser timezones', () => {
     assert.equal(formatDate('2026-11-05T23:59:59Z'), formatDate('2026-11-05T00:00:00Z'));
+});
+
+test('a saved light theme is respected and missing or invalid preferences default to dark', () => {
+    assert.equal(getTheme('light'), 'light');
+    assert.equal(getTheme('dark'), 'dark');
+    assert.equal(getTheme(undefined), 'dark');
+    assert.equal(getTheme('sepia'), 'dark');
 });

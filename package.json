@@ -3,15 +3,14 @@
     "version": "0.1.1",
     "description": "Reusable Next.js foundation with numbered backend layers and a live component playground",
     "scripts": {
-        "dev": "node scripts/dev.mts",
-        "dev:server": "next dev",
+        "predev": "npm test",
+        "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "version": "node scripts/sync-compose-version.mjs",
         "lint": "eslint",
         "typecheck": "tsc --noEmit",
         "test": "node --conditions=react-server --import tsx --test tests/*.test.ts",
-        "test:e2e": "playwright test",
         "check": "npm run lint && npm run typecheck && npm test"
     },
     "dependencies": {
@@ -30,7 +29,6 @@
         "server-only": "^0.0.1"
     },
     "devDependencies": {
-        "@playwright/test": "^1.64.1",
         "@types/node": "^24.19.2",
         "@types/nodemailer": "^8.0.2",
         "@types/react": "^19.3.0",
