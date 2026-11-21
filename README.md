@@ -15,7 +15,7 @@ npm run dev
 
 Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. The production app runs with `npm run build` and `npm run start`.
 
-`npm run dev` runs the Node tests once, then starts Next.js with hot reload. Run `npm run check` for lint, type checking, and the same tests.
+`npm run dev` starts Next.js with hot reload and runs the Node tests. Saves in `src`, `tests`, or `public` rerun the full suite. Test results appear under `[test]` in the dev terminal, and Next.js keeps serving while you fix failures. Run `npm run check` for lint, type checking, and a one-time test run.
 
 ## Docker and Portainer
 
