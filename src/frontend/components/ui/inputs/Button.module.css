@@ -1,66 +1,113 @@
 .button {
+    position: relative;
     padding: 0 1em;
     width: fit-content;
     height: 3em;
-    border-radius: 0.55em;
-    border: 2px solid var(--accent);
+    border: none;
+    background: transparent;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 0.5em;
-    background-color: var(--button-background);
-    transition: 0.2s;
     font-weight: 500;
     line-height: 0;
     text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s, opacity 0.2s;
+
+    /* Default hover expansion: wider horizontally, slightly shorter vertically */
+    --btn-bg: var(--button-background);
+    --btn-border: 2px solid var(--accent);
+    --btn-radius: 0.6em;
+    --btn-shadow: none;
+    --expand-x: 0.3em;
+    --expand-y: -0.1em;
 }
 
-.filled {
-    background-color: var(--accent);
+.button > * {
+    position: relative;
+    z-index: 1;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    z-index: 0;
+    border-radius: var(--btn-radius);
+    border: var(--btn-border);
+    background-color: var(--btn-bg);
+    box-shadow: var(--btn-shadow);
+    transition:
+        inset 0.2s,
+        background-color 0.2s,
+        border-color 0.2s,
+        border-radius 0.2s,
+        box-shadow 0.2s;
+}
+
+.button:not(:disabled):hover,
+.button:not(:disabled):focus-visible {
+    z-index: 10;
+    color: white;
+    --btn-bg: var(--accent);
+    --btn-shadow: 0px 0px 15px var(--accent);
+    --btn-radius: 0.8em;
+}
+
+.button:not(:disabled):hover::before,
+.button:not(:disabled):focus-visible::before {
+    inset: calc(var(--expand-y) * -1) calc(var(--expand-x) * -1);
+}
+
+/* Variants */
+.button.filled {
+    --btn-bg: var(--accent);
     color: white;
 }
 
-.wide {
+.button.wide {
     padding: 0 2em;
 }
 
-.button:hover {
-    background-color: var(--accent);
-    color: white;
-    box-shadow: 0px 0px 15px var(--accent);
-}
-
-.buttonSimple {
-    border: none;
-    background-color: rgb(from var(--grey) r g b / 0.2);
+.button.buttonSimple {
+    --btn-border: none;
+    --btn-bg: rgb(from var(--grey) r g b / 0.2);
     height: 2em;
     color: var(--foreground);
+    --expand-x: 0px;
+    --expand-y: 0px;
 }
 
-.buttonSimple:hover {
-    box-shadow: none;
-    background-color: rgb(from var(--grey) r g b / 0.4);
+.button.buttonSimple:not(:disabled):hover,
+.button.buttonSimple:not(:disabled):focus-visible {
+    --btn-shadow: none;
+    --btn-bg: rgb(from var(--grey) r g b / 0.4);
     color: var(--foreground);
+    --btn-radius: 0.7em;
 }
 
-.buttonSimple.filled {
-    background-color: rgb(from var(--brightaccent) r g b / 0.2);
+.button.buttonSimple.filled {
+    --btn-bg: rgb(from var(--brightaccent) r g b / 0.2);
 }
 
-.buttonSimple:hover.filled {
-    background-color: rgb(from var(--brightaccent) r g b / 0.5);
+.button.buttonSimple.filled:not(:disabled):hover,
+.button.buttonSimple.filled:not(:disabled):focus-visible {
+    --btn-bg: rgb(from var(--brightaccent) r g b / 0.5);
 }
 
 .icon {
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
 
-.iconOnly {
+.button.iconOnly {
     padding: 0;
     width: 2.5rem;
     height: 2.5rem;
     flex-shrink: 0;
+    --expand-x: 0px;
+    --expand-y: 0px;
 }
 
 .iconOnly > svg,
@@ -69,24 +116,26 @@
 }
 
 .button.danger {
-    border-color: var(--error);
-    background-color: var(--lightred);
+    --btn-border: 2px solid var(--error);
+    --btn-bg: var(--lightred);
     color: var(--error);
 }
 
 .button.danger.filled {
-    background-color: var(--error);
+    --btn-bg: var(--error);
     color: white;
 }
 
-.button.danger:hover {
-    background-color: var(--error);
+.button.danger:not(:disabled):hover,
+.button.danger:not(:disabled):focus-visible {
+    --btn-bg: var(--error);
     color: white;
-    box-shadow: 0 0 15px var(--error);
+    --btn-shadow: 0 0 15px var(--error);
 }
 
-.buttonSimple.danger:hover {
-    box-shadow: none;
+.button.buttonSimple.danger:not(:disabled):hover,
+.button.buttonSimple.danger:not(:disabled):focus-visible {
+    --btn-shadow: none;
 }
 
 .button:disabled {

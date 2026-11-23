@@ -2,8 +2,8 @@ import 'server-only';
 import { examplePlans } from '@backend/config/example.config';
 import { ProjectModel } from '@backend/models';
 import type { ProjectDraft } from '@backend/types';
-import { validateProjectInput } from '../../06_utils/example.validation';
-import { AppError } from '../../06_utils/error.util';
+import { validateProjectInput } from '@backend/utils/example.validation';
+import { AppError } from '@backend/utils/error.util';
 
 export function getExamplePlans() {
     return examplePlans.map(plan => ({...plan}));

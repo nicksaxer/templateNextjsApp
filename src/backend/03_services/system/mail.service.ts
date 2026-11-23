@@ -6,7 +6,7 @@ import nodemailer from 'nodemailer';
 import { appConfig } from '@backend/config/app.config';
 import { getMailConfig } from '@backend/config/env.config';
 import type { MailValues, RenderedMail, MailDelivery } from '@backend/types';
-import { AppError } from '../../06_utils/error.util';
+import { AppError } from '@backend/utils/error.util';
 
 const templateRoot = path.join(process.cwd(), 'src/backend/07_mailtemplates');
 const templateNames = {welcome: 'welcome.html', project: 'project.html'} as const;

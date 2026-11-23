@@ -24,13 +24,15 @@
     --menu-button: var(--mediumaccent);
 
     color-scheme: dark;
+
+    --fa-width: auto;
 }
 
 :root[data-theme='light'] {
-    --background: #f7f8fa;
+    --background: #fafafa;
     --foreground: #171717;
-    --grey: #474a50;
-    --border: #e2e5e9;
+    --grey: #474747;
+    --border: #dfdfdf;
     --success: #00d81d;
 
     --button-background: rgb(from var(--accent) r g b / 0.1);

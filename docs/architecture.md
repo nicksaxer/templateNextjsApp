@@ -23,7 +23,7 @@ The backend layers are ordered by responsibility, not a rule requiring a wrapper
 | `06_utils` | Domain validation, error conversion and supporting server helpers |
 | `07_mailtemplates` | HTML base, partials, and allowlisted templates |
 
-Services may perform data access directly; do not introduce a repository layer merely to forward arguments. Organize new domain code within feature folders in the existing layers. Retain the aliases in `tsconfig.json`.
+Services may perform data access directly; do not introduce a repository layer merely to forward arguments. Organize new domain code within feature folders in the existing layers. Use the `tsconfig.json` aliases across features and layers, including when tests import from `src`. Plain Node tests import utility modules through `@backend/utils/*` to avoid loading the Next.js navigation code exported by the utility barrel.
 
 ## Data flow
 
@@ -63,4 +63,4 @@ The default palette is GuildMarket and the default theme is dark. Component CSS 
 
 Remove example domain files together and replace the pages/modules with your own feature. Keep reusable UI and backend infrastructure according to actual needs. Add environment variables with placeholders and setup documentation. Keep future product rules in their feature rather than spreading them through universal controls.
 
-Use the installed Next.js documentation for version-specific APIs. The lockfile, Node.js pin, package scripts and CI workflow define reproducible verification. `npm run dev` runs the Node tests once before starting Next.js with hot reload. `npm run check` runs lint, type checking, and the same tests without live services. A live database or SMTP integration requires development credentials.
+Use the installed Next.js documentation for version-specific APIs. The lockfile, Node.js pin, package scripts and CI workflow define reproducible verification. `npm run dev` starts Next.js and uses Node's built-in watcher to run the full test suite at startup and on changes in `src`, `scripts`, or `public`. The Node tests live in `scripts/tests`. `npm run check` runs lint, type checking, and the same tests without live services. A live database or SMTP integration requires development credentials.

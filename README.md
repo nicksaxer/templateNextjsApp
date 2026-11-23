@@ -15,7 +15,7 @@ npm run dev
 
 Open http://localhost:3000. No environment variables, database, SMTP server, or account are needed. The production app runs with `npm run build` and `npm run start`.
 
-`npm run dev` runs the Node tests once, then starts Next.js with hot reload. Run `npm run check` for lint, type checking, and the same tests.
+`npm run dev` starts Next.js with hot reload and runs the Node tests. Changes on disk in `src`, `scripts`, or `public` rerun the full suite after 1.5 seconds without another change. Look for the `[test]` heading in the dev terminal. Next.js keeps serving while you fix failures. Run `npm run check` for lint, type checking, and a one-time test run.
 
 ## Docker and Portainer
 
@@ -26,7 +26,7 @@ One `compose.yaml` works on local Docker Standalone and remote Agent environment
 3. For a private copy of the project, configure Git authentication for the repository and add an authenticated `ghcr.io` custom registry for the image. Use a classic GitHub token with `read:packages` and access to the package. [Portainer registry setup](https://docs.portainer.io/admin/registries/add/custom) · [GitHub registry authentication](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
 4. For later deployments, use **Pull and redeploy** once publication succeeds. Each successful default-branch build publishes the same image as `latest` and under its package version. The Portainer image status badge compares the local image against the registry. [Portainer image status](https://docs.portainer.io/user/docker/containers)
 
-Run `npm version patch` (or `minor` or `major`) to update the package files and Compose tag in one release commit. GitHub uses that package version for the Docker build, which sets the image's `org.opencontainers.image.version` label. The footer reads the same version. For example, Portainer deploys `ghcr.io/nicksaxer/templatenextjsapp:0.1.0` and the footer shows `v0.1.0`.
+Run `npm version patch` (or `minor` or `major`) to update the package files. The npm version hook runs `scripts/sync-compose-version.mjs` to put the same image tag in `compose.yaml` and stage it for the release commit. GitHub uses the package version for the Docker build, which sets the image's `org.opencontainers.image.version` label. The footer reads the same version. For example, Portainer deploys `ghcr.io/nicksaxer/templatenextjsapp:0.1.0` and the footer shows `v0.1.0`.
 
 For a repo created from this template, GitHub publishes to the lowercase repository path under `ghcr.io`. Update the default image name in `compose.yaml` or set `APP_IMAGE` to that path without the tag in Portainer.
 
@@ -48,6 +48,7 @@ If HTML/CSS loads but clicks do nothing, check the browser console and terminal 
 
 | Location | Responsibility |
 | --- | --- |
+| `scripts` | Development launcher, Node tests, and Compose version hook |
 | `src/app/(frontend)/(public)` | Pages composing frontend modules |
 | `src/app/(frontend)` | Document layout, theme, global tokens, loading/error/not-found boundaries |
 | `src/app/api` | HTTP interfaces; includes a minimal health endpoint |
@@ -66,7 +67,7 @@ If HTML/CSS loads but clicks do nothing, check the browser console and terminal 
 | `src/backend/06_utils` | Form parsing, domain validation, AppError, action/HTTP error handling |
 | `src/backend/07_mailtemplates` | Handlebars base, header/footer partials, welcome and project templates |
 
-Aliases preserve the existing projects' conventions: `@frontend/*`, `@backend/config/*`, `@backend/types`, `@backend/models`, `@backend/services/*`, `@backend/queries/*`, `@backend/actions/*`, and `@backend/utils`.
+Use the project aliases for imports across features and layers. They include `@frontend/*`, `@backend/config/*`, `@backend/types`, `@backend/models`, `@backend/services/*`, `@backend/queries/*`, `@backend/actions/*`, `@backend/utils`, and `@backend/utils/*`.
 
 ## Reuse for a new project
 
