@@ -12,6 +12,7 @@ const shutdown = new AbortController();
 const {signal} = shutdown;
 let testRun = Promise.resolve();
 let queued = false;
+let runAfter = 0;
 
 function stop(code: number, error?: unknown) {
     if (signal.aborted) {return;}
@@ -26,11 +27,16 @@ server.once('close', code => stop(code ?? 1));
 process.once('SIGINT', () => stop(130));
 process.once('SIGTERM', () => stop(143));
 
-function queueTests() {
-    if (queued || signal.aborted) {return;}
+function queueTests(wait = 0) {
+    if (signal.aborted) {return;}
+    runAfter = performance.now() + wait;
+    if (queued) {return;}
     queued = true;
     testRun = testRun.then(async () => {
-        await delay(150, undefined, {signal});
+        for (let remaining = runAfter - performance.now(); remaining > 0; remaining = runAfter - performance.now()) {
+            await delay(Math.ceil(remaining), undefined, {signal});
+        }
+        if (signal.aborted) {return;}
         queued = false;
         console.log('\n[test] Running Node tests');
         const report = run({globPatterns: ['scripts/tests/*.test.ts'], execArgv: ['--conditions=react-server', '--import', 'tsx'], concurrency: true, signal}).compose(spec);
@@ -41,7 +47,7 @@ function queueTests() {
 
 try {
     for (const directory of ['src', 'scripts', 'public'].filter(existsSync)) {
-        watch(directory, {recursive: true, signal}, queueTests).on('error', error => stop(1, error));
+        watch(directory, {recursive: true, signal}, () => queueTests(1500)).on('error', error => stop(1, error));
     }
     queueTests();
 } catch (error) {stop(1, error);}
