@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import delay from '../src/frontend/utils/delay';
-import { formatDate } from '../src/frontend/utils/format';
-import { getTheme } from '../src/frontend/utils/prefs';
+import delay from '@frontend/utils/delay';
+import { formatDate } from '@frontend/utils/format';
+import { getTheme } from '@frontend/utils/prefs';
 
 test('delay supports cancellation before and during a pending operation', async () => {
     const controller = new AbortController();

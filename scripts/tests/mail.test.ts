@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { renderMail } from '../src/backend/03_services/system/mail.service';
-import { getShowcase } from '../src/backend/04_queries/example/showcase.query';
-import { AppError } from '../src/backend/06_utils/error.util';
-import { getMailConfig, requiredEnv } from '../src/backend/00_config/env.config';
+import { renderMail } from '@backend/services/system/mail.service';
+import { getShowcase } from '@backend/queries/example/showcase.query';
+import { AppError } from '@backend/utils';
+import { getMailConfig, requiredEnv } from '@backend/config/env.config';
 
 test('mail rendering includes layout and partials and escapes all substituted user content', async () => {
     const mail = await renderMail({type: 'welcome', name: '<img src=x onerror=alert(1)>'});
