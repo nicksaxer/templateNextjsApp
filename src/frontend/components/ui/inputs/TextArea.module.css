@@ -19,8 +19,7 @@
     font-size: 0.8em;
 }
 
-.wrapper:hover > .label,
-.wrapper:focus-within > .label {
+.wrapper:hover > .label, .wrapper:focus-within > .label {
     background-color: transparent;
     color: var(--foreground);
     top: -0.9em;
@@ -44,8 +43,7 @@
     width: 100%;
 }
 
-.wrapper:hover > .input,
-.wrapper:focus-within > .input {
+.wrapper:hover > .input, .wrapper:focus-within > .input {
     background-color: rgb(from var(--accent) r g b / 0.3);
 }
 
@@ -57,7 +55,7 @@
     border-color: var(--error);
 }
 
-.wrapper:hover > .input[aria-invalid='true'] {
+.wrapper:hover > .input[aria-invalid='true'], .wrapper:focus-within > .input[aria-invalid='true'] {
     background-color: rgb(from var(--error) r g b / 0.2);
 }
 

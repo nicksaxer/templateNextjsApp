@@ -148,7 +148,7 @@
     border-color: var(--error);
 }
 
-.wrapper:hover > .input[aria-invalid='true'] {
+.wrapper:hover > .input[aria-invalid='true'], .wrapper:focus-within > .input[aria-invalid='true'] {
     background-color: rgb(from var(--error) r g b / 0.2);
 }
 
