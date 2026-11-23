@@ -3,14 +3,13 @@
     "version": "0.1.1",
     "description": "Reusable Next.js foundation with numbered backend layers and a live component playground",
     "scripts": {
-        "dev": "concurrently --kill-others --names next,test --passthrough-arguments \"next dev {@}\" \"npm:test:watch\" --",
+        "dev": "node scripts/dev.mts",
         "build": "next build",
         "start": "next start",
         "version": "node scripts/sync-compose-version.mjs",
         "lint": "eslint",
         "typecheck": "tsc --noEmit",
         "test": "node --conditions=react-server --import tsx --test \"tests/*.test.ts\"",
-        "test:watch": "nodemon --quiet --watch src --watch tests --watch public --ext \"*\" --exec \"npm test --silent\"",
         "check": "npm run lint && npm run typecheck && npm test"
     },
     "dependencies": {
@@ -33,10 +32,8 @@
         "@types/nodemailer": "^8.0.2",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
-        "concurrently": "^10.0.7",
         "eslint": "^9.39.5",
         "eslint-config-next": "^16.4.5",
-        "nodemon": "^3.1.14",
         "tsx": "^4.23.15",
         "typescript": "^5.9.3"
     },
