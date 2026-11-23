@@ -33,7 +33,7 @@ function queueTests() {
         await delay(150, undefined, {signal});
         queued = false;
         console.log('\n[test] Running Node tests');
-        const report = run({globPatterns: ['scripts/*.test.ts'], execArgv: ['--conditions=react-server', '--import', 'tsx'], concurrency: true, signal}).compose(spec);
+        const report = run({globPatterns: ['scripts/tests/*.test.ts'], execArgv: ['--conditions=react-server', '--import', 'tsx'], concurrency: true, signal}).compose(spec);
         report.pipe(process.stdout, {end: false});
         await finished(report, {cleanup: true});
     }).catch(error => stop(1, error));

@@ -1,5 +1,5 @@
 import 'server-only';
-import { AppError } from '../06_utils/error.util';
+import { AppError } from '@backend/utils/error.util';
 
 export function requiredEnv(name: string): string {
     const value = process.env[name];

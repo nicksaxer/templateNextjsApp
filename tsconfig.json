@@ -45,6 +45,9 @@
       ],
       "@backend/utils": [
         "./src/backend/06_utils/index.ts"
+      ],
+      "@backend/utils/*": [
+        "./src/backend/06_utils/*"
       ]
     },
     "allowJs": true

@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createProjectDraft } from '@backend/services/example/project.service';
-import { validateProjectInput } from '../../src/backend/06_utils/example.validation';
-import { getRequiredString, getCheckbox, AppError } from '@backend/utils';
+import { validateProjectInput } from '@backend/utils/example.validation';
+import { getRequiredString, getCheckbox } from '@backend/utils/action-input.utils';
+import { AppError } from '@backend/utils/error.util';
 
 const valid = {name: '  Sunday Studio  ', email: 'Alex@Example.com', plan: 'studio', seats: 3, notes: 'A small idea.', updates: true};
 

@@ -9,6 +9,7 @@ Read `docs/architecture.md` before changing structure, data flow, persistence, c
 - For JavaScript, TypeScript, and HTML, keep function signatures, calls, imports, destructuring, and simple expressions on one line when readable. CSS follows the separate formatting rule above.
 - Prefer compact guards: `if (invalid) {throw new AppError(...);}`.
 - Preserve naming, capitalization, terminology, aliases, component props, and export patterns.
+- Use the aliases in `tsconfig.json` when importing across features or layers and when tests import from `src`. Use relative imports for nearby files within the same feature.
 - Use meaningful types and type-only imports for client-safe contracts. Avoid `any`, unchecked assertions, and suppressions used to hide errors.
 - Use straightforward implementations. Avoid unrelated refactors, speculative layers, and boilerplate.
 

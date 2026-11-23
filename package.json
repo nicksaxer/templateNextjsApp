@@ -9,7 +9,7 @@
         "version": "node scripts/sync-compose-version.mjs",
         "lint": "eslint",
         "typecheck": "tsc --noEmit",
-        "test": "node --conditions=react-server --import tsx --test \"scripts/*.test.ts\"",
+        "test": "node --conditions=react-server --import tsx --test \"scripts/tests/*.test.ts\"",
         "check": "npm run lint && npm run typecheck && npm test"
     },
     "dependencies": {

@@ -67,7 +67,7 @@ If HTML/CSS loads but clicks do nothing, check the browser console and terminal 
 | `src/backend/06_utils` | Form parsing, domain validation, AppError, action/HTTP error handling |
 | `src/backend/07_mailtemplates` | Handlebars base, header/footer partials, welcome and project templates |
 
-Aliases preserve the existing projects' conventions: `@frontend/*`, `@backend/config/*`, `@backend/types`, `@backend/models`, `@backend/services/*`, `@backend/queries/*`, `@backend/actions/*`, and `@backend/utils`.
+Use the project aliases for imports across features and layers. They include `@frontend/*`, `@backend/config/*`, `@backend/types`, `@backend/models`, `@backend/services/*`, `@backend/queries/*`, `@backend/actions/*`, `@backend/utils`, and `@backend/utils/*`.
 
 ## Reuse for a new project
 

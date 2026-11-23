@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { renderMail } from '@backend/services/system/mail.service';
 import { getShowcase } from '@backend/queries/example/showcase.query';
-import { AppError } from '@backend/utils';
+import { AppError } from '@backend/utils/error.util';
 import { getMailConfig, requiredEnv } from '@backend/config/env.config';
 
 test('mail rendering includes layout and partials and escapes all substituted user content', async () => {
