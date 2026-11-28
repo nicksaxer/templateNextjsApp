@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { type SubmitEvent, useEffect, useRef, useState } from 'react';
 import Card from '@frontend/components/ui/elements/Card';
+import Dialog from '@frontend/components/ui/elements/Dialog';
 import AlertBadge from '@frontend/components/ui/elements/AlertBadge';
 import Badge from '@frontend/components/ui/elements/Badge';
 import EmptyState from '@frontend/components/ui/elements/EmptyState';
@@ -29,6 +30,8 @@ export default function FeedbackShowcase() {
     const [alertStatus, setAlertStatus] = useState('');
     const [alertTitle, setAlertTitle] = useState('Example alert');
     const [alertContent, setAlertContent] = useState('Example alert message.');
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogName, setDialogName] = useState('');
     const controller = useRef<AbortController | null>(null);
     useEffect(() => () => controller.current?.abort(), []);
     async function reload() {
@@ -38,6 +41,11 @@ export default function FeedbackShowcase() {
         try {await delay(1400, controller.current.signal); setLoaded(true);}
         catch {return;}
         finally {setLoading(false);}
+    }
+    function saveDialog(event: SubmitEvent<HTMLFormElement>) {
+        event.preventDefault();
+        setDialogName(String(new FormData(event.currentTarget).get('name') ?? ''));
+        setDialogOpen(false);
     }
     return (
         <section id="feedback" className={styles.section}>
@@ -111,6 +119,20 @@ export default function FeedbackShowcase() {
                             </div>
                         ) : <EmptyState title="No items" icon={<Icon name="box-seam" />} action={<Button onClick={() => setItems(1)}>Add item</Button>}>Example empty state.</EmptyState>}
                     </Card>
+                    <h3>Dialog</h3>
+                    <Button onClick={() => setDialogOpen(true)}>Open dialog</Button>
+                    <p role="status">{dialogName ? `Saved name: ${dialogName}` : 'No name saved yet.'}</p>
+                    {dialogOpen && (
+                        <Dialog title="Example dialog" onClose={() => setDialogOpen(false)}>
+                            <form onSubmit={saveDialog} className={styles.dialogForm}>
+                                <TextInput label="Name" name="name" defaultValue={dialogName} required />
+                                <div className={styles.buttonRow}>
+                                    <Button type="submit" filled>Save</Button>
+                                    <Button simple onClick={() => setDialogOpen(false)}>Cancel</Button>
+                                </div>
+                            </form>
+                        </Dialog>
+                    )}
                 </div>
             </div>
         </section>

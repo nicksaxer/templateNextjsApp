@@ -1,9 +1,10 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import cx from '@frontend/utils/classNames';
 import styles from './Card.module.css';
 
-export default function Card({ title, description, action, children, className, ...props}: Omit<ComponentPropsWithoutRef<'section'>, 'title'> & {title?: string; description?: string; action?: ReactNode}) {
+export default function Card({title, description, action, children, className, ...props}: Omit<ComponentPropsWithoutRef<'section'>, 'title'> & {title?: string; description?: string; action?: ReactNode}) {
     return (
-        <section {...props} className={`${styles.card}${className ? ` ${className}` : ''}`}>
+        <section {...props} className={cx(styles.card, className)}>
             {(title || action) && (
                 <div className={styles.cardHeader}>
                     <div>

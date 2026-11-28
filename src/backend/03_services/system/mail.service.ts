@@ -7,6 +7,7 @@ import { appConfig } from '@backend/config/app.config';
 import { getMailConfig } from '@backend/config/env.config';
 import type { MailValues, RenderedMail, MailDelivery } from '@backend/types';
 import { AppError } from '@backend/utils/error.util';
+import { isEmail } from '@backend/utils/validation.util';
 
 const templateRoot = path.join(process.cwd(), 'src/backend/07_mailtemplates');
 const templateNames = {welcome: 'welcome.html', project: 'project.html'} as const;
@@ -28,7 +29,7 @@ export async function renderMail(values: MailValues): Promise<RenderedMail> {
 
 // Server integrations call this deliberately. No public action exposes SMTP delivery.
 export async function sendMail(recipient: string, values: MailValues): Promise<void> {
-    if (recipient.length > 254 || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(recipient)) {throw new AppError(400, 'Invalid recipient.');}
+    if (!isEmail(recipient)) {throw new AppError(400, 'Invalid recipient.');}
     const {from, ...config} = getMailConfig();
     const mail = await renderMail(values);
     await nodemailer.createTransport(config).sendMail({from, to: recipient, ...mail});

@@ -55,8 +55,8 @@ If HTML/CSS loads but clicks do nothing, check the browser console and terminal 
 | `src/frontend/components/layout` | Container; gallery appearance controls live with the examples |
 | `src/frontend/components/modules` | Showcase gallery and reusable Alert module |
 | `src/frontend/components/ui/inputs` | Button, TextInput, NumberInput, SelectInput, TextArea, Switch, Checkbox, shared field behavior |
-| `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, inline Alert, Badge, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Icon, NavigationLink, ProfilePicture |
-| `src/frontend/components/ui/animations` | SlideDown and FadeIn |
+| `src/frontend/components/ui/elements` | ErrorMessage, InfoBox, inline Alert, Badge, Dialog, LoadingIndicator, Skeleton, Progress, EmptyState, Card, HLine, Accordion, Tabs, Icon, NavigationLink, ProfilePicture |
+| `src/frontend/components/ui/animations` | SlideDown, FadeIn, and the `useSlidingHighlight` hook used by Tabs |
 | `src/frontend/utils` | Formatting, class names, cancellable delay, theme preferences |
 | `src/backend/00_config` | App, environment, MongoDB, example plans and limits |
 | `src/backend/01_types` | Client-safe action results, DTOs, example domain and mail contracts |

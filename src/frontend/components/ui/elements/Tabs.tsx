@@ -1,6 +1,8 @@
 'use client';
 
-import { Children, isValidElement, type KeyboardEvent, type ReactElement, type ReactNode, useId, useLayoutEffect, useRef, useState } from 'react';
+import { Children, isValidElement, type KeyboardEvent, type ReactElement, type ReactNode, useId, useRef, useState } from 'react';
+import cx from '@frontend/utils/classNames';
+import useSlidingHighlight from '../animations/useSlidingHighlight';
 import styles from './Tabs.module.css';
 
 interface TabProps {
@@ -31,43 +33,7 @@ export default function Tabs({children, label, activeId, onChange, center = fals
     const tabIds = tabs.map((tab, index) => tab.props.id ?? String(index));
     const active = Math.max(0, activeId === undefined ? tabs.findIndex(tab => tab.key === selectedKey) : tabIds.indexOf(activeId));
 
-    useLayoutEffect(() => {
-        const list = listRef.current;
-        const highlight = highlightRef.current;
-        const button = list?.querySelector<HTMLButtonElement>('[aria-selected="true"]');
-        if (!list || !highlight || !button) {return;}
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        const cancelAnimation = () => highlight.getAnimations().forEach(animation => animation.cancel());
-
-        const align = (animate: boolean) => {
-            const next = {left: `${button.offsetLeft}px`, top: `${button.offsetTop}px`, width: `${button.offsetWidth}px`, height: `${button.offsetHeight}px`};
-            if (Object.entries(next).every(([key, value]) => highlight.style.getPropertyValue(key) === value)) {return;}
-
-            // Sample the visible frame so rapid switches continue from the current position.
-            const {left, top, width, height, scale} = getComputedStyle(highlight);
-            const move = animate && highlight.hasAttribute('data-ready') && !reducedMotion.matches;
-            cancelAnimation();
-            Object.assign(highlight.style, next);
-            highlight.dataset.ready = '';
-            if (move) {
-                highlight.animate([
-                    {left, top, width, height, scale},
-                    {scale: '1.12 0.82', offset: 0.5},
-                    {...next, scale: '1'}
-                ], {duration: 320, easing: 'cubic-bezier(0.25, 0.65, 0.35, 1)'});
-            }
-        };
-
-        align(true);
-        const observer = new ResizeObserver(() => align(false));
-        observer.observe(list);
-        list.querySelectorAll('[role="tab"]').forEach(tab => observer.observe(tab));
-        reducedMotion.addEventListener('change', cancelAnimation);
-        return () => {
-            observer.disconnect();
-            reducedMotion.removeEventListener('change', cancelAnimation);
-        };
-    });
+    useSlidingHighlight(listRef, highlightRef, '[aria-selected="true"]', `${active}/${tabs.length}`);
 
     function select(index: number) {
         if (activeId === undefined) {setSelectedKey(tabs[index].key);}
@@ -88,8 +54,8 @@ export default function Tabs({children, label, activeId, onChange, center = fals
 
     if (!tabs.length) {return null;}
     return (
-        <div className={className ? ` ${className}` : ''}>
-            <div ref={listRef} role="tablist" aria-label={label} className={center ? `${styles.tabs} ${styles.center}` : styles.tabs}>
+        <div className={className}>
+            <div ref={listRef} role="tablist" aria-label={label} className={cx(styles.tabs, center && styles.center)}>
                 <span ref={highlightRef} className={styles.highlight} aria-hidden="true" />
                 {tabs.map((tab, index) => (
                     <button key={tab.key} id={`${id}-tab-${index}`} type="button" role="tab" aria-selected={active === index} aria-controls={`${id}-panel-${index}`} tabIndex={active === index ? 0 : -1} onClick={() => select(index)} onKeyDown={event => keyDown(event, index)}>

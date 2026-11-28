@@ -1,0 +1,60 @@
+.dialog {
+    width: min(34rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 2px solid var(--border);
+    border-radius: 1rem;
+    background: var(--background);
+    color: var(--foreground);
+    box-shadow: 0 24px 64px rgb(0 0 0 / 0.35);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transition: translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+}
+
+.dialog::backdrop {
+    background: rgb(0 0 0 / 0.5);
+    backdrop-filter: blur(3px);
+}
+
+@starting-style {
+    .dialog[open] {
+        translate: 0 1rem;
+        opacity: 0;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.header h2 {
+    display: block;
+    margin: 0;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+}
+
+/* Phones get a bottom sheet that keeps the form within thumb reach. */
+@media (max-width: 600px) {
+    .dialog {
+        width: 100%;
+        max-width: 100%;
+        max-height: 92dvh;
+        margin: auto 0 0;
+        border-width: 2px 0 0;
+        border-radius: 1.25rem 1.25rem 0 0;
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+
+    @starting-style {
+        .dialog[open] {
+            translate: 0 100%;
+            opacity: 1;
+        }
+    }
+}
