@@ -9,6 +9,8 @@ Read `docs/architecture.md` before changing structure, data flow, or server/clie
 - Compact guards: `if (invalid) {throw new AppError(...);}`
 - CSS: four-space indentation, one declaration per line, a blank line between rules. Never single-line blocks.
 - Use the `tsconfig.json` aliases across features/layers and in tests; relative imports within a feature.
+- Join class names with `cx` from `@frontend/utils/classNames`.
+- Type form submit handlers with `SubmitEvent`.
 - No `any`, unchecked casts, or suppressions.
 - Keep it simple: no speculative layers, wrappers, or unrelated refactors.
 
@@ -17,6 +19,7 @@ Read `docs/architecture.md` before changing structure, data flow, or server/clie
 - The app is a plain component gallery with labeled, interactive examples. No dashboard shell, sidebar, hero, marketing copy, code samples, or code viewers.
 - Keep the GuildMarket/SeppOS look: Rubik, the original palette variables, accent borders, moving input labels, button hover glow, the number stepper, themed native selects, compact switches. Don't swap in a new design system.
 - Every styled component gets an adjacent, same-named CSS Module. Shared values come from tokens in `globals.css`.
+- Use `showAlert`/`showConfirm` for notices and confirmations, and `Dialog` for modal forms.
 - Gallery-only examples live in `modules/Showcase`.
 
 ## Server

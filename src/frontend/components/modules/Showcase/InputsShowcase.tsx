@@ -52,7 +52,7 @@ export default function InputsShowcase() {
                             <TextInput label="Input with hint" hint="Example hint below the input." />
                             <TextInput label="Grey Input" grey />
                             <TextInput label="Small Input" small />
-                            <TextInput label="Small Grey Input" small grey/>
+                            <TextInput label="Small Grey Input" small grey />
                             <div className={styles.row}><span>Inline:</span><TextInput label="Inline text" inline defaultValue="Edit this text" /></div>
                             <TextInput label="End adornment" endAdornment={<span className={inputStyles.adornment}>CHF</span>} />
                         </div>
@@ -74,14 +74,14 @@ export default function InputsShowcase() {
                             <p role="status">Selected: {selection}</p>
                             <SelectInput label="Required select" name="requiredSelection" defaultValue="" required>
                                 <option value="" disabled>Choose an option</option>
-                                <option value="available">Available option</option>
-                                <option value="available">Available option 2</option>
-                                <option value="available">Available option 3</option>
+                                <option value="first">First option</option>
+                                <option value="second">Second option</option>
+                                <option value="third">Third option</option>
                             </SelectInput>
-                            <SelectInput label="Grey select" name="greySelection" defaultValue="" grey>
-                                <option value="available">Available option</option>
-                                <option value="available">Available option 2</option>
-                                <option value="available">Available option 3</option>
+                            <SelectInput label="Grey select" name="greySelection" defaultValue="first" grey>
+                                <option value="first">First option</option>
+                                <option value="second">Second option</option>
+                                <option value="third">Third option</option>
                             </SelectInput>
                             <SelectInput label="Disabled select" disabled>
                                 <option>Disabled option</option>

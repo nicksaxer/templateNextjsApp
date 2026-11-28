@@ -7,15 +7,7 @@ import Button from '@frontend/components/ui/inputs/Button';
 export default function ErrorPage({reset}: {error: Error & {digest?: string}; reset: () => void}) {
     return (
         <Container>
-            <EmptyState
-                title="Something went wrong"
-                icon="cloud-rain"
-                action={
-                    <Button filled onClick={reset}>
-                        Try again
-                    </Button>
-                }
-            >
+            <EmptyState title="Something went wrong" icon="cloud-rain" action={<Button filled onClick={reset}>Try again</Button>}>
                 Please try again.
             </EmptyState>
         </Container>

@@ -49,6 +49,13 @@
     gap: 1rem;
 }
 
+.dialogForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
 @media (max-width: 700px) {
     .examples {
         grid-template-columns: 1fr;

@@ -1,20 +1,29 @@
 import 'server-only';
 import { exampleLimits, examplePlans } from '@backend/config/example.config';
-import { AppError } from './error.util';
 import type { ProjectDraftInput } from '@backend/types';
+import { AppError } from './error.util';
+import { isEmail } from './validation.util';
 
 export function validateProjectInput(input: unknown): ProjectDraftInput {
     if (!input || typeof input !== 'object') {throw new AppError(400, 'Please check your project details.');}
     const {name, email, plan, seats, notes, updates} = input as Record<string, unknown>;
+    const {maxName, minSeats, maxSeats, maxNotes} = exampleLimits;
+    const values = {
+        name: typeof name === 'string' ? name.trim() : '',
+        email: typeof email === 'string' ? email.trim().toLowerCase() : '',
+        plan: examplePlans.find(item => item.id === plan)?.id,
+        seats: typeof seats === 'number' ? seats : NaN,
+        notes: typeof notes === 'string' ? notes.trim() : undefined,
+        updates: typeof updates === 'boolean' ? updates : undefined
+    };
     const errors: Record<string, string> = {};
-    if (typeof name !== 'string' || !name.trim() || name.trim().length > exampleLimits.maxName) {errors.name = 'Enter a name between 1 and 80 characters.';}
-    if (typeof email !== 'string' || email.length > 254 || !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(email)) {errors.email = 'Enter a valid email address.';}
-    if (typeof plan !== 'string' || !examplePlans.some(item => item.id === plan)) {errors.plan = 'Choose an available plan.';}
-    if (typeof seats !== 'number' || !Number.isSafeInteger(seats) || seats < exampleLimits.minSeats || seats > exampleLimits.maxSeats) {errors.seats = 'Choose between 1 and 50 people.';}
-    if (typeof notes !== 'string' || notes.length > exampleLimits.maxNotes) {errors.notes = 'Keep your note within 500 characters.';}
-    if (typeof updates !== 'boolean') {errors.updates = 'Choose your email preference.';}
-    if (Object.keys(errors).length) {throw new AppError(400, 'A few details need your attention.', errors);}
-    // The explicit guards narrow each untrusted field without accepting extra client properties.
-    if (typeof name !== 'string' || typeof email !== 'string' || (plan !== 'personal' && plan !== 'studio' && plan !== 'business') || typeof seats !== 'number' || typeof notes !== 'string' || typeof updates !== 'boolean') {throw new AppError(400, 'Invalid project details.');}
-    return {name: name.trim(), email: email.trim().toLowerCase(), plan, seats, notes: notes.trim(), updates};
+    if (!values.name || values.name.length > maxName) {errors.name = `Enter a name between 1 and ${maxName} characters.`;}
+    if (!isEmail(values.email)) {errors.email = 'Enter a valid email address.';}
+    if (!values.plan) {errors.plan = 'Choose an available plan.';}
+    if (!Number.isSafeInteger(values.seats) || values.seats < minSeats || values.seats > maxSeats) {errors.seats = `Choose between ${minSeats} and ${maxSeats} people.`;}
+    if (values.notes === undefined || values.notes.length > maxNotes) {errors.notes = `Keep your note within ${maxNotes} characters.`;}
+    if (values.updates === undefined) {errors.updates = 'Choose your email preference.';}
+    // The undefined checks repeat the errors above so TypeScript can narrow the result.
+    if (Object.keys(errors).length || !values.plan || values.notes === undefined || values.updates === undefined) {throw new AppError(400, 'A few details need your attention.', errors);}
+    return {...values, plan: values.plan, notes: values.notes, updates: values.updates};
 }
